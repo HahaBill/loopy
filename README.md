@@ -73,7 +73,7 @@ Setup instructions will be added once the first baseline runs. AppWorld installs
 
 - Ton Hoang Nguyen (Bill) ([@HahaBill](https://github.com/HahaBill))
 - Alfredo F. Frontera Del Valle ([@AlfredoFFD](https://github.com/AlfredoFFD))
-- Harsh
+- Harsh Kumar
 
 ## Related work
 
