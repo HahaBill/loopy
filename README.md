@@ -45,17 +45,38 @@ Choosing between these is a multislope rent-or-buy problem from online algorithm
 
 ```
 loopy/
-├── agent/        # our agent loop and model clients (cheap/local and frontier)
-├── skills/       # coach (in-context skills) and compile (parameterized workflows)
-├── controller/   # rent / coach / compile decision policy
-├── eval/         # AppWorld harness, baselines, cost and latency logging
-├── app/          # desktop app and MCP server
-└── docs/         # proposal, notes, results
+├── src/loopy/
+│   ├── agent/        # our agent loop and model clients (cheap/local and frontier)
+│   ├── skills/       # coach (in-context skills) and compile (parameterized workflows)
+│   ├── controller/   # rent / coach / compile decision policy
+│   ├── eval/         # AppWorld harness, baselines, cost and latency logging
+│   └── app/          # terminal app (TUI), desktop app and MCP server
+├── tests/
+└── docs/             # proposal, notes, results
 ```
 
 ## Getting started
 
-Setup instructions will be added once the first baseline runs. AppWorld installs with `pip install appworld`; see its documentation for data download.
+So far the repository has a skeleton of the terminal app. It needs Python 3.11 or newer.
+
+```bash
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+loopy      # opens the TUI with the built-in offline model: no API key, server or download
+pytest
+```
+
+The offline model only echoes, so the chat loop, streaming and usage tracking can be built and tested without a real model. To use one, pass a [PydanticAI model name](https://ai.pydantic.dev/models/) or point Loopy at any OpenAI-compatible server:
+
+```bash
+loopy --model test                                              # PydanticAI's built-in test model
+loopy --model openai:<model-name>                               # needs OPENAI_API_KEY
+loopy --model qwen3:8b --base-url http://localhost:11434/v1     # a local model served by Ollama
+```
+
+`LOOPY_MODEL`, `LOOPY_BASE_URL` and `LOOPY_API_KEY` set the same options from the environment.
+
+The AppWorld harness is not wired up yet. AppWorld installs with `pip install appworld`; see its documentation for data download.
 
 ## Roadmap
 

@@ -1,0 +1,38 @@
+#chat {
+    width: 1fr;
+}
+
+#messages {
+    height: 1fr;
+    padding: 0 1;
+}
+
+#prompt {
+    margin: 0 1 1 1;
+}
+
+#usage {
+    width: 36;
+    height: 100%;
+    padding: 1 2;
+    background: $panel;
+}
+
+UserMessage {
+    margin: 1 0 0 10;
+    padding: 0 1;
+    background: $primary 20%;
+}
+
+AssistantMessage {
+    margin: 1 10 0 0;
+    padding: 0 1;
+    background: $surface;
+}
+
+ErrorMessage {
+    margin: 1 0 0 0;
+    padding: 0 1;
+    color: $text-error;
+    background: $error 15%;
+}
