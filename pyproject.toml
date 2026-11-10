@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "loopy-local"
+version = "0.1.0"
+description = "A local-first desktop agent that learns the tasks you repeat."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic-ai-slim[openai]>=2.66",
+    "textual>=8.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9"]
+
+[project.scripts]
+loopy = "loopy.app.tui:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/loopy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
