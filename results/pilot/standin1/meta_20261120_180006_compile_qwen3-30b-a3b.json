@@ -1,0 +1,56 @@
+{
+  "command": "experiments/pilot/run_arm.py --run-name standin1 --condition compile --model qwen3-30b-a3b --versions 2,3 --skills-dir results/pilot/standin1/raw_large/skills --label STAND-IN MODELS",
+  "condition": "compile",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pydantic_ai": "2.71.0",
+    "python": "3.11.9"
+  },
+  "git": {
+    "branch": "alfredo/pilot-setup",
+    "commit": "491b27dc43a35190a41907f32f49bdd1853474e9",
+    "dirty_files": []
+  },
+  "label": "STAND-IN MODELS",
+  "max_usd": 3.0,
+  "model": {
+    "api_key_env": "NEBIUS_API_KEY",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "context_budget_tokens": 200000,
+    "extra_body": null,
+    "key": "qwen3-30b-a3b",
+    "max_tokens": 1500,
+    "name": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "request_timeout": 180.0,
+    "role": "small",
+    "seed": 123,
+    "temperature": 0.0,
+    "usd_per_mtok_in": 0.1,
+    "usd_per_mtok_out": 0.3
+  },
+  "model_key": "qwen3-30b-a3b",
+  "provider": "nebius.com",
+  "repeat": 1,
+  "run_name": "standin1",
+  "settings": {
+    "appworld_timeout_seconds": 100,
+    "max_steps": 50,
+    "output_char_limit": 8000
+  },
+  "sha256": {
+    "config": "98db03e23fcf2b9cb2f6d9826dfea770fee33671d1544b081998f24657a406bb",
+    "prompt": "5e72480bd4c033ea4c3d65e092ffb3ff16401fda255c8649eb8ac848ed219147",
+    "react.py": "9e1e716ace719e2d70c2ff0758674a8888d390ab84a0812e8be5fb33a256f43e",
+    "run_arm.py": "ff46489681e0919b1447cfedc9eff3b52c7827693d7ac3d9008238bf0be88f2e",
+    "scenarios": "9ba0c0974246956b44305468218718a42cb10acd8bff748aa22f855f50e0753c"
+  },
+  "started": "2026-11-20T18:00:06-05:00",
+  "task_ids": [
+    "d4e9306_2",
+    "d4e9306_3",
+    "37a8675_2",
+    "37a8675_3",
+    "530b157_2",
+    "530b157_3"
+  ]
+}

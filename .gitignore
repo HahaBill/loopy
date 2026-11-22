@@ -1,7 +1,16 @@
 .venv/
+.venv-appworld/
 __pycache__/
+*.pyc
 *.egg-info/
 .pytest_cache/
 build/
 dist/
 .env
+
+# AppWorld's own data and scratch output (downloaded with `appworld download data`; never commit)
+/data/
+/experiments/outputs/
+
+# Large raw run artifacts stay local; the per-run JSONL and summaries in results/ are committed
+results/**/raw_large/

@@ -1,0 +1,209 @@
+{
+  "students": {
+    "qwen3-30b-a3b": {
+      "alone_passed": 0,
+      "alone_of": 9,
+      "usable_R1": false,
+      "test_tasks_failed_alone": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "coach_checked_builds": {
+        "d4e9306": "built",
+        "37a8675": "failed_validation",
+        "530b157": "failed_validation"
+      },
+      "coach_checked_runs": {
+        "d4e9306_2": false,
+        "d4e9306_3": false
+      },
+      "fixed_by_coach_checked": [],
+      "fixed_by_function": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "function_runs_passed": "5/6",
+      "hurt_by_coach_checked": [],
+      "hurt_by_function": [],
+      "coach_checked_build_cost_usd": 0.2062,
+      "cost_per_run_usd": {
+        "alone": 0.0504,
+        "coach_checked": 0.075,
+        "function": 0.0029
+      },
+      "seconds_per_run": {
+        "alone": 129.0,
+        "coach_checked": 638.4,
+        "function": 7.8
+      },
+      "R2_checked_note_works": false,
+      "function_fixes_half": true,
+      "function_minus_note": 5
+    },
+    "gemma-3-27b": {
+      "alone_passed": 0,
+      "alone_of": 9,
+      "usable_R1": false,
+      "test_tasks_failed_alone": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "coach_checked_builds": {
+        "d4e9306": "built",
+        "37a8675": "failed_validation",
+        "530b157": "failed_validation"
+      },
+      "coach_checked_runs": {
+        "d4e9306_2": false,
+        "d4e9306_3": true
+      },
+      "fixed_by_coach_checked": [
+        "d4e9306_3"
+      ],
+      "fixed_by_function": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "function_runs_passed": "6/6",
+      "hurt_by_coach_checked": [],
+      "hurt_by_function": [],
+      "coach_checked_build_cost_usd": 0.0775,
+      "cost_per_run_usd": {
+        "alone": 0.0063,
+        "coach_checked": 0.0081,
+        "function": 0.0006
+      },
+      "seconds_per_run": {
+        "alone": 27.7,
+        "coach_checked": 120.5,
+        "function": 5.2
+      },
+      "R2_checked_note_works": false,
+      "function_fixes_half": true,
+      "function_minus_note": 5
+    },
+    "gpt-oss-120b": {
+      "alone_passed": 0,
+      "alone_of": 9,
+      "usable_R1": false,
+      "test_tasks_failed_alone": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "coach_checked_builds": {
+        "d4e9306": "built",
+        "37a8675": "failed_validation",
+        "530b157": "failed_validation"
+      },
+      "coach_checked_runs": {
+        "d4e9306_2": true,
+        "d4e9306_3": false
+      },
+      "fixed_by_coach_checked": [
+        "d4e9306_2"
+      ],
+      "fixed_by_function": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "function_runs_passed": "6/6",
+      "hurt_by_coach_checked": [],
+      "hurt_by_function": [],
+      "coach_checked_build_cost_usd": 0.0783,
+      "cost_per_run_usd": {
+        "alone": 0.0165,
+        "coach_checked": 0.0077,
+        "function": 0.0011
+      },
+      "seconds_per_run": {
+        "alone": 29.3,
+        "coach_checked": 15.9,
+        "function": 3.0
+      },
+      "R2_checked_note_works": false,
+      "function_fixes_half": true,
+      "function_minus_note": 5
+    },
+    "qwen3.8-27b": {
+      "alone_passed": 6,
+      "alone_of": 9,
+      "usable_R1": true,
+      "test_tasks_failed_alone": [
+        "37a8675_2",
+        "37a8675_3"
+      ],
+      "coach_checked_builds": {
+        "d4e9306": "skipped_small_passed",
+        "37a8675": "built",
+        "530b157": "skipped_small_passed"
+      },
+      "coach_checked_runs": {
+        "37a8675_2": true,
+        "37a8675_3": true
+      },
+      "fixed_by_coach_checked": [
+        "37a8675_2",
+        "37a8675_3"
+      ],
+      "fixed_by_function": [
+        "37a8675_2",
+        "37a8675_3"
+      ],
+      "function_runs_passed": "6/6",
+      "hurt_by_coach_checked": [],
+      "hurt_by_function": [],
+      "coach_checked_build_cost_usd": 0.1156,
+      "cost_per_run_usd": {
+        "alone": 0.0677,
+        "coach_checked": 0.053,
+        "function": 0.0094
+      },
+      "seconds_per_run": {
+        "alone": 17.6,
+        "coach_checked": 20.2,
+        "function": 6.7
+      },
+      "R2_checked_note_works": true,
+      "function_fixes_half": true,
+      "function_minus_note": 0
+    }
+  },
+  "R3": {
+    "note_works_for": [
+      "qwen3.8-27b"
+    ],
+    "note_fails_but_function_works_for": [
+      "qwen3-30b-a3b",
+      "gemma-3-27b",
+      "gpt-oss-120b"
+    ],
+    "function_at_least_2_more_for_every_eligible_student": false,
+    "any_usable_student": true
+  },
+  "compile_build_cost_usd_pilot1_all_rounds": 0.0611,
+  "pilot2_cost_usd": 1.647,
+  "ledger_total_usd": 2.5002
+}

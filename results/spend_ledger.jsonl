@@ -1,0 +1,27 @@
+{"note": "qwen3-30b-a3b", "provider": "nebius.com", "run": "check_models", "time": "2026-11-20T00:08:52-05:00", "usd": 4e-06}
+{"note": "gemma-3-27b", "provider": "nebius.com", "run": "check_models", "time": "2026-11-20T00:08:53-05:00", "usd": 4e-06}
+{"note": "small_alone qwen3-30b-a3b", "provider": "nebius.com", "run": "smoke", "time": "2026-11-20T00:17:23-05:00", "usd": 0.034441}
+{"note": "glm-5.3-flash", "provider": "nebius.com", "run": "check_models", "time": "2026-11-20T00:24:13-05:00", "usd": 0.000104}
+{"note": "7 one-line requests sent outside the scripts on Nov 20, 00:10 to 00:14 (endpoint and wrapper debugging); cost computed from the token usage each reply reported", "provider": "nebius.com", "run": "direct_probes", "time": "2026-11-20T00:39:34-05:00", "usd": 0.000872}
+{"note": "small_alone qwen3-30b-a3b", "provider": "nebius.com", "run": "standin1", "time": "2026-11-20T01:03:25-05:00", "usd": 0.454002}
+{"note": "cloud_alone glm-5.3-flash", "provider": "nebius.com", "run": "standin1", "time": "2026-11-20T17:33:44-05:00", "usd": 0.145242}
+{"note": "build_skills glm-5.3-flash", "provider": "nebius.com", "run": "standin1", "time": "2026-11-20T17:37:27-05:00", "usd": 0.032657}
+{"note": "coach qwen3-30b-a3b", "provider": "nebius.com", "run": "standin1", "time": "2026-11-20T17:52:34-05:00", "usd": 0.130236}
+{"note": "build_skills glm-5.3-flash", "provider": "nebius.com", "run": "standin1", "time": "2026-11-20T17:59:51-05:00", "usd": 0.038014}
+{"note": "compile qwen3-30b-a3b", "provider": "nebius.com", "run": "standin1", "time": "2026-11-20T18:01:01-05:00", "usd": 0.017435}
+{"note": "gpt-oss-120b", "provider": "nebius.com", "run": "check_models", "time": "2026-11-20T18:58:27-05:00", "usd": 6.1e-05}
+{"note": "qwen3.8-27b", "provider": "nebius.com", "run": "check_models", "time": "2026-11-20T18:58:27-05:00", "usd": 0.000108}
+{"note": "small_alone gemma-3-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:02:53-05:00", "usd": 0.056577}
+{"note": "small_alone gpt-oss-120b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:03:29-05:00", "usd": 0.148804}
+{"note": "small_alone qwen3.8-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:06:12-05:00", "usd": 0.609379}
+{"note": "compile gemma-3-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:07:13-05:00", "usd": 0.003851}
+{"note": "compile gpt-oss-120b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:07:40-05:00", "usd": 0.00664}
+{"note": "compile qwen3.8-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:08:29-05:00", "usd": 0.056477}
+{"note": "build_coach_checked glm-5.3-flash for qwen3.8-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:10:23-05:00", "usd": 0.115643}
+{"note": "build_coach_checked glm-5.3-flash for qwen3-30b-a3b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:10:38-05:00", "usd": 0.206236}
+{"note": "build_coach_checked glm-5.3-flash for gpt-oss-120b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:11:47-05:00", "usd": 0.078344}
+{"note": "build_coach_checked glm-5.3-flash for gemma-3-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:22:18-05:00", "usd": 0.077462}
+{"note": "coach_checked qwen3-30b-a3b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:43:57-05:00", "usd": 0.149919}
+{"note": "coach_checked gemma-3-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:48:18-05:00", "usd": 0.016286}
+{"note": "coach_checked gpt-oss-120b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:49:08-05:00", "usd": 0.015417}
+{"note": "coach_checked qwen3.8-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:50:09-05:00", "usd": 0.105977}

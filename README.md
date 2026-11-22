@@ -76,7 +76,25 @@ loopy --model qwen3:8b --base-url http://localhost:11434/v1     # a local model 
 
 `LOOPY_MODEL`, `LOOPY_BASE_URL` and `LOOPY_API_KEY` set the same options from the environment.
 
-The AppWorld harness is not wired up yet. AppWorld installs with `pip install appworld`; see its documentation for data download.
+### Experiments on AppWorld
+
+AppWorld pins pydantic 1 and the app needs pydantic 2, so AppWorld lives in its own environment next to the app's. The agent loop (`src/loopy/agent/react.py`) talks to it through a small bridge (`src/loopy/eval/bridge.py`).
+
+```bash
+python3.11 -m venv .venv-appworld
+.venv-appworld/bin/pip install appworld            # Windows: .venv-appworld\Scripts\pip
+.venv-appworld/bin/appworld install
+.venv-appworld/bin/appworld download data --root .  # 178 MB into ./data (gitignored)
+
+.venv-appworld/bin/python experiments/appworld_env_check.py   # no model, no cost; must end with ENV GATE PASSED
+pytest                                                         # includes an end-to-end bridge test
+```
+
+On Windows, AppWorld's code-execution timeout needs a small shim (`src/loopy/eval/appworld_win_compat.py`), applied automatically. The environment check above runs AppWorld's own unit tests and reference solutions with the shim, so run it once per machine before trusting results.
+
+Model keys go in `.env` (copy `.env.example`). The pilot (three dev scenarios, see `CLAUDE.md`) is run with `experiments/pilot/run_arm.py`; every run appends a line to `results/pilot/<run>/runs.jsonl` and to `LOG.md`.
+
+AppWorld asks that its task data and anything derived from it not be republished in plain text. Full trajectories therefore stay in `results/**/raw_large/` (gitignored); only ids, counts, tokens, dollars and timings are committed.
 
 ## Roadmap
 

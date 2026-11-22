@@ -1,0 +1,61 @@
+{
+  "command": "experiments/pilot/run_arm.py --run-name smoke --condition small_alone --model qwen3-30b-a3b --tasks 50e1ac9_1 --max-usd 0.25",
+  "condition": "small_alone",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pydantic_ai": "2.71.0",
+    "python": "3.11.9"
+  },
+  "git": {
+    "branch": "alfredo/pilot-setup",
+    "commit": "846c149e3ced16a7264c46c38029859e1b152f6f",
+    "dirty_files": [
+      "M .gitignore",
+      "?? .env.example",
+      "?? experiments/",
+      "?? results/",
+      "?? src/loopy/agent/llm.py",
+      "?? src/loopy/agent/prompts/",
+      "?? src/loopy/agent/react.py",
+      "?? src/loopy/eval/",
+      "?? tests/test_appworld_bridge.py",
+      "?? tests/test_react.py"
+    ]
+  },
+  "max_usd": 0.25,
+  "model": {
+    "api_key_env": "NEBIUS_API_KEY",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "context_budget_tokens": 200000,
+    "extra_body": null,
+    "key": "qwen3-30b-a3b",
+    "max_tokens": 1500,
+    "name": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "request_timeout": 300.0,
+    "role": "small",
+    "seed": 123,
+    "temperature": 0.0,
+    "usd_per_mtok_in": 0.1,
+    "usd_per_mtok_out": 0.3
+  },
+  "model_key": "qwen3-30b-a3b",
+  "provider": "nebius.com",
+  "repeat": 1,
+  "run_name": "smoke",
+  "settings": {
+    "appworld_timeout_seconds": 100,
+    "max_steps": 50,
+    "output_char_limit": 8000
+  },
+  "sha256": {
+    "config": "f0afd2f9fdd4dda328878b3f496e3b5bb18e5fbdf6cdc57300c506176df1ac19",
+    "prompt": "5e72480bd4c033ea4c3d65e092ffb3ff16401fda255c8649eb8ac848ed219147",
+    "react.py": "9e1e716ace719e2d70c2ff0758674a8888d390ab84a0812e8be5fb33a256f43e",
+    "run_arm.py": "ef5c2db3c9d5b35e934f8f655e01be14f7c945ee627fb35c4a83fdce142d7ded",
+    "scenarios": "9ba0c0974246956b44305468218718a42cb10acd8bff748aa22f855f50e0753c"
+  },
+  "started": "2026-11-20T00:15:06-05:00",
+  "task_ids": [
+    "50e1ac9_1"
+  ]
+}

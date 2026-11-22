@@ -1,0 +1,37 @@
+{"ts": "2026-11-20T00:24:36", "cmd": "expand", "source": "openalex", "query": "cites of 2610.02932", "hits": 0}
+{"ts": "2026-11-20T00:24:37", "cmd": "expand", "source": "s2", "query": "recs of 2610.02932", "hits": 25}
+{"ts": "2026-11-20T00:25:21", "cmd": "search", "source": "arxiv", "query": "all:learning-augmented AND all:skill AND all:agent AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:25:21", "cmd": "search", "source": "openalex", "query": "learning-augmented skill agent since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:25:27", "cmd": "search", "source": "s2", "query": "learning-augmented skill agent since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:25:57", "cmd": "search", "source": "arxiv", "query": "all:rent AND all:buy AND all:LLM AND all:agent AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:25:58", "cmd": "search", "source": "openalex", "query": "rent or buy LLM agent since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:26:18", "cmd": "search", "source": "s2", "query": "rent or buy LLM agent since 2026-09-21", "hits": 0}
+{"ts": "2026-11-20T00:27:09", "cmd": "search", "source": "arxiv", "query": "all:ski AND all:rental AND all:agent AND all:skill AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:27:09", "cmd": "search", "source": "openalex", "query": "ski rental agent skill since 2026-09-21", "hits": 8}
+{"ts": "2026-11-20T00:27:29", "cmd": "search", "source": "s2", "query": "ski rental agent skill since 2026-09-21", "hits": 1}
+{"ts": "2026-11-20T00:28:02", "cmd": "search", "source": "arxiv", "query": "all:coach AND all:compile AND all:agent AND all:cost AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:28:02", "cmd": "search", "source": "openalex", "query": "coach compile agent cost since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:28:08", "cmd": "search", "source": "s2", "query": "coach compile agent cost since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:28:56", "cmd": "search", "source": "arxiv", "query": "all:self-prediction AND all:agent AND all:failure AND all:routing AND all:skill AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:29:45", "cmd": "search", "source": "arxiv", "query": "all:self-prediction AND all:failure AND all:routing AND all:agent AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:29:46", "cmd": "search", "source": "openalex", "query": "self-prediction agent failure routing skill since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:30:06", "cmd": "search", "source": "s2", "query": "self-prediction agent failure routing skill since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:30:07", "cmd": "expand", "source": "s2", "query": "cites of 2410.15257", "hits": 10}
+{"ts": "2026-11-20T18:48:06", "cmd": "search", "source": "arxiv", "query": "all:natural AND all:language AND all:skill AND all:versus AND all:program AND all:small AND all:model AND all:agent AND submittedDate:[202605240000 TO 202611202359]", "hits": 0}
+{"ts": "2026-11-20T18:48:09", "cmd": "search", "source": "arxiv", "query": "all:language AND all:natural AND all:program AND all:versus AND submittedDate:[202605240000 TO 202611202359]", "hits": 8}
+{"ts": "2026-11-20T18:48:10", "cmd": "search", "source": "openalex", "query": "natural language skill versus program small model agent since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:10", "cmd": "search", "source": "s2", "query": "natural language skill versus program small model agent since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:11", "cmd": "search", "source": "arxiv", "query": "all:knowing AND all:doing AND all:gap AND all:agent AND all:skill AND all:execution AND submittedDate:[202605240000 TO 202611202359]", "hits": 0}
+{"ts": "2026-11-20T18:48:14", "cmd": "search", "source": "arxiv", "query": "all:execution AND all:knowing AND all:doing AND all:agent AND submittedDate:[202605240000 TO 202611202359]", "hits": 12}
+{"ts": "2026-11-20T18:48:14", "cmd": "search", "source": "openalex", "query": "knowing doing gap agent skill execution since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:34", "cmd": "search", "source": "s2", "query": "knowing doing gap agent skill execution since 2026-05-24", "hits": 0}
+{"ts": "2026-11-20T18:48:34", "cmd": "search", "source": "arxiv", "query": "all:teacher AND all:diagnosis AND all:student AND all:failure AND all:agent AND all:skill AND submittedDate:[202605240000 TO 202611202359]", "hits": 1}
+{"ts": "2026-11-20T18:48:35", "cmd": "search", "source": "openalex", "query": "teacher diagnosis student failure agent skill since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:55", "cmd": "search", "source": "s2", "query": "teacher diagnosis student failure agent skill since 2026-05-24", "hits": 0}
+{"ts": "2026-11-20T18:48:55", "cmd": "search", "source": "arxiv", "query": "all:weak AND all:agent AND all:follows AND all:skill AND all:fails AND all:instruction AND all:following AND submittedDate:[202605240000 TO 202611202359]", "hits": 2}
+{"ts": "2026-11-20T18:48:56", "cmd": "search", "source": "openalex", "query": "weak agent follows skill fails instruction following since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:49:16", "cmd": "search", "source": "s2", "query": "weak agent follows skill fails instruction following since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:49:17", "cmd": "search", "source": "arxiv", "query": "all:capability AND all:threshold AND all:skill AND all:transfer AND all:student AND all:model AND submittedDate:[202605240000 TO 202611202359]", "hits": 0}
+{"ts": "2026-11-20T18:49:20", "cmd": "search", "source": "arxiv", "query": "all:capability AND all:threshold AND all:transfer AND all:student AND submittedDate:[202605240000 TO 202611202359]", "hits": 5}
+{"ts": "2026-11-20T18:49:20", "cmd": "search", "source": "openalex", "query": "capability threshold skill transfer student model since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:49:32", "cmd": "search", "source": "s2", "query": "capability threshold skill transfer student model since 2026-05-24", "hits": 12}
