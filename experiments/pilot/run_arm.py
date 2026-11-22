@@ -169,6 +169,7 @@ def main() -> int:
     skills_dir = Path(args.skills_dir) if args.skills_dir else None
     new_records = []
     meta_appworld: dict = {}
+    ledgered = 0.0
     experiment_name = f"{args.run_name}__{args.condition}__{args.model}__r{args.repeat}"
     try:
         with AppWorldBridge(stderr_path=run_dir / "raw_large" / "appworld_worker.log") as bridge:
@@ -182,6 +183,9 @@ def main() -> int:
                     except FileNotFoundError:
                         print(f"  {task_id}: no {args.condition} skill was built for {scenario_id}; skipped", flush=True)
                         continue
+                if ledger_cap is not None and ledger_total(LEDGER, provider) >= ledger_cap:
+                    print("  provider cap reached; stopping this invocation", flush=True)
+                    break
                 started, clock = now_et(), time.perf_counter()
                 task = bridge.open_task(task_id, experiment_name=experiment_name,
                                         timeout_seconds=config["appworld_timeout_seconds"])
@@ -249,6 +253,10 @@ def main() -> int:
                         "evaluation": evaluation,
                     }, handle, indent=2, ensure_ascii=False, default=str)
                 append_jsonl(runs_path, record)
+                if budget.spent_usd > ledgered:
+                    ledger_add(LEDGER, provider, budget.spent_usd - ledgered, args.run_name,
+                               f"{args.condition} {args.model} {task_id}")
+                    ledgered = budget.spent_usd
                 new_records.append(record)
                 p_fail = record["forecast_p_fail"]
                 print(f"  {task_id} d{task.difficulty}: {'PASS' if success else 'FAIL (' + str(record['failure_type']) + ')'}"
@@ -260,8 +268,9 @@ def main() -> int:
                     break
     finally:
         # Record what this invocation spent even if it crashed, so the provider cap stays honest.
-        if budget.spent_usd > 0:
-            ledger_add(LEDGER, provider, budget.spent_usd, args.run_name, f"{args.condition} {args.model}")
+        if budget.spent_usd > ledgered:
+            ledger_add(LEDGER, provider, budget.spent_usd - ledgered, args.run_name,
+                       f"{args.condition} {args.model}")
 
     summary = summarize(new_records)
     finish = {"finished": now_et(), "summary": summary, "appworld": meta_appworld,

@@ -30,6 +30,7 @@ def main() -> int:
     parser.add_argument("--split", default="dev")
     parser.add_argument("--seed-text", default=SEED_TEXT)
     parser.add_argument("--out", default=str(OUTPUT))
+    parser.add_argument("--n", type=int, default=None, help="draw this many scenarios, taking levels in turn")
     args = parser.parse_args()
 
     task_ids = (REPO_ROOT / "data" / "datasets" / f"{args.split}.txt").read_text(encoding="utf-8").split()
@@ -52,7 +53,16 @@ def main() -> int:
     seed = int(hashlib.sha256(args.seed_text.encode("utf-8")).hexdigest()[:16], 16)
     generator = random.Random(seed)
     chosen = []
-    for level in sorted(by_level):
+    if args.n:
+        pools = {level: generator.sample(sorted(by_level[level]), len(by_level[level])) for level in sorted(by_level)}
+        while len(chosen) < args.n and any(pools.values()):
+            for level in sorted(pools):
+                if pools[level] and len(chosen) < args.n:
+                    scenario = pools[level].pop(0)
+                    chosen.append({"scenario_id": scenario, "difficulty": level,
+                                   "task_ids": sorted(versions_of[scenario]),
+                                   "n_candidates_at_this_level": len(by_level[level])})
+    for level in ([] if args.n else sorted(by_level)):
         candidates = sorted(by_level[level])
         scenario = generator.choice(candidates)
         chosen.append({
@@ -65,7 +75,8 @@ def main() -> int:
     write_new_json(args.out, {
         "created": now_et(),
         "split": args.split,
-        "rule": "one scenario per difficulty level, drawn with random.Random(seed).choice over the sorted "
+        "n_requested": args.n,
+        "rule": "(with --n: each level is shuffled by the seeded generator, then levels are taken in turn) one scenario per difficulty level, drawn with random.Random(seed).choice over the sorted "
                 "scenario ids of that level, levels visited in ascending order",
         "seed_text": args.seed_text,
         "seed": seed,

@@ -25,3 +25,5 @@
 {"note": "coach_checked gemma-3-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:48:18-05:00", "usd": 0.016286}
 {"note": "coach_checked gpt-oss-120b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:49:08-05:00", "usd": 0.015417}
 {"note": "coach_checked qwen3.8-27b", "provider": "nebius.com", "run": "pilot2", "time": "2026-11-20T19:50:09-05:00", "usd": 0.105977}
+{"note": "deepseek-v4.1-flash", "provider": "nebius.com", "run": "check_models", "time": "2026-11-22T18:17:46-05:00", "usd": 4e-05}
+{"note": "minimax-m3.1-flash", "provider": "nebius.com", "run": "check_models", "time": "2026-11-22T18:17:47-05:00", "usd": 4.2e-05}

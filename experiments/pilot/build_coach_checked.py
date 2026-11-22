@@ -88,6 +88,7 @@ def main() -> int:
     budget = Budget(max_usd=max_usd)
     teacher, student = PydanticAIChat(teacher_spec), PydanticAIChat(student_spec)
     git = git_state()
+    ledgered = 0.0
 
     try:
         with AppWorldBridge(stderr_path=raw_dir / "appworld_worker.log") as bridge:
@@ -95,6 +96,9 @@ def main() -> int:
                 scenario_id = item["scenario_id"]
                 if scenario_id in done:
                     continue
+                if ledger_cap is not None and ledger_total(LEDGER, provider) >= ledger_cap:
+                    print("provider cap reached; stopping", flush=True)
+                    break
                 task_id = f"{scenario_id}_{args.learn_version}"
                 small = find_record(records, task_id, "small_alone", args.small_model)
                 cloud = find_record(records, task_id, "cloud_alone", args.cloud_model)
@@ -184,11 +188,15 @@ def main() -> int:
                 print(f"{scenario_id}: coach_checked {'built' if validated else 'FAILED'} after "
                       f"{len(attempts)} attempt(s) | teacher ${teacher_cost:.4f} + student ${student_cost:.4f}",
                       flush=True)
+                if budget.spent_usd > ledgered:
+                    ledger_add(LEDGER, provider, budget.spent_usd - ledgered, args.run_name,
+                               f"build_coach_checked {args.small_model} {scenario_id}")
+                    ledgered = budget.spent_usd
     except CostCapReached as error:
         print(f"cost cap reached: {error}")
     finally:
-        if budget.spent_usd > 0:
-            ledger_add(LEDGER, provider, budget.spent_usd, args.run_name,
+        if budget.spent_usd > ledgered:
+            ledger_add(LEDGER, provider, budget.spent_usd - ledgered, args.run_name,
                        f"build_coach_checked {args.cloud_model} for {args.small_model}")
     print(f"spent ${budget.spent_usd:.4f} | {provider} ledger total ${ledger_total(LEDGER, provider):.4f}")
     return 0

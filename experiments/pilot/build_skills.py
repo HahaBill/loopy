@@ -60,6 +60,8 @@ def main() -> int:
                         help="output limit for skill-writing requests; a model that thinks first needs room")
     parser.add_argument("--skills-dir", default=None, help="where notes and functions go (default: raw_large/skills)")
     parser.add_argument("--only", choices=("coach", "compile"), default=None, help="build just one kind")
+    parser.add_argument("--no-student", action="store_true",
+                        help="build functions for every scenario the cloud model passed; no student run needed")
     parser.add_argument("--retry-compile", action="store_true",
                         help="try compile again where the last attempt did not pass; earlier rows are kept")
     args = parser.parse_args()
@@ -68,6 +70,8 @@ def main() -> int:
     load_env_file(REPO_ROOT / ".env")
     teacher_spec = ModelSpec.from_dict(args.cloud_model, config["models"][args.cloud_model])
     teacher_spec = dataclasses.replace(teacher_spec, max_tokens=args.teach_max_tokens)
+    if args.no_student and args.only != "compile":
+        raise SystemExit("--no-student needs --only compile")
     if teacher_spec.role != "cloud":
         raise SystemExit(f"{args.cloud_model} is not a 'cloud' model")
     scenarios = json.loads((REPO_ROOT / config["scenario_file"]).read_text(encoding="utf-8"))["chosen"]
@@ -125,7 +129,8 @@ def main() -> int:
             for item in scenarios:
                 scenario_id = item["scenario_id"]
                 task_id = f"{scenario_id}_{args.learn_version}"
-                small = find_record(records, task_id, "small_alone", args.small_model)
+                small = ({"success": False, "repeat": 1} if args.no_student
+                         else find_record(records, task_id, "small_alone", args.small_model))
                 cloud = find_record(records, task_id, "cloud_alone", args.cloud_model)
                 if small is None:
                     raise SystemExit(f"{task_id}: no small_alone run with {args.small_model}. Run that arm first.")
@@ -144,7 +149,8 @@ def main() -> int:
                     print(f"{scenario_id}: {skip}")
                     continue
 
-                small_raw = load_raw(raw_dir, "small_alone", args.small_model, task_id, small["repeat"])
+                small_raw = (None if args.no_student
+                             else load_raw(raw_dir, "small_alone", args.small_model, task_id, small["repeat"]))
                 cloud_raw = load_raw(raw_dir, "cloud_alone", args.cloud_model, task_id, cloud["repeat"])
                 folder = (Path(args.skills_dir) if args.skills_dir else raw_dir / "skills") / scenario_id
                 folder.mkdir(parents=True, exist_ok=True)
