@@ -25,12 +25,13 @@ import sys
 import time
 from pathlib import Path
 
-from loopy.agent.llm import ModelSpec, PydanticAIChat, load_env_file
+from loopy.agent.llm import ModelSpec, load_env_file
 from loopy.agent.react import Budget, CostCapReached
 from loopy.eval.bridge import REPO_ROOT, AppWorldBridge
 from loopy.eval.runlog import append_jsonl, git_state, ledger_add, ledger_total, now_et, read_jsonl
 from loopy.skills.coach import build_coach_prompt, parse_coach_reply
 from loopy.skills.compile import build_compile_prompt, build_repair_prompt, parse_compile_reply
+from loopy.skills.teach import complete_uncut
 
 HERE = Path(__file__).resolve().parent
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
@@ -39,7 +40,7 @@ LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
 def find_record(records: list[dict], task_id: str, condition: str, model_key: str) -> dict | None:
     matches = [record for record in records if record["task_id"] == task_id
                and record["condition"] == condition and record["model_key"] == model_key]
-    return matches[0] if matches else None
+    return matches[-1] if matches else None
 
 
 def load_raw(raw_dir: Path, condition: str, model_key: str, task_id: str, repeat: int) -> dict:
@@ -62,6 +63,7 @@ def main() -> int:
     parser.add_argument("--only", choices=("coach", "compile"), default=None, help="build just one kind")
     parser.add_argument("--no-student", action="store_true",
                         help="build functions for every scenario the cloud model passed; no student run needed")
+    parser.add_argument("--retry-only", default=None, help="with --retry-compile: only these scenarios")
     parser.add_argument("--retry-compile", action="store_true",
                         help="try compile again where the last attempt did not pass; earlier rows are kept")
     args = parser.parse_args()
@@ -85,7 +87,9 @@ def main() -> int:
     if args.retry_compile:  # a compile whose last row did not pass may be tried again
         last = {(row["scenario_id"], row["kind"], row["teacher_model_key"], row["small_model_key"]): row
                 for row in earlier}
-        done -= {key for key, row in last.items() if key[1] == "compile" and row["status"] == "failed_validation"}
+        only = set(args.retry_only.split(",")) if args.retry_only else None
+        done -= {key for key, row in last.items() if key[1] == "compile" and row["status"] == "failed_validation"
+                 and (only is None or key[0] in only)}
     build_round = 1 + max((row.get("round", 1) for row in earlier), default=0) if earlier else 1
 
     provider = teacher_spec.provider
@@ -97,7 +101,6 @@ def main() -> int:
             raise SystemExit(f"{provider}: the ${ledger_cap:.2f} cap is used up. Stopping.")
         max_usd = remaining if max_usd is None else min(max_usd, remaining)
     budget = Budget(max_usd=max_usd)
-    teacher = PydanticAIChat(teacher_spec)
     git = git_state()
     spent = 0.0
 
@@ -105,20 +108,18 @@ def main() -> int:
         return {"run_name": args.run_name, "label": args.label, "time": now_et(), "scenario_id": scenario_id, "learn_task_id": task_id,
                 "kind": kind, "teacher_model_key": args.cloud_model, "teacher_model_name": teacher_spec.name,
                 "small_model_key": args.small_model, "git_commit": git["commit"], "command": " ".join(sys.argv),
-                "round": build_round, "teach_max_tokens": args.teach_max_tokens}
+                "round": build_round, "teach_max_tokens": args.teach_max_tokens, "cutoff_fix": True}
 
     def ask(messages: list[dict]) -> tuple[str, dict]:
         nonlocal spent
-        budget.check()
-        reply = teacher.complete(messages)
-        cost = teacher_spec.cost_usd(reply.input_tokens, reply.output_tokens)
-        budget.add(cost)
-        spent += cost
-        return reply.text, {"input_tokens": reply.input_tokens, "output_tokens": reply.output_tokens,
-                            "cost_usd": cost, "seconds": reply.seconds}
+        reply, usage = complete_uncut(teacher_spec, messages, budget)
+        spent += usage["cost_usd"]
+        return reply.text, usage
 
     def total(usages: list[dict]) -> dict:
-        return {"requests": len(usages), "cloud_calls": len(usages),
+        n_requests = sum(usage["requests"] for usage in usages)
+        return {"requests": n_requests, "cloud_calls": n_requests,
+                "cut_off_requests": sum(usage["cut_off_requests"] for usage in usages),
                 "input_tokens": sum(usage["input_tokens"] for usage in usages),
                 "output_tokens": sum(usage["output_tokens"] for usage in usages),
                 "cost_usd": round(sum(usage["cost_usd"] for usage in usages), 6),

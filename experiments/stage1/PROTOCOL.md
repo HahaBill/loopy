@@ -42,3 +42,19 @@ only where listed under "Changes from the design".
 - Not collected: the teacher's prediction before a build, note-compliance scoring, the generic-note control.
   So the prediction question (Q3) can only use what the records already hold.
 - One run per task. The repeats are stage 2.
+
+## Infrastructure fixes, Nov 22, 2026, 9:10 PM ET (after the teacher arm and 18 of 30 builds, before any student run)
+The run was paused to fix three faults in the harness. The design, the arms, the analysis and the decision labels
+above are unchanged. No student had run, so no fix was made after seeing any student result.
+
+1. **Replies cut off by the output limit are not attempts.** The teacher thinks before it answers. In 9 of the 18
+   function builds it used the whole 16,000-token limit and returned nothing, so those builds never had the
+   protocol's three real tries. Now a cut-off reply is sent again with twice the limit, up to 64,000, for coach
+   notes and functions alike. All requests are priced. The 9 voided builds are redone from the start; their first
+   rows stay in `teach.jsonl` and their cost counts. A build that fails on real attempts stays failed.
+2. **A crash inside AppWorld is returned to the agent as a failed execution** instead of ending the run. It happened
+   once (`0d01c76_3`, teacher: the agent passed `...` to an API and AppWorld's call logger crashed).
+3. **Infrastructure errors are rerun once.** A task that ended in `model_error` is rerun as repeat 2 and repeat 1
+   stays in the file. The analysis uses the latest repeat of a task and reports how many were rerun.
+
+Also: parallel processes now take a lock before appending to `runs.jsonl`, `teach.jsonl` and the spend ledger.

@@ -30,6 +30,7 @@ from loopy.agent.react import Budget, CostCapReached, run_task
 from loopy.eval.bridge import REPO_ROOT, AppWorldBridge
 from loopy.eval.runlog import append_jsonl, git_state, ledger_add, ledger_total, now_et, read_jsonl
 from loopy.skills.coach import build_coach_prompt, build_revision_prompt, parse_coach_reply
+from loopy.skills.teach import complete_uncut
 
 HERE = Path(__file__).resolve().parent
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
@@ -39,7 +40,7 @@ KIND = "coach_checked"
 def find_record(records: list[dict], task_id: str, condition: str, model_key: str) -> dict | None:
     matches = [record for record in records if record["task_id"] == task_id
                and record["condition"] == condition and record["model_key"] == model_key]
-    return matches[0] if matches else None
+    return matches[-1] if matches else None
 
 
 def main() -> int:
@@ -86,7 +87,7 @@ def main() -> int:
             raise SystemExit(f"{provider}: the ${ledger_cap:.2f} cap is used up. Stopping.")
         max_usd = remaining if max_usd is None else min(max_usd, remaining)
     budget = Budget(max_usd=max_usd)
-    teacher, student = PydanticAIChat(teacher_spec), PydanticAIChat(student_spec)
+    student = PydanticAIChat(student_spec)
     git = git_state()
     ledgered = 0.0
 
@@ -126,16 +127,14 @@ def main() -> int:
                 messages = [{"role": "user", "content": build_coach_prompt(
                     small_raw["instruction"], small_raw["steps"], cloud_raw["steps"])}]
                 teacher_cost = student_cost = 0.0
-                teacher_calls = student_requests = 0
+                teacher_calls = student_requests = cut_off_requests = 0
                 attempts: list[dict] = []
                 validated, note, first = False, None, None
                 for attempt in range(1, args.max_repairs + 2):
-                    budget.check()
-                    reply = teacher.complete(messages)
-                    cost = teacher_spec.cost_usd(reply.input_tokens, reply.output_tokens)
-                    budget.add(cost)
-                    teacher_cost += cost
-                    teacher_calls += 1
+                    reply, usage = complete_uncut(teacher_spec, messages, budget)
+                    teacher_cost += usage["cost_usd"]
+                    teacher_calls += usage["requests"]
+                    cut_off_requests += usage["cut_off_requests"]
                     try:
                         note = parse_coach_reply(reply.text)
                     except ValueError as error:
@@ -181,7 +180,7 @@ def main() -> int:
                     **row, "status": "built" if validated else "failed_validation", "validated": validated,
                     "attempts": len(attempts), "requests": teacher_calls, "cloud_calls": teacher_calls,
                     "teacher_cost_usd": round(teacher_cost, 6), "student_cost_usd": round(student_cost, 6),
-                    "student_requests": student_requests, "cost_usd": round(teacher_cost + student_cost, 6),
+                    "student_requests": student_requests, "cut_off_requests": cut_off_requests, "cost_usd": round(teacher_cost + student_cost, 6),
                     "divergence_step": first.divergence_step if first else None,
                     "failure_kind": first.failure_kind if first else None,
                 })

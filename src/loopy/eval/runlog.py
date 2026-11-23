@@ -14,9 +14,12 @@ import datetime as dt
 import hashlib
 import json
 import platform
+import os
 import subprocess
+import time
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Iterator
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
@@ -49,11 +52,42 @@ def read_jsonl(path: Path | str) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+@contextmanager
+def _locked(path: Path) -> Iterator[None]:
+    """Hold an OS lock on `<path>.lock`. The OS releases it if the process dies."""
+    with open(str(path) + ".lock", "a+b") as lock:
+        if os.name == "nt":
+            import msvcrt
+
+            lock.seek(0)
+            while True:
+                try:
+                    msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError:
+                    time.sleep(0.02)
+            try:
+                yield
+            finally:
+                lock.seek(0)
+                msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock, fcntl.LOCK_UN)
+
+
 def append_jsonl(path: Path | str, record: dict[str, Any]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "a", encoding="utf-8", newline="\n") as handle:
-        handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
+    line = json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n"
+    with _locked(path):
+        with open(path, "a", encoding="utf-8", newline="\n") as handle:
+            handle.write(line)
 
 
 def write_new_json(path: Path | str, payload: Any) -> None:

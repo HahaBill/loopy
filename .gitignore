@@ -14,3 +14,6 @@ dist/
 
 # Large raw run artifacts stay local; the per-run JSONL and summaries in results/ are committed
 results/**/raw_large/
+
+# Sidecar locks for files written by parallel runs
+*.jsonl.lock

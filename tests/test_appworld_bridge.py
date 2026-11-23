@@ -61,3 +61,12 @@ def test_runaway_code_is_stopped_by_the_timeout(bridge):
     bridge.close_task()
     assert "timed out" in output
     assert still_alive.strip() == "42"
+
+
+def test_crash_inside_appworld_goes_back_to_the_agent(bridge):
+    bridge.open_task(TASK_ID, experiment_name="test_bridge")
+    output = bridge.execute("apis.spotify.show_song(song_id=...)").output
+    still_alive = bridge.execute("print(6 * 7)").output
+    bridge.close_task()
+    assert output.startswith("Execution failed.")
+    assert still_alive.strip() == "42"

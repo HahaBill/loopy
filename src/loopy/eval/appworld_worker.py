@@ -109,7 +109,10 @@ def main() -> int:
             elif world is None:
                 send({"ok": False, "error": f"no task is open (command: {command})"})
             elif command == "execute":
-                output = world.execute(request["code"])
+                try:
+                    output = world.execute(request["code"])
+                except Exception as error:  # for example an Ellipsis passed to an API breaks AppWorld's call logger
+                    output = f"Execution failed. Traceback:\n{type(error).__name__}: {str(error)[:500]}"
                 send({"ok": True, "output": output, "task_completed": bool(world.task_completed())})
             elif command == "evaluate":
                 send({"ok": True, "evaluation": world.evaluate().to_dict()})
