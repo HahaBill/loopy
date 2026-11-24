@@ -142,3 +142,28 @@ def test_preload_runs_first_and_a_broken_preload_stops_the_run():
     broken = run_task(FakeEnvironment(), ScriptedChat(SPEC, []), "Do it.", SUPERVISOR, forecast=False,
                       preload_code="boom")
     assert broken.stop_reason == "preload_error" and not broken.steps
+
+
+class BreaksOnSecondCall(FakeEnvironment):
+    """Stands in for AppWorld raising after the model has already answered."""
+
+    def execute(self, code: str) -> FakeExecution:
+        if len(self.executed) == 1:
+            raise RuntimeError("the bridge broke")
+        return super().execute(code)
+
+
+def test_a_reply_paid_before_the_environment_broke_stays_in_the_totals():
+    model = ScriptedChat(SPEC, ["40", "print('one')", "print('two')", "print('never asked')"])
+    budget = Budget()
+    trace = run_task(BreaksOnSecondCall(), model, "Do it.", SUPERVISOR, max_steps=5, budget=budget)
+    assert trace.stop_reason == "model_error" and "the bridge broke" in trace.error
+    assert len(trace.steps) == 1 and len(trace.unfinished) == 1   # the second reply never became a step
+    totals = trace.totals()
+    assert totals["requests"] == 3                                 # forecast, one step, one paid reply without a step
+    assert totals["cost_usd"] == pytest.approx(budget.spent_usd)   # the row and the ledger now agree
+    assert totals["input_tokens"] == trace.forecast.input_tokens + trace.steps[0].input_tokens + trace.unfinished[
+        0].input_tokens
+    whole = run_task(FakeEnvironment(), ScriptedChat(SPEC, ["apis.supervisor.complete_task()"]), "Do it.", SUPERVISOR,
+                     forecast=False)
+    assert whole.unfinished == [] and whole.totals()["requests"] == 1

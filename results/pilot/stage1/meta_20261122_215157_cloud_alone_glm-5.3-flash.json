@@ -1,0 +1,51 @@
+{
+  "command": "experiments/pilot/run_arm.py --config experiments/stage1/config.json --run-name stage1 --condition cloud_alone --model glm-5.3-flash --tasks 0d01c76_3 --repeat 2 --label STAGE 1 --max-usd 1",
+  "condition": "cloud_alone",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pydantic_ai": "2.71.0",
+    "python": "3.11.9"
+  },
+  "git": {
+    "branch": "alfredo/pilot-setup",
+    "commit": "17ab44cfb3cb8034ddd2550b47ec5b2c8fac945e",
+    "dirty_files": []
+  },
+  "label": "STAGE 1",
+  "max_usd": 1.0,
+  "model": {
+    "api_key_env": "NEBIUS_API_KEY",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "context_budget_tokens": 400000,
+    "extra_body": null,
+    "key": "glm-5.3-flash",
+    "max_tokens": 4000,
+    "name": "zai-org/GLM-5.3-Flash",
+    "request_timeout": 180.0,
+    "role": "cloud",
+    "seed": 123,
+    "temperature": 0.0,
+    "usd_per_mtok_in": 0.15,
+    "usd_per_mtok_out": 0.5
+  },
+  "model_key": "glm-5.3-flash",
+  "provider": "nebius.com",
+  "repeat": 2,
+  "run_name": "stage1",
+  "settings": {
+    "appworld_timeout_seconds": 100,
+    "max_steps": 50,
+    "output_char_limit": 8000
+  },
+  "sha256": {
+    "config": "73ef831d1eec30b9c43fe5ac973e9a9185b631cfca10c01bb1247e21617a3946",
+    "prompt": "5e72480bd4c033ea4c3d65e092ffb3ff16401fda255c8649eb8ac848ed219147",
+    "react.py": "9e1e716ace719e2d70c2ff0758674a8888d390ab84a0812e8be5fb33a256f43e",
+    "run_arm.py": "dd75fb20c35c9bc0b8c3591958f659c0fe1cdb725ac6ea87e9f354c7e8d6c8da",
+    "scenarios": "7e6319bebeba94a682b72bc53687d6f644d5604874c7e2289c59f10160c19504"
+  },
+  "started": "2026-11-22T21:51:57-05:00",
+  "task_ids": [
+    "0d01c76_3"
+  ]
+}

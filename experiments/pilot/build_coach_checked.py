@@ -28,9 +28,9 @@ from pathlib import Path
 from loopy.agent.llm import ModelSpec, PydanticAIChat, load_env_file
 from loopy.agent.react import Budget, CostCapReached, run_task
 from loopy.eval.bridge import REPO_ROOT, AppWorldBridge
-from loopy.eval.runlog import append_jsonl, git_state, ledger_add, ledger_total, now_et, read_jsonl
+from loopy.eval.runlog import append_jsonl, git_state, ledger_total, now_et, read_jsonl
 from loopy.skills.coach import build_coach_prompt, build_revision_prompt, parse_coach_reply
-from loopy.skills.teach import complete_uncut
+from loopy.skills.teach import cap_stop_status, complete_uncut, run_check, stale_skips, stop_status
 
 HERE = Path(__file__).resolve().parent
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
@@ -74,9 +74,16 @@ def main() -> int:
     teach_path = run_dir / "teach.jsonl"
     source_dirs = [run_dir] + ([REPO_ROOT / "results" / "pilot" / args.source_run] if args.source_run else [])
     records = [record for folder in source_dirs for record in read_jsonl(folder / "runs.jsonl")]
-    done = {row["scenario_id"] for row in read_jsonl(teach_path)
-            if row["kind"] == KIND and row["teacher_model_key"] == args.cloud_model
-            and row["small_model_key"] == args.small_model}
+    earlier = [row for row in read_jsonl(teach_path)
+               if row["kind"] == KIND and row["teacher_model_key"] == args.cloud_model
+               and row["small_model_key"] == args.small_model]
+
+    def learned(condition: str, model_key: str, scenario_id: str) -> bool | None:
+        record = find_record(records, f"{scenario_id}_{args.learn_version}", condition, model_key)
+        return None if record is None else bool(record["success"])
+
+    # A recorded skip is a decision only while the runs it was read from are still the latest ones.
+    done = {row["scenario_id"] for row in earlier} - {key[0] for key in stale_skips(earlier, learned)}
 
     provider = teacher_spec.provider
     max_usd = args.max_usd if args.max_usd is not None else config.get("max_usd_per_invocation")
@@ -86,10 +93,10 @@ def main() -> int:
         if remaining <= 0:
             raise SystemExit(f"{provider}: the ${ledger_cap:.2f} cap is used up. Stopping.")
         max_usd = remaining if max_usd is None else min(max_usd, remaining)
-    budget = Budget(max_usd=max_usd)
+    budget = Budget(max_usd=max_usd, ledger=LEDGER, provider=provider, run_name=args.run_name,
+                    note=f"build_coach_checked {args.small_model}", ledger_cap=ledger_cap)
     student = PydanticAIChat(student_spec)
     git = git_state()
-    ledgered = 0.0
 
     try:
         with AppWorldBridge(stderr_path=raw_dir / "appworld_worker.log") as bridge:
@@ -108,7 +115,7 @@ def main() -> int:
                 row = {"run_name": args.run_name, "label": args.label, "time": now_et(), "scenario_id": scenario_id,
                        "learn_task_id": task_id, "kind": KIND, "teacher_model_key": args.cloud_model,
                        "teacher_model_name": teacher_spec.name, "small_model_key": args.small_model,
-                       "git_commit": git["commit"], "command": " ".join(sys.argv)}
+                       "git_commit": git["commit"], "command": " ".join(sys.argv), "cutoff_fix_version": 3}
                 if small["success"] or not cloud["success"]:
                     status = "skipped_small_passed" if small["success"] else "skipped_cloud_failed"
                     append_jsonl(teach_path, {**row, "status": status, "validated": False, "attempts": 0,
@@ -129,12 +136,25 @@ def main() -> int:
                 teacher_cost = student_cost = 0.0
                 teacher_calls = student_requests = cut_off_requests = 0
                 attempts: list[dict] = []
-                validated, note, first = False, None, None
+                validated, note, first, stopped = False, None, None, None
+                untouched = False  # the spend limit came before this build's first request
+                interrupted = None  # why the validation could not run to its own end, if it could not
+                broken_checks: list[dict] = []
                 for attempt in range(1, args.max_repairs + 2):
-                    reply, usage = complete_uncut(teacher_spec, messages, budget)
+                    try:
+                        reply, usage = complete_uncut(teacher_spec, messages, budget)
+                    except CostCapReached:
+                        # Reached between attempts: keep what this build already paid for. A build that sent
+                        # nothing gets no record, so the next start builds it.
+                        stopped = cap_stop_status(teacher_calls + student_requests)
+                        untouched = stopped is None
+                        break
                     teacher_cost += usage["cost_usd"]
                     teacher_calls += usage["requests"]
                     cut_off_requests += usage["cut_off_requests"]
+                    stopped = stop_status(usage)
+                    if stopped:  # not an attempt: the teacher never finished a reply
+                        break
                     try:
                         note = parse_coach_reply(reply.text)
                     except ValueError as error:
@@ -144,59 +164,94 @@ def main() -> int:
                                                                   "Reply again in exactly the required format."}]
                         continue
                     first = first or note
-                    task = bridge.open_task(task_id, experiment_name=f"{args.run_name}__coach_check__"
-                                                                     f"{args.small_model}__a{attempt}",
-                                            timeout_seconds=config["appworld_timeout_seconds"])
-                    trace = run_task(bridge, student, task.instruction, task.supervisor,
-                                     max_steps=config["max_steps"], output_char_limit=config["output_char_limit"],
-                                     guidance=note.guidance(), forecast=False, budget=budget)
-                    passed = bool(bridge.evaluate()["success"])
-                    bridge.close_task()
-                    totals = trace.totals()
-                    student_cost += totals["cost_usd"]
-                    student_requests += int(totals["requests"])
-                    attempts.append({"attempt": attempt, "reply": reply.text, "note": note.note, "passed": passed,
-                                     "stop_reason": trace.stop_reason, "n_steps": len(trace.steps),
-                                     "steps": [asdict(step) for step in trace.steps]})
-                    if passed:
+
+                    def check_once() -> tuple[str, dict]:
+                        """One run of the student with the note. A bridge failure around the run is a `model_error`."""
+                        trace = None
+                        try:
+                            task = bridge.open_task(task_id, experiment_name=f"{args.run_name}__coach_check__"
+                                                                             f"{args.small_model}__a{attempt}",
+                                                    timeout_seconds=config["appworld_timeout_seconds"])
+                            trace = run_task(bridge, student, task.instruction, task.supervisor,
+                                             max_steps=config["max_steps"],
+                                             output_char_limit=config["output_char_limit"],
+                                             guidance=note.guidance(), forecast=False, budget=budget)
+                            passed = bool(bridge.evaluate()["success"])
+                            bridge.close_task()
+                            stop_reason, error = trace.stop_reason, trace.error
+                        except Exception as broke:  # outside the run itself: opening, grading or closing the task
+                            passed, stop_reason, error = False, "model_error", f"{type(broke).__name__}: {broke}"
+                            try:
+                                bridge.close_task()
+                            except Exception:
+                                pass
+                        totals = trace.totals() if trace else {"cost_usd": 0.0, "requests": 0}
+                        return stop_reason, {"passed": passed, "stop_reason": stop_reason, "error": error,
+                                             "cost_usd": totals["cost_usd"], "requests": int(totals["requests"]),
+                                             "steps": [asdict(step) for step in trace.steps] if trace else []}
+
+                    # A check that the provider, the bridge or a spend limit ended says nothing about the note. It is
+                    # not an attempt: it is started again (not after a spend stop), and it never ends a build as failed.
+                    ran, checks = run_check(check_once)
+                    student_cost += sum(check["cost_usd"] for check in checks)
+                    student_requests += sum(check["requests"] for check in checks)
+                    check = checks[-1]
+                    broken_checks += [{"attempt": attempt, "stop_reason": item["stop_reason"], "error": item["error"],
+                                       "n_steps": len(item["steps"])} for item in (checks if not ran else checks[:-1])]
+                    if not ran:
+                        interrupted = f"{check['stop_reason']}: {check['error']}"
+                        break
+                    attempts.append({"attempt": attempt, "reply": reply.text, "note": note.note,
+                                     "passed": check["passed"], "stop_reason": check["stop_reason"],
+                                     "n_steps": len(check["steps"]), "steps": check["steps"]})
+                    if check["passed"]:
                         validated = True
                         break
-                    if trace.stop_reason == "cost_cap":
-                        break
                     messages += [{"role": "assistant", "content": reply.text},
-                                 {"role": "user", "content": build_revision_prompt(
-                                     [asdict(step) for step in trace.steps])}]
+                                 {"role": "user", "content": build_revision_prompt(check["steps"])}]
 
+                if untouched:
+                    print(f"{scenario_id}: coach_checked not started, the spend limit came first; left pending. "
+                          "Stopping.", flush=True)
+                    break
                 folder = skills_dir / scenario_id
                 folder.mkdir(parents=True, exist_ok=True)
+                if interrupted:
+                    # No row: a row would mark the build as decided. What was paid is in the ledger, and in this log.
+                    (folder / f"coach_checked_PENDING_log_{time.strftime('%Y%m%d_%H%M%S')}.json").write_text(
+                        json.dumps({"prompt": messages[0]["content"], "attempts": attempts, "interrupted": interrupted,
+                                    "broken_checks": broken_checks, "teacher_cost_usd": round(teacher_cost, 6),
+                                    "student_cost_usd": round(student_cost, 6)}, indent=2, ensure_ascii=False),
+                        encoding="utf-8")
+                    print(f"{scenario_id}: coach_checked validation could not run ({interrupted[:120]}); no row "
+                          f"written, the build stays pending | paid, in the ledger: teacher ${teacher_cost:.4f} + "
+                          f"student ${student_cost:.4f}. Stopping.", flush=True)
+                    break
                 if validated and note is not None:
                     (folder / "coach_checked_note.txt").write_text(note.guidance(), encoding="utf-8")
                 elif note is not None:  # kept for the record; not used as a skill
                     (folder / "coach_checked_FAILED_last_note.txt").write_text(note.guidance(), encoding="utf-8")
                 (folder / f"coach_checked_log_{time.strftime('%Y%m%d_%H%M%S')}.json").write_text(
-                    json.dumps({"prompt": messages[0]["content"], "attempts": attempts}, indent=2,
-                               ensure_ascii=False), encoding="utf-8")
+                    json.dumps({"prompt": messages[0]["content"], "attempts": attempts,
+                                "broken_checks": broken_checks}, indent=2, ensure_ascii=False), encoding="utf-8")
+                final_status = "built" if validated else stopped or "failed_validation"
                 append_jsonl(teach_path, {
-                    **row, "status": "built" if validated else "failed_validation", "validated": validated,
+                    **row, "status": final_status, "validated": validated,
                     "attempts": len(attempts), "requests": teacher_calls, "cloud_calls": teacher_calls,
                     "teacher_cost_usd": round(teacher_cost, 6), "student_cost_usd": round(student_cost, 6),
                     "student_requests": student_requests, "cut_off_requests": cut_off_requests, "cost_usd": round(teacher_cost + student_cost, 6),
                     "divergence_step": first.divergence_step if first else None,
                     "failure_kind": first.failure_kind if first else None,
                 })
-                print(f"{scenario_id}: coach_checked {'built' if validated else 'FAILED'} after "
+                print(f"{scenario_id}: coach_checked {final_status} after "
                       f"{len(attempts)} attempt(s) | teacher ${teacher_cost:.4f} + student ${student_cost:.4f}",
                       flush=True)
-                if budget.spent_usd > ledgered:
-                    ledger_add(LEDGER, provider, budget.spent_usd - ledgered, args.run_name,
-                               f"build_coach_checked {args.small_model} {scenario_id}")
-                    ledgered = budget.spent_usd
+                if stopped == "cost_cap":
+                    print("cost cap reached; stopping. A cost_cap build is not resumed: the stage is incomplete.",
+                          flush=True)
+                    break
     except CostCapReached as error:
         print(f"cost cap reached: {error}")
-    finally:
-        if budget.spent_usd > ledgered:
-            ledger_add(LEDGER, provider, budget.spent_usd - ledgered, args.run_name,
-                       f"build_coach_checked {args.cloud_model} for {args.small_model}")
     print(f"spent ${budget.spent_usd:.4f} | {provider} ledger total ${ledger_total(LEDGER, provider):.4f}")
     return 0
 

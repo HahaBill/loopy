@@ -22,6 +22,8 @@ from loopy.eval.runlog import read_jsonl
 FORECAST_AUROC_THRESHOLD = 0.65
 SMALL_FAILS_OFTEN_AT_LEAST = 3
 TEST_VERSIONS = (2, 3)
+RESOURCE_FIELDS = ("cost_usd", "cloud_calls", "requests", "input_tokens", "output_tokens", "model_seconds",
+                   "wall_seconds", "n_steps")
 
 
 def auroc(scores_of_failures: list[float], scores_of_passes: list[float]) -> float | None:
@@ -35,16 +37,30 @@ def auroc(scores_of_failures: list[float], scores_of_passes: list[float]) -> flo
     return wins / (len(scores_of_failures) * len(scores_of_passes))
 
 
+def latest_repeats(records: list[dict]) -> list[dict]:
+    """One row per task, condition and model: the outcome of the highest repeat, the resources of all repeats."""
+    grouped: dict[tuple[str, str, str], list[dict]] = defaultdict(list)
+    for row in records:
+        grouped[(row["task_id"], row["condition"], row["model_key"])].append(row)
+    merged = []
+    for rows in grouped.values():
+        last = max(enumerate(rows), key=lambda item: (item[1].get("repeat", 1), item[0]))[1]
+        spent = {key: sum(row[key] for row in rows) for key in RESOURCE_FIELDS if all(key in row for row in rows)}
+        merged.append({**last, **spent, "n_repeats": len(rows)})
+    return merged
+
+
 def condition_table(records: list[dict]) -> dict[str, dict]:
     table: dict[str, dict] = {}
     by_condition: dict[tuple[str, str], list[dict]] = defaultdict(list)
-    for record in records:
+    for record in latest_repeats(records):
         by_condition[(record["condition"], record["model_key"])].append(record)
     for (condition, model_key), rows in sorted(by_condition.items()):
         n = len(rows)
         passed = sum(1 for row in rows if row["success"])
         table[f"{condition} [{model_key}]"] = {
             "n_runs": n,
+            "n_rerun_rows": sum(row["n_repeats"] - 1 for row in rows),
             "n_passed": passed,
             "n_bug_failures": sum(1 for row in rows if row["failure_type"] == "bug"),
             "n_quality_failures": sum(1 for row in rows if row["failure_type"] == "quality"),
@@ -201,8 +217,8 @@ def main() -> int:
         "teach": [{key: row.get(key) for key in ("scenario_id", "kind", "round", "status", "validated", "attempts",
                                                  "cloud_calls", "cost_usd", "divergence_step", "failure_kind")}
                   for row in teach],
-        "skill_effects_on_test_versions": skill_effects(records, args.small_model),
-        **read_signals(records, teach, args.small_model, args.cloud_model),
+        "skill_effects_on_test_versions": skill_effects(latest_repeats(records), args.small_model),
+        **read_signals(latest_repeats(records), teach, args.small_model, args.cloud_model),
         "total_cost_usd": round(sum(row["cost_usd"] for row in records) + sum(row["cost_usd"] for row in teach), 6),
     }
     print(json.dumps(summary, indent=2))

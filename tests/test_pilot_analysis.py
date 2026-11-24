@@ -22,6 +22,18 @@ def teach_row(scenario, kind, cost, status="built", calls=1):
             "cost_usd": cost, "cloud_calls": calls, "status": status, "validated": status == "built"}
 
 
+def test_outcomes_use_the_latest_repeat_and_spend_counts_every_row():
+    base = {"task_id": "a_1", "condition": "cloud_alone", "model_key": "big", "failure_type": None, "wall_seconds": 1.0,
+            "n_steps": 1, "input_tokens": 1, "cloud_calls": 1}
+    rows = [{**base, "repeat": 1, "success": False, "cost_usd": 0.5}, {**base, "repeat": 2, "success": True, "cost_usd": 0.25}]
+    merged = analyze.latest_repeats(rows)
+    assert [row["repeat"] for row in merged] == [2] and merged[0]["success"] is True
+    assert merged[0]["cost_usd"] == 0.75 and merged[0]["cloud_calls"] == 2
+    entry = analyze.condition_table(rows)["cloud_alone [big]"]
+    assert entry["n_runs"] == 1 and entry["n_passed"] == 1 and entry["n_rerun_rows"] == 1
+    assert entry["cost_usd_total"] == 0.75 and entry["cloud_calls_total"] == 2
+
+
 def test_auroc_counts_pairs_and_ties():
     assert analyze.auroc([0.9, 0.8], [0.1, 0.2]) == 1.0
     assert analyze.auroc([0.1], [0.9]) == 0.0

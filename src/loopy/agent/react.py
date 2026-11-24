@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from loopy.agent.llm import ChatModel, Message, Reply
+from loopy.eval.runlog import ledger_add, ledger_total
 
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "appworld_minimal_react.txt"
 
@@ -47,17 +48,33 @@ class CostCapReached(RuntimeError):
 
 @dataclass
 class Budget:
-    """A hard dollar cap, checked right before every model request."""
+    """A hard dollar cap, checked right before every model request.
+
+    With a ledger, every priced request is written to the shared ledger as soon as it returns, and the shared cap is
+    read before the next one. Parallel jobs then see each other's spend, so the most the total can pass the cap by is
+    one request in flight per job. A hard kill loses at most the request in flight.
+    """
 
     max_usd: float | None = None
     spent_usd: float = 0.0
+    ledger: Path | str | None = None
+    provider: str = ""
+    run_name: str = ""
+    note: str = ""
+    ledger_cap: float | None = None
 
     def check(self) -> None:
         if self.max_usd is not None and self.spent_usd >= self.max_usd:
             raise CostCapReached(f"spent ${self.spent_usd:.4f} of the ${self.max_usd:.2f} cap")
+        if self.ledger is not None and self.ledger_cap is not None:
+            total = ledger_total(self.ledger, self.provider)
+            if total >= self.ledger_cap:
+                raise CostCapReached(f"{self.provider} ledger at ${total:.4f} of the ${self.ledger_cap:.2f} cap")
 
     def add(self, usd: float) -> None:
         self.spent_usd += usd
+        if self.ledger is not None and usd > 0:
+            ledger_add(self.ledger, self.provider, usd, self.run_name, self.note)
 
 
 @dataclass
@@ -89,6 +106,17 @@ class Forecast:
 
 
 @dataclass
+class PaidReply:
+    """A model reply that was charged but never became a step, because the run broke before the step was stored."""
+
+    input_tokens: int
+    output_tokens: int
+    seconds: float
+    cost_usd: float
+    raw_reply: str
+
+
+@dataclass
 class RunTrace:
     stop_reason: str  # completed | max_steps | context_overflow | cost_cap | model_error | preload_error
     task_completed: bool
@@ -97,13 +125,15 @@ class RunTrace:
     messages: list[Message] = field(default_factory=list)
     preload_output: str | None = None
     error: str | None = None
+    unfinished: list[PaidReply] = field(default_factory=list)
 
     @property
     def n_execution_failures(self) -> int:
         return sum(1 for step in self.steps if step.execution_failed)
 
     def totals(self) -> dict[str, float]:
-        parts = list(self.steps) + ([self.forecast] if self.forecast else [])
+        """Every request the budget was charged for: the steps, the forecast and any reply that never became a step."""
+        parts = list(self.steps) + ([self.forecast] if self.forecast else []) + list(self.unfinished)
         return {
             "requests": len(parts),
             "input_tokens": sum(part.input_tokens for part in parts),
@@ -240,6 +270,10 @@ def run_task(
             reply: Reply = model.complete(prompt)
             cost = model.spec.cost_usd(reply.input_tokens, reply.output_tokens)
             budget.add(cost)
+            # Counted from the moment it is charged. If the environment raises below, the step is never stored, and
+            # without this the run's totals would be one request short of what the budget and the ledger recorded.
+            paid = PaidReply(reply.input_tokens, reply.output_tokens, reply.seconds, cost, reply.text)
+            trace.unfinished.append(paid)
 
             code = extract_code(reply.text)
             completed = False
@@ -269,6 +303,7 @@ def run_task(
                     dropped_messages=dropped,
                 )
             )
+            trace.unfinished.remove(paid)  # it is a step now
             if completed:
                 trace.stop_reason = "completed"
                 trace.task_completed = True

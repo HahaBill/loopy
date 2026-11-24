@@ -118,3 +118,18 @@ same format (DIVERGENCE_STEP, FAILURE_KIND, NOTE).
 
 def build_revision_prompt(student_steps: Sequence[dict[str, Any]], max_steps: int = 30) -> str:
     return REVISION_PROMPT.format(run=render_run(student_steps, max_steps=max_steps))
+
+
+# The control for "this note" against "any note". Fixed on Nov 23, 2026, before any student ran. It is general advice
+# about these apps, written without looking at any task or failure, and shown in the same wrapper as a real note.
+GENERIC_NOTE = """Read the task statement carefully and work out exactly what must change and what must stay as it is.
+Look at the available apps and their API documentation before you call an API.
+Check the required arguments of each API before calling it.
+When an API returns results in pages, retrieve every page.
+After you change something, read it back to confirm the change.
+Do not change anything the task does not ask you to change.
+When you are done, call the API that marks the task complete, with the answer if the task asks for one."""
+
+
+def generic_guidance() -> str:
+    return GUIDANCE_TEMPLATE.format(note=GENERIC_NOTE)

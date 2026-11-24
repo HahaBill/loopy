@@ -60,10 +60,22 @@ student() {
   echo "student $S done $(date '+%F %T')" >> "$LOGD/console.log"
 }
 
-student gemma-3-27b 1.5 2 &
-student gpt-oss-120b 2.5 2 &
-student minimax-m3.1-flash 2.5 2 &
-student deepseek-v4.1-flash 3.5 2.5 &
-student qwen3.8-27b 7 3 &
+# The note-build limit is the same for every student, so a weak student with more notes to build is not cut short.
+student gemma-3-27b 1.5 4 &
+student gpt-oss-120b 2.5 4 &
+student minimax-m3.1-flash 2.5 4 &
+student deepseek-v4.1-flash 3.5 4 &
+student qwen3.8-27b 7 4 &
 wait
-echo "STAGE1 DONE $(date '+%F %T')" >> "$LOGD/console.log"
+REASONS=$($PY experiments/stage1/sweep.py check)
+CHECK=$?
+REASONS=${REASONS//$'\r'/}
+if [ "$CHECK" -ne 0 ]; then
+  echo "STAGE1 INCOMPLETE $(date '+%F %T'): the completeness check failed" >> "$LOGD/console.log"
+  exit 1
+elif [ -n "$REASONS" ]; then
+  echo "STAGE1 INCOMPLETE $(date '+%F %T'): $REASONS" >> "$LOGD/console.log"
+  exit 1
+else
+  echo "STAGE1 DONE $(date '+%F %T')" >> "$LOGD/console.log"
+fi

@@ -7,7 +7,7 @@
   "appworld_timeout_seconds": 100,
   "max_usd_per_invocation": 8.0,
   "ledger_caps_usd": {
-    "nebius.com": 25.0
+    "nebius.com": 49.0
   },
   "notes": [
     "max_steps 50, temperature 0 and seed 123 are the defaults of AppWorld's minimal ReAct agent (notebooks/minimal_agent.ipynb).",
