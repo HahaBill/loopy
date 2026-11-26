@@ -72,6 +72,22 @@ To do the task:
 2. Then call `apis.supervisor.complete_task(answer=result)` if the task asks for information, or `apis.supervisor.complete_task()` if it does not.
 If the call raises an error, read it, fix the arguments and call it again. Do not rewrite the workflow yourself unless it keeps failing."""
 
+# Stage 2, part B: the same function handed over as text inside a note, not loaded. Fixed on Nov 24, 2026, before any
+# run of that arm. The student has to do whatever it does with the code itself.
+TEXT_NOTE_TEMPLATE = """\
+The expert wrote the Python function below for this kind of task. It is NOT defined in your environment. You can copy \
+it into your code and call it with the right arguments for this task, change it, or use it only as a guide to the steps.
+
+```python
+{source}
+```"""
+
+
+def as_text_note(source: str) -> str:
+    """The body of a note that carries a compiled function as text."""
+    return TEXT_NOTE_TEMPLATE.format(source=source.strip())
+
+
 _THINK_BLOCK = re.compile(r"<think>.*?</think>", re.S)
 _FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)
 

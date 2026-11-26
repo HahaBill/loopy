@@ -1,0 +1,121 @@
+{
+  "status": "COMPLETE",
+  "students": [
+    "gpt-oss-120b",
+    "gemma-3-27b",
+    "minimax-m3.1-flash"
+  ],
+  "n_tasks_per_student": 46,
+  "pooled": {
+    "n_both_built": 63,
+    "note": 0.42857142857142855,
+    "function": 0.7619047619047619,
+    "text": 0.6349206349206349,
+    "share_recovered": 0.6190476190476191,
+    "n_failed_alone": 119,
+    "function_all": 0.8067226890756303,
+    "text_all": 0.5630252100840336,
+    "function_minus_text_all": 0.24369747899159666
+  },
+  "intervals_95": {
+    "share_recovered": {
+      "low": 0.1923076923076923,
+      "high": 1.1818181818181819,
+      "n_undefined_resamples": 0
+    },
+    "function_minus_text_all": {
+      "low": 0.0892857142857143,
+      "high": 0.392,
+      "n_undefined_resamples": 0
+    }
+  },
+  "label": "MIXED",
+  "per_student": {
+    "gpt-oss-120b": {
+      "n_both_built": 11,
+      "note": 0.18181818181818182,
+      "function": 0.7272727272727273,
+      "text": 0.5454545454545454,
+      "share_recovered": 0.6666666666666666,
+      "n_failed_alone": 43,
+      "function_all": 0.7906976744186046,
+      "text_all": 0.5581395348837209,
+      "function_minus_text_all": 0.2325581395348837
+    },
+    "gemma-3-27b": {
+      "n_both_built": 26,
+      "note": 0.34615384615384615,
+      "function": 0.6538461538461539,
+      "text": 0.5,
+      "share_recovered": 0.5,
+      "n_failed_alone": 41,
+      "function_all": 0.7560975609756098,
+      "text_all": 0.4878048780487805,
+      "function_minus_text_all": 0.2682926829268293
+    },
+    "minimax-m3.1-flash": {
+      "n_both_built": 26,
+      "note": 0.6153846153846154,
+      "function": 0.8846153846153846,
+      "text": 0.8076923076923077,
+      "share_recovered": 0.7142857142857144,
+      "n_failed_alone": 35,
+      "function_all": 0.8857142857142857,
+      "text_all": 0.6571428571428571,
+      "function_minus_text_all": 0.22857142857142854
+    }
+  },
+  "harm_on_tasks_passed_alone": {
+    "gpt-oss-120b": {
+      "passed_alone": 3,
+      "broken_with_function": 1,
+      "broken_with_text": 1
+    },
+    "gemma-3-27b": {
+      "passed_alone": 5,
+      "broken_with_function": 1,
+      "broken_with_text": 1
+    },
+    "minimax-m3.1-flash": {
+      "passed_alone": 11,
+      "broken_with_function": 0,
+      "broken_with_text": 1
+    }
+  },
+  "bootstrap": {
+    "unit": "scenario",
+    "resamples": 10000,
+    "seed": 123,
+    "interval": "percentile, 2.5 to 97.5"
+  },
+  "usage": {
+    "gemma-3-27b": {
+      "runs": 46,
+      "passed": 24,
+      "function_fits_output_limit": 26,
+      "passed_where_it_fits": 20,
+      "pasted_the_function": 1,
+      "passed_after_pasting": 0,
+      "steps_total": 158
+    },
+    "gpt-oss-120b": {
+      "runs": 46,
+      "passed": 26,
+      "function_fits_output_limit": 44,
+      "passed_where_it_fits": 26,
+      "pasted_the_function": 5,
+      "passed_after_pasting": 4,
+      "steps_total": 398
+    },
+    "minimax-m3.1-flash": {
+      "runs": 46,
+      "passed": 33,
+      "function_fits_output_limit": 44,
+      "passed_where_it_fits": 31,
+      "pasted_the_function": 0,
+      "passed_after_pasting": 0,
+      "steps_total": 1110
+    }
+  },
+  "cost_usd_all_part_b_rows": 4.088799
+}

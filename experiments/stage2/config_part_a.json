@@ -1,0 +1,183 @@
+{
+  "name": "stage2a",
+  "split": "test_normal",
+  "scenario_file": "experiments/stage1/scenarios.json",
+  "max_steps": 50,
+  "output_char_limit": 8000,
+  "appworld_timeout_seconds": 100,
+  "max_usd_per_invocation": 8.0,
+  "ledger_caps_usd": {
+    "nebius.com": 51.63
+  },
+  "notes": [
+    "max_steps 50, temperature 0 and seed 123 are the defaults of AppWorld's minimal ReAct agent (notebooks/minimal_agent.ipynb).",
+    "max_tokens is 1500 instead of that notebook's 400 so that models that think before answering are not cut off.",
+    "Prices are US dollars per million tokens, read from the provider's model list on 2026-11-19. Re-read them before a new batch.",
+    "Which entry plays 'small' and which plays 'cloud' in a given run is chosen on the command line and recorded in each run's meta file.",
+    "Stage 2, part B (Nov 24, 2026): a copy of the stage 1 config. Only the name and the provider stop changed (49.0 to 52.0); every model entry and run setting is the same.",
+    "Stage 2, part A, gate 1 (Nov 25, 2026): a copy of the stage 2 config. The provider stop is 51.63 ($4.00 above the ledger's $47.6333) and four candidate students are added. Their prices were read from the provider's model list on 2026-11-25; the prices of the older entries were re-read the same day and are unchanged."
+  ],
+  "models": {
+    "qwen3-8b-local": {
+      "role": "small",
+      "name": "qwen3-8b",
+      "base_url": "http://127.0.0.1:8081/v1",
+      "usd_per_mtok_in": 0.0,
+      "usd_per_mtok_out": 0.0,
+      "context_budget_tokens": 28000,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    "qwen3-30b-a3b": {
+      "role": "small",
+      "name": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.3,
+      "context_budget_tokens": 200000
+    },
+    "gemma-3-27b": {
+      "role": "small",
+      "name": "google/gemma-3-27b-it",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.3,
+      "context_budget_tokens": 90000
+    },
+    "gpt-oss-120b": {
+      "role": "small",
+      "name": "openai/gpt-oss-120b",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.15,
+      "usd_per_mtok_out": 0.6,
+      "max_tokens": 4000,
+      "context_budget_tokens": 110000
+    },
+    "qwen3.8-27b": {
+      "role": "small",
+      "name": "Qwen/Qwen3.8-27B",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.45,
+      "usd_per_mtok_out": 3.0,
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000
+    },
+    "deepseek-v4-pro": {
+      "role": "cloud",
+      "name": "deepseek-ai/DeepSeek-V4-Pro-0813",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 1.32,
+      "usd_per_mtok_out": 3.96,
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000
+    },
+    "kimi-k3.1-pro": {
+      "role": "cloud",
+      "name": "moonshotai/Kimi-K3.1-Pro",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 2.0,
+      "usd_per_mtok_out": 10.0,
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000
+    },
+    "glm-5.3": {
+      "role": "cloud",
+      "name": "zai-org/GLM-5.3",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 1.4,
+      "usd_per_mtok_out": 4.4,
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000
+    },
+    "glm-5.3-flash": {
+      "role": "cloud",
+      "name": "zai-org/GLM-5.3-Flash",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.15,
+      "usd_per_mtok_out": 0.5,
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000
+    },
+    "qwen3-235b": {
+      "role": "cloud",
+      "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.2,
+      "usd_per_mtok_out": 0.6,
+      "max_tokens": 4000,
+      "context_budget_tokens": 200000
+    },
+    "deepseek-v4.1-flash": {
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "role": "small",
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000,
+      "name": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "usd_per_mtok_in": 0.3,
+      "usd_per_mtok_out": 1.2
+    },
+    "minimax-m3.1-flash": {
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "role": "small",
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000,
+      "name": "MiniMaxAI/MiniMax-M3.1-Flash",
+      "usd_per_mtok_in": 0.15,
+      "usd_per_mtok_out": 0.6
+    },
+    "qwen3-235b-instruct": {
+      "role": "small",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "max_tokens": 4000,
+      "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "usd_per_mtok_in": 0.2,
+      "usd_per_mtok_out": 0.6,
+      "context_budget_tokens": 200000
+    },
+    "nemotron-3-super-120b": {
+      "role": "small",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "max_tokens": 4000,
+      "name": "nvidia/nemotron-3-super-120b-a12b",
+      "usd_per_mtok_in": 0.3,
+      "usd_per_mtok_out": 0.9,
+      "context_budget_tokens": 200000
+    },
+    "inkling-2-small": {
+      "role": "small",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "max_tokens": 4000,
+      "name": "thinkingmachines/Inkling-2-Small",
+      "usd_per_mtok_in": 0.3,
+      "usd_per_mtok_out": 1.0,
+      "context_budget_tokens": 400000
+    },
+    "nemotron-3.5-lightning": {
+      "role": "small",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "max_tokens": 4000,
+      "name": "nvidia/Nemotron-3_5-Lightning",
+      "usd_per_mtok_in": 0.06,
+      "usd_per_mtok_out": 0.24,
+      "context_budget_tokens": 400000
+    }
+  }
+}

@@ -22,6 +22,7 @@ import dataclasses
 import json
 import sys
 import time
+import types
 from dataclasses import asdict
 from pathlib import Path
 
@@ -35,12 +36,48 @@ from loopy.skills.teach import cap_stop_status, complete_uncut, run_check, stale
 HERE = Path(__file__).resolve().parent
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
 KIND = "coach_checked"
+PENDING_GLOB = "coach_checked_PENDING_log_*.json"
+RESUME_KEYS = ("messages", "attempts", "broken_checks", "teacher_cost_usd", "student_cost_usd", "teacher_calls",
+               "student_requests", "cut_off_requests", "first")
 
 
 def find_record(records: list[dict], task_id: str, condition: str, model_key: str) -> dict | None:
     matches = [record for record in records if record["task_id"] == task_id
                and record["condition"] == condition and record["model_key"] == model_key]
     return matches[-1] if matches else None
+
+
+def load_records(source_dirs: list[Path]) -> list[dict]:
+    """Every run row of the run folder and of the source run, each marked with the folder it came from.
+
+    The source run's rows come first, so `find_record`, which takes the last match, picks the run's own row over an
+    older one in the source run (review item 5), and the trajectory file is read from the folder of the row picked.
+    """
+    return [{**record, "_folder": str(folder)} for folder in reversed(source_dirs)
+            for record in read_jsonl(folder / "runs.jsonl")]
+
+
+def ledger_note(student: str, scenario_id: str) -> str:
+    """The ledger note of every request a note build sends. The cost audit reads the scenario from it (item 7)."""
+    return f"build_coach_checked {student} {scenario_id}"
+
+
+def pending_state(folder: Path) -> dict | None:
+    """What an interrupted build of this scenario already did and paid for, from its latest pending log (item 4).
+
+    A build whose validation the provider or the bridge kept breaking writes a pending log and no row. A restart goes
+    on from there: the same conversation with the teacher, the attempts already made (so it does not get a fresh set)
+    and the spend so far (so the row it finally writes carries all of it). Each pending log holds the whole state up to
+    its interruption, so only the latest one is read. A pending log without that state cannot be resumed safely.
+    """
+    logs = sorted(folder.glob(PENDING_GLOB))
+    if not logs:
+        return None
+    state = json.loads(logs[-1].read_text(encoding="utf-8"))
+    missing = [key for key in RESUME_KEYS if key not in state]
+    if missing:
+        raise SystemExit(f"{logs[-1]}: a pending build without {missing}; it cannot be resumed. Decide it by hand.")
+    return {**state, "file": logs[-1].name}
 
 
 def main() -> int:
@@ -73,7 +110,7 @@ def main() -> int:
     skills_dir = Path(args.skills_dir)
     teach_path = run_dir / "teach.jsonl"
     source_dirs = [run_dir] + ([REPO_ROOT / "results" / "pilot" / args.source_run] if args.source_run else [])
-    records = [record for folder in source_dirs for record in read_jsonl(folder / "runs.jsonl")]
+    records = load_records(source_dirs)
     earlier = [row for row in read_jsonl(teach_path)
                if row["kind"] == KIND and row["teacher_model_key"] == args.cloud_model
                and row["small_model_key"] == args.small_model]
@@ -123,24 +160,33 @@ def main() -> int:
                     print(f"{scenario_id}: {status}", flush=True)
                     continue
 
-                def raw(condition: str, model_key: str, repeat: int) -> dict:
-                    name = f"{condition}__{model_key}__{task_id}__r{repeat}.json"
-                    path = next(folder / "raw_large" / name for folder in source_dirs
-                                if (folder / "raw_large" / name).exists())
-                    return json.loads(path.read_text(encoding="utf-8"))
+                def raw(record: dict) -> dict:
+                    name = f"{record['condition']}__{record['model_key']}__{task_id}__r{record['repeat']}.json"
+                    return json.loads((Path(record["_folder"]) / "raw_large" / name).read_text(encoding="utf-8"))
 
-                small_raw = raw("small_alone", args.small_model, small["repeat"])
-                cloud_raw = raw("cloud_alone", args.cloud_model, cloud["repeat"])
-                messages = [{"role": "user", "content": build_coach_prompt(
-                    small_raw["instruction"], small_raw["steps"], cloud_raw["steps"])}]
-                teacher_cost = student_cost = 0.0
-                teacher_calls = student_requests = cut_off_requests = 0
-                attempts: list[dict] = []
-                validated, note, first, stopped = False, None, None, None
+                folder = skills_dir / scenario_id
+                budget.note = ledger_note(args.small_model, scenario_id)
+                state = pending_state(folder)
+                if state:  # an earlier start was interrupted during validation: go on from where it stopped
+                    messages, attempts, broken_checks = state["messages"], state["attempts"], state["broken_checks"]
+                    teacher_cost, student_cost = state["teacher_cost_usd"], state["student_cost_usd"]
+                    teacher_calls, student_requests = state["teacher_calls"], state["student_requests"]
+                    cut_off_requests = state["cut_off_requests"]
+                    first = types.SimpleNamespace(**state["first"]) if state["first"] else None
+                    print(f"{scenario_id}: resuming the build interrupted in {state['file']} after "
+                          f"{len(attempts)} attempt(s) | already paid ${teacher_cost + student_cost:.4f}", flush=True)
+                else:
+                    small_raw, cloud_raw = raw(small), raw(cloud)
+                    messages = [{"role": "user", "content": build_coach_prompt(
+                        small_raw["instruction"], small_raw["steps"], cloud_raw["steps"])}]
+                    teacher_cost = student_cost = 0.0
+                    teacher_calls = student_requests = cut_off_requests = 0
+                    attempts, broken_checks, first = [], [], None
+                validated, note, stopped = False, None, None
                 untouched = False  # the spend limit came before this build's first request
                 interrupted = None  # why the validation could not run to its own end, if it could not
-                broken_checks: list[dict] = []
-                for attempt in range(1, args.max_repairs + 2):
+                attempt = len(attempts) + 1
+                for attempt in range(len(attempts) + 1, args.max_repairs + 2):
                     try:
                         reply, usage = complete_uncut(teacher_spec, messages, budget)
                     except CostCapReached:
@@ -214,14 +260,20 @@ def main() -> int:
                     print(f"{scenario_id}: coach_checked not started, the spend limit came first; left pending. "
                           "Stopping.", flush=True)
                     break
-                folder = skills_dir / scenario_id
                 folder.mkdir(parents=True, exist_ok=True)
                 if interrupted:
-                    # No row: a row would mark the build as decided. What was paid is in the ledger, and in this log.
+                    # No row: a row would mark the build as decided. What was paid is in the ledger and in this log,
+                    # which also holds everything a restart needs to go on from here (`pending_state`).
                     (folder / f"coach_checked_PENDING_log_{time.strftime('%Y%m%d_%H%M%S')}.json").write_text(
-                        json.dumps({"prompt": messages[0]["content"], "attempts": attempts, "interrupted": interrupted,
-                                    "broken_checks": broken_checks, "teacher_cost_usd": round(teacher_cost, 6),
-                                    "student_cost_usd": round(student_cost, 6)}, indent=2, ensure_ascii=False),
+                        json.dumps({"prompt": messages[0]["content"], "messages": messages, "attempts": attempts,
+                                    "interrupted": interrupted, "interrupted_attempt": attempt,
+                                    "broken_checks": broken_checks, "teacher_cost_usd": teacher_cost,
+                                    "student_cost_usd": student_cost, "teacher_calls": teacher_calls,
+                                    "student_requests": student_requests, "cut_off_requests": cut_off_requests,
+                                    "first": None if first is None else {"divergence_step": first.divergence_step,
+                                                                         "failure_kind": first.failure_kind},
+                                    "resumed_from": state["file"] if state else None},
+                                   indent=2, ensure_ascii=False),
                         encoding="utf-8")
                     print(f"{scenario_id}: coach_checked validation could not run ({interrupted[:120]}); no row "
                           f"written, the build stays pending | paid, in the ledger: teacher ${teacher_cost:.4f} + "
@@ -242,6 +294,7 @@ def main() -> int:
                     "student_requests": student_requests, "cut_off_requests": cut_off_requests, "cost_usd": round(teacher_cost + student_cost, 6),
                     "divergence_step": first.divergence_step if first else None,
                     "failure_kind": first.failure_kind if first else None,
+                    "resumed_from": state["file"] if state else None,
                 })
                 print(f"{scenario_id}: coach_checked {final_status} after "
                       f"{len(attempts)} attempt(s) | teacher ${teacher_cost:.4f} + student ${student_cost:.4f}",

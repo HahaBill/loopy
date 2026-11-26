@@ -1,0 +1,21 @@
+{
+  "appworld": {
+    "appworld_version": "0.1.3.post1",
+    "patched": {
+      "timeout_call": true,
+      "winloop_policy": true
+    }
+  },
+  "finished": "2026-11-25T05:22:05-05:00",
+  "ledger_total_after": 59.013823,
+  "summary": {
+    "cloud_calls": 0,
+    "cost_usd": 0.071768,
+    "input_tokens": 196635,
+    "n_passed": 0,
+    "n_runs": 1,
+    "output_tokens": 14197,
+    "pass_rate": 0.0,
+    "wall_seconds": 63.1
+  }
+}

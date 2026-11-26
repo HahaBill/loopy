@@ -1,0 +1,64 @@
+{
+  "command": "experiments/pilot/run_arm.py --config experiments/stage2/config_part_a.json --run-name stage2a --condition small_alone --model nemotron-3.5-lightning --tasks 13547f5_1,166f4ff_1,31dc501_1,552869a_1,59fae45_1,0d01c76_1,3aa1a22_1,522e5e5_1,042a9fc_1,0de03ea_1,2c544f9_1,3b8fb7a_1 --label STAGE 2 PART A SCREEN --max-usd 0.4",
+  "condition": "small_alone",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pydantic_ai": "2.71.0",
+    "python": "3.11.9"
+  },
+  "git": {
+    "branch": "alfredo/pilot-setup",
+    "commit": "c7a1d797e49a33a13859e5df67d76620cd091468",
+    "dirty_files": [
+      "M results/spend_ledger.jsonl"
+    ]
+  },
+  "label": "STAGE 2 PART A SCREEN",
+  "max_usd": 0.4,
+  "model": {
+    "api_key_env": "NEBIUS_API_KEY",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "context_budget_tokens": 400000,
+    "extra_body": null,
+    "key": "nemotron-3.5-lightning",
+    "max_tokens": 4000,
+    "name": "nvidia/Nemotron-3_5-Lightning",
+    "request_timeout": 180.0,
+    "role": "small",
+    "seed": 123,
+    "temperature": 0.0,
+    "usd_per_mtok_in": 0.06,
+    "usd_per_mtok_out": 0.24
+  },
+  "model_key": "nemotron-3.5-lightning",
+  "provider": "nebius.com",
+  "repeat": 1,
+  "run_name": "stage2a",
+  "settings": {
+    "appworld_timeout_seconds": 100,
+    "max_steps": 50,
+    "output_char_limit": 8000
+  },
+  "sha256": {
+    "config": "010c82e47dd1e34b3a6e526a7f01cb19e427ac045e1b15cd8a33941b99b4a848",
+    "prompt": "5e72480bd4c033ea4c3d65e092ffb3ff16401fda255c8649eb8ac848ed219147",
+    "react.py": "bacf8db168d8c26383c088468d106fd207ada48c4c4b235e1fc75f6f0d2837e5",
+    "run_arm.py": "4f1953ee668a00cecda2f939c446f314dc4d56d8c3632e5d386cc0dd5a2acf5c",
+    "scenarios": "7e6319bebeba94a682b72bc53687d6f644d5604874c7e2289c59f10160c19504"
+  },
+  "started": "2026-11-25T01:56:45-05:00",
+  "task_ids": [
+    "13547f5_1",
+    "166f4ff_1",
+    "31dc501_1",
+    "552869a_1",
+    "59fae45_1",
+    "0d01c76_1",
+    "3aa1a22_1",
+    "522e5e5_1",
+    "042a9fc_1",
+    "0de03ea_1",
+    "2c544f9_1",
+    "3b8fb7a_1"
+  ]
+}

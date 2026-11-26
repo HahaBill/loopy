@@ -8,6 +8,8 @@ Conditions
     coach         the small model plus a coach note written once by the bigger model   (needs --skills-dir)
     compile       the small model plus a saved workflow function it only has to call   (needs --skills-dir)
     generic_note  the small model plus a fixed general note, the control for "any note"
+    code_note     the small model plus the compile arm's function shown as text in a note, not loaded
+                  (stage 2, part B; needs --skills-dir pointing at the folder the compile arm reads)
 The other conditions read no skill files and refuse --skills-dir.
 
 Every finished task run appends one line to results/pilot/<run-name>/runs.jsonl (ids, counts, tokens,
@@ -30,7 +32,8 @@ from pathlib import Path
 from loopy.agent.llm import ModelSpec, PydanticAIChat, load_env_file
 from loopy.agent.react import Budget, RunTrace, classify_failure, run_task
 from loopy.eval.bridge import REPO_ROOT, AppWorldBridge
-from loopy.skills.coach import generic_guidance
+from loopy.skills.coach import generic_guidance, note_guidance
+from loopy.skills.compile import as_text_note
 from loopy.eval.runlog import (
     append_jsonl,
     completed_keys,
@@ -45,8 +48,8 @@ from loopy.eval.runlog import (
 )
 
 HERE = Path(__file__).resolve().parent
-CONDITIONS = ("small_alone", "cloud_alone", "coach", "coach_checked", "compile", "generic_note")
-SKILL_CONDITIONS = ("coach", "coach_checked", "compile")  # the only ones that read files from --skills-dir
+CONDITIONS = ("small_alone", "cloud_alone", "coach", "coach_checked", "compile", "generic_note", "code_note")
+SKILL_CONDITIONS = ("coach", "coach_checked", "compile", "code_note")  # the only ones that read --skills-dir
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
 
 
@@ -82,6 +85,8 @@ def load_skill(skills_dir: Path, condition: str, scenario_id: str) -> tuple[str 
         return (folder / "compiled_guidance.txt").read_text(encoding="utf-8"), (
             folder / "compiled_workflow.py"
         ).read_text(encoding="utf-8")
+    if condition == "code_note":  # the compile arm's function as text in a note; nothing is defined for the student
+        return note_guidance(as_text_note((folder / "compiled_workflow.py").read_text(encoding="utf-8"))), None
     return None, None
 
 

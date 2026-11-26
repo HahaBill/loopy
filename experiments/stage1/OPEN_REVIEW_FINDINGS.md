@@ -19,3 +19,12 @@ item 1, which is a choice about one descriptive number.
 | 8 | `ledger_vs_rows.py` | Control runs that share a boundary second are compared as group sums, so opposite errors inside a group would not show. | `PROTOCOL.md` now says this in those words. 121 of the 131 control runs are checked as sums. |
 
 To do before any new note or function build is run with this code: items 4, 5 and 7.
+
+## Fixed Nov 25, 2026, before stage 2 part A builds any note
+
+- **Item 4:** fixed in `build_coach_checked.py` (an interrupted build resumes with its attempts and spend). Not changed
+  in `build_skills.py`, because no function is built again; it stays open there.
+- **Item 5:** fixed (`load_records`: the run's own rows win; trajectories are read from the folder of the row used).
+- **Item 7:** fixed (`ledger_note`: every request of a note build carries the student and the scenario).
+
+Tests: `tests/test_note_build_fixes.py`. Items 1, 2, 3, 6 and 8 are unchanged.

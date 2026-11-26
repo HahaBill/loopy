@@ -133,3 +133,8 @@ When you are done, call the API that marks the task complete, with the answer if
 
 def generic_guidance() -> str:
     return GUIDANCE_TEMPLATE.format(note=GENERIC_NOTE)
+
+
+def note_guidance(note: str) -> str:
+    """Any note text in the same wrapper a coach note is shown in."""
+    return GUIDANCE_TEMPLATE.format(note=note)
