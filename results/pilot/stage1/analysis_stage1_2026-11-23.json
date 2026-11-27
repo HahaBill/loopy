@@ -1,0 +1,1299 @@
+{
+  "status": "COMPLETE",
+  "raw_recount": {
+    "n_checked": 987,
+    "problems": []
+  },
+  "bootstrap": {
+    "unit": "scenario",
+    "resamples": 10000,
+    "seed": 123,
+    "interval": "percentile, 2.5 to 97.5"
+  },
+  "primary_note_eligible": {
+    "note_lower": 0.2698412698412698,
+    "note_upper": 1.0,
+    "function_lower": 0.6904761904761905,
+    "function_upper": 0.6,
+    "D": 0.7301587301587302,
+    "H2": 0.8206349206349206,
+    "n_units": 131,
+    "lower_students": [
+      "gemma-3-27b",
+      "gpt-oss-120b",
+      "minimax-m3.1-flash"
+    ],
+    "upper_students": [
+      "deepseek-v4.1-flash",
+      "qwen3.8-27b"
+    ],
+    "D_interval_95": {
+      "low": 0.6296879556722077,
+      "high": 0.8194444444444444,
+      "n_undefined_resamples": 431
+    },
+    "H2_interval_95": {
+      "low": 0.3153291753291753,
+      "high": 1.4471175166297117,
+      "n_undefined_resamples": 431
+    },
+    "label": "INCONCLUSIVE",
+    "generic_note_control": {
+      "n_units_without_a_control_run": 0,
+      "control_lower": 0.1111111111111111,
+      "control_upper": 0.4,
+      "D_control": 0.2888888888888889,
+      "D_net_of_control": 0.4412698412698413,
+      "D_control_interval_95": {
+        "low": -0.11627906976744186,
+        "high": 0.9,
+        "n_undefined_resamples": 431
+      },
+      "D_net_interval_95": {
+        "low": -0.17851605758582503,
+        "high": 0.847431750549877,
+        "n_undefined_resamples": 431
+      }
+    },
+    "claim": "INCONCLUSIVE"
+  },
+  "secondary_as_first_written": {
+    "note_lower": 0.2138364779874214,
+    "note_upper": 0.35714285714285715,
+    "function_lower": 0.6037735849056604,
+    "function_upper": 0.42857142857142855,
+    "D": 0.14330637915543576,
+    "H2": 0.31850853548966757,
+    "n_units": 173,
+    "lower_students": [
+      "gemma-3-27b",
+      "gpt-oss-120b",
+      "minimax-m3.1-flash"
+    ],
+    "upper_students": [
+      "deepseek-v4.1-flash",
+      "qwen3.8-27b"
+    ],
+    "D_interval_95": {
+      "low": -0.2,
+      "high": 0.5112438219322277,
+      "n_undefined_resamples": 4
+    },
+    "H2_interval_95": {
+      "low": -0.1574131513647643,
+      "high": 0.6974077071019796,
+      "n_undefined_resamples": 4
+    },
+    "label": "NOT SUPPORTED"
+  },
+  "sensitivity_equal_weight_per_student": {
+    "note_lower": 0.2829878159665394,
+    "note_upper": 1.0,
+    "function_lower": 0.6891707583196945,
+    "function_upper": 0.75,
+    "D": 0.7170121840334607,
+    "H2": 0.6561829423531551,
+    "n_units": 131,
+    "lower_students": [
+      "gemma-3-27b",
+      "gpt-oss-120b",
+      "minimax-m3.1-flash"
+    ],
+    "upper_students": [
+      "deepseek-v4.1-flash",
+      "qwen3.8-27b"
+    ],
+    "D_interval_95": {
+      "low": 0.607954809418224,
+      "high": 0.814023444735519,
+      "n_undefined_resamples": 431
+    },
+    "H2_interval_95": {
+      "low": 0.2954676953485295,
+      "high": 1.4386303408671828,
+      "n_undefined_resamples": 431
+    },
+    "label": "INCONCLUSIVE"
+  },
+  "per_student": {
+    "gemma-3-27b": {
+      "v1_passed": 5,
+      "v1_tasks": 30,
+      "v1_pass_rate": 0.16666666666666666,
+      "tier": "lower",
+      "failed_test_tasks": 55,
+      "fixed_by_note": 10,
+      "fixed_by_function": 31,
+      "note_eligible_failed_test_tasks": 39,
+      "eligible_fixed_by_note": 10,
+      "eligible_fixed_by_function": 24,
+      "harm": {
+        "note": {
+          "passed_alone_and_ran_with_skill": 2,
+          "failed_with_skill": 1
+        },
+        "function": {
+          "passed_alone_and_ran_with_skill": 5,
+          "failed_with_skill": 1
+        }
+      }
+    },
+    "gpt-oss-120b": {
+      "v1_passed": 1,
+      "v1_tasks": 30,
+      "v1_pass_rate": 0.03333333333333333,
+      "tier": "lower",
+      "failed_test_tasks": 56,
+      "fixed_by_note": 2,
+      "fixed_by_function": 34,
+      "note_eligible_failed_test_tasks": 47,
+      "eligible_fixed_by_note": 2,
+      "eligible_fixed_by_function": 33,
+      "harm": {
+        "note": {
+          "passed_alone_and_ran_with_skill": 1,
+          "failed_with_skill": 1
+        },
+        "function": {
+          "passed_alone_and_ran_with_skill": 3,
+          "failed_with_skill": 1
+        }
+      }
+    },
+    "minimax-m3.1-flash": {
+      "v1_passed": 6,
+      "v1_tasks": 30,
+      "v1_pass_rate": 0.2,
+      "tier": "lower",
+      "failed_test_tasks": 48,
+      "fixed_by_note": 22,
+      "fixed_by_function": 31,
+      "note_eligible_failed_test_tasks": 40,
+      "eligible_fixed_by_note": 22,
+      "eligible_fixed_by_function": 30,
+      "harm": {
+        "note": {
+          "passed_alone_and_ran_with_skill": 2,
+          "failed_with_skill": 0
+        },
+        "function": {
+          "passed_alone_and_ran_with_skill": 11,
+          "failed_with_skill": 0
+        }
+      }
+    },
+    "deepseek-v4.1-flash": {
+      "v1_passed": 27,
+      "v1_tasks": 30,
+      "v1_pass_rate": 0.9,
+      "tier": "upper",
+      "failed_test_tasks": 6,
+      "fixed_by_note": 1,
+      "fixed_by_function": 1,
+      "note_eligible_failed_test_tasks": 1,
+      "eligible_fixed_by_note": 1,
+      "eligible_fixed_by_function": 1,
+      "harm": {
+        "note": {
+          "passed_alone_and_ran_with_skill": 3,
+          "failed_with_skill": 0
+        },
+        "function": {
+          "passed_alone_and_ran_with_skill": 45,
+          "failed_with_skill": 1
+        }
+      }
+    },
+    "qwen3.8-27b": {
+      "v1_passed": 26,
+      "v1_tasks": 30,
+      "v1_pass_rate": 0.8666666666666667,
+      "tier": "upper",
+      "failed_test_tasks": 8,
+      "fixed_by_note": 4,
+      "fixed_by_function": 5,
+      "note_eligible_failed_test_tasks": 4,
+      "eligible_fixed_by_note": 4,
+      "eligible_fixed_by_function": 2,
+      "harm": {
+        "note": {
+          "passed_alone_and_ran_with_skill": 2,
+          "failed_with_skill": 0
+        },
+        "function": {
+          "passed_alone_and_ran_with_skill": 41,
+          "failed_with_skill": 6
+        }
+      }
+    }
+  },
+  "builds": {
+    "function_shared": {
+      "final_status": {
+        "built": 23,
+        "cut_off": 1,
+        "failed_validation": 2,
+        "skipped_cloud_failed": 4
+      },
+      "attempted": 26,
+      "built": 23,
+      "cut_off": 1,
+      "cost_usd_all_rows_including_failed": 1.728706
+    },
+    "note_by_student": {
+      "gemma-3-27b": {
+        "final_status": {
+          "built": 15,
+          "failed_validation": 6,
+          "skipped_cloud_failed": 4,
+          "skipped_small_passed": 5
+        },
+        "attempted": 21,
+        "built": 15,
+        "cut_off": 0,
+        "cost_usd_all_rows_including_failed": 0.570586
+      },
+      "gpt-oss-120b": {
+        "final_status": {
+          "built": 6,
+          "failed_validation": 19,
+          "skipped_cloud_failed": 4,
+          "skipped_small_passed": 1
+        },
+        "attempted": 25,
+        "built": 6,
+        "cut_off": 0,
+        "cost_usd_all_rows_including_failed": 1.216416
+      },
+      "minimax-m3.1-flash": {
+        "final_status": {
+          "built": 17,
+          "failed_validation": 4,
+          "skipped_cloud_failed": 3,
+          "skipped_small_passed": 6
+        },
+        "attempted": 21,
+        "built": 17,
+        "cut_off": 0,
+        "cost_usd_all_rows_including_failed": 3.074564
+      },
+      "deepseek-v4.1-flash": {
+        "final_status": {
+          "built": 2,
+          "skipped_cloud_failed": 1,
+          "skipped_small_passed": 27
+        },
+        "attempted": 2,
+        "built": 2,
+        "cut_off": 0,
+        "cost_usd_all_rows_including_failed": 0.074452
+      },
+      "qwen3.8-27b": {
+        "final_status": {
+          "built": 3,
+          "skipped_cloud_failed": 1,
+          "skipped_small_passed": 26
+        },
+        "attempted": 3,
+        "built": 3,
+        "cut_off": 0,
+        "cost_usd_all_rows_including_failed": 0.430724
+      }
+    }
+  },
+  "by_arm": {
+    "cloud_alone [glm-5.3-flash]": {
+      "n_runs": 90,
+      "n_rerun_rows": 1,
+      "n_passed": 76,
+      "n_bug_failures": 1,
+      "n_quality_failures": 13,
+      "cost_usd_total": 1.974957,
+      "cost_usd_per_run": 0.021944,
+      "wall_seconds_per_run": 59.1,
+      "steps_per_run": 18.2,
+      "input_tokens_per_run": 136863,
+      "cloud_calls_total": 1726
+    },
+    "coach_checked [deepseek-v4.1-flash]": {
+      "n_runs": 4,
+      "n_rerun_rows": 0,
+      "n_passed": 4,
+      "n_bug_failures": 0,
+      "n_quality_failures": 0,
+      "cost_usd_total": 0.065212,
+      "cost_usd_per_run": 0.016303,
+      "wall_seconds_per_run": 12.5,
+      "steps_per_run": 10.0,
+      "input_tokens_per_run": 48108,
+      "cloud_calls_total": 0
+    },
+    "coach_checked [gemma-3-27b]": {
+      "n_runs": 30,
+      "n_rerun_rows": 0,
+      "n_passed": 11,
+      "n_bug_failures": 0,
+      "n_quality_failures": 19,
+      "cost_usd_total": 0.28067,
+      "cost_usd_per_run": 0.009356,
+      "wall_seconds_per_run": 48.7,
+      "steps_per_run": 13.4,
+      "input_tokens_per_run": 88923,
+      "cloud_calls_total": 0
+    },
+    "coach_checked [gpt-oss-120b]": {
+      "n_runs": 12,
+      "n_rerun_rows": 0,
+      "n_passed": 2,
+      "n_bug_failures": 0,
+      "n_quality_failures": 10,
+      "cost_usd_total": 0.126322,
+      "cost_usd_per_run": 0.010527,
+      "wall_seconds_per_run": 18.3,
+      "steps_per_run": 13.2,
+      "input_tokens_per_run": 47759,
+      "cloud_calls_total": 0
+    },
+    "coach_checked [minimax-m3.1-flash]": {
+      "n_runs": 34,
+      "n_rerun_rows": 1,
+      "n_passed": 24,
+      "n_bug_failures": 6,
+      "n_quality_failures": 4,
+      "cost_usd_total": 2.014326,
+      "cost_usd_per_run": 0.059245,
+      "wall_seconds_per_run": 40.7,
+      "steps_per_run": 24.5,
+      "input_tokens_per_run": 356982,
+      "cloud_calls_total": 0
+    },
+    "coach_checked [qwen3.8-27b]": {
+      "n_runs": 6,
+      "n_rerun_rows": 0,
+      "n_passed": 6,
+      "n_bug_failures": 0,
+      "n_quality_failures": 0,
+      "cost_usd_total": 0.532265,
+      "cost_usd_per_run": 0.088711,
+      "wall_seconds_per_run": 23.2,
+      "steps_per_run": 19.8,
+      "input_tokens_per_run": 169316,
+      "cloud_calls_total": 0
+    },
+    "compile [deepseek-v4.1-flash]": {
+      "n_runs": 46,
+      "n_rerun_rows": 0,
+      "n_passed": 45,
+      "n_bug_failures": 0,
+      "n_quality_failures": 1,
+      "cost_usd_total": 0.537974,
+      "cost_usd_per_run": 0.011695,
+      "wall_seconds_per_run": 8.3,
+      "steps_per_run": 5.0,
+      "input_tokens_per_run": 34623,
+      "cloud_calls_total": 0
+    },
+    "compile [gemma-3-27b]": {
+      "n_runs": 46,
+      "n_rerun_rows": 0,
+      "n_passed": 35,
+      "n_bug_failures": 0,
+      "n_quality_failures": 11,
+      "cost_usd_total": 0.05145,
+      "cost_usd_per_run": 0.001118,
+      "wall_seconds_per_run": 5.7,
+      "steps_per_run": 2.6,
+      "input_tokens_per_run": 10602,
+      "cloud_calls_total": 0
+    },
+    "compile [gpt-oss-120b]": {
+      "n_runs": 46,
+      "n_rerun_rows": 0,
+      "n_passed": 36,
+      "n_bug_failures": 0,
+      "n_quality_failures": 10,
+      "cost_usd_total": 0.06938,
+      "cost_usd_per_run": 0.001508,
+      "wall_seconds_per_run": 3.3,
+      "steps_per_run": 2.5,
+      "input_tokens_per_run": 8096,
+      "cloud_calls_total": 0
+    },
+    "compile [minimax-m3.1-flash]": {
+      "n_runs": 46,
+      "n_rerun_rows": 1,
+      "n_passed": 42,
+      "n_bug_failures": 3,
+      "n_quality_failures": 1,
+      "cost_usd_total": 1.209528,
+      "cost_usd_per_run": 0.026294,
+      "wall_seconds_per_run": 24.7,
+      "steps_per_run": 17.1,
+      "input_tokens_per_run": 160083,
+      "cloud_calls_total": 0
+    },
+    "compile [qwen3.8-27b]": {
+      "n_runs": 46,
+      "n_rerun_rows": 0,
+      "n_passed": 40,
+      "n_bug_failures": 0,
+      "n_quality_failures": 6,
+      "cost_usd_total": 0.466588,
+      "cost_usd_per_run": 0.010143,
+      "wall_seconds_per_run": 6.6,
+      "steps_per_run": 2.6,
+      "input_tokens_per_run": 12113,
+      "cloud_calls_total": 0
+    },
+    "generic_note [deepseek-v4.1-flash]": {
+      "n_runs": 1,
+      "n_rerun_rows": 0,
+      "n_passed": 1,
+      "n_bug_failures": 0,
+      "n_quality_failures": 0,
+      "cost_usd_total": 0.017893,
+      "cost_usd_per_run": 0.017893,
+      "wall_seconds_per_run": 16.0,
+      "steps_per_run": 13.0,
+      "input_tokens_per_run": 53015,
+      "cloud_calls_total": 0
+    },
+    "generic_note [gemma-3-27b]": {
+      "n_runs": 39,
+      "n_rerun_rows": 0,
+      "n_passed": 2,
+      "n_bug_failures": 0,
+      "n_quality_failures": 37,
+      "cost_usd_total": 0.398049,
+      "cost_usd_per_run": 0.010206,
+      "wall_seconds_per_run": 56.6,
+      "steps_per_run": 15.3,
+      "input_tokens_per_run": 96828,
+      "cloud_calls_total": 0
+    },
+    "generic_note [gpt-oss-120b]": {
+      "n_runs": 47,
+      "n_rerun_rows": 0,
+      "n_passed": 1,
+      "n_bug_failures": 1,
+      "n_quality_failures": 45,
+      "cost_usd_total": 0.686007,
+      "cost_usd_per_run": 0.014596,
+      "wall_seconds_per_run": 22.4,
+      "steps_per_run": 15.6,
+      "input_tokens_per_run": 69033,
+      "cloud_calls_total": 0
+    },
+    "generic_note [minimax-m3.1-flash]": {
+      "n_runs": 40,
+      "n_rerun_rows": 0,
+      "n_passed": 11,
+      "n_bug_failures": 14,
+      "n_quality_failures": 15,
+      "cost_usd_total": 2.891168,
+      "cost_usd_per_run": 0.072279,
+      "wall_seconds_per_run": 47.0,
+      "steps_per_run": 32.0,
+      "input_tokens_per_run": 447638,
+      "cloud_calls_total": 0
+    },
+    "generic_note [qwen3.8-27b]": {
+      "n_runs": 4,
+      "n_rerun_rows": 0,
+      "n_passed": 1,
+      "n_bug_failures": 0,
+      "n_quality_failures": 3,
+      "cost_usd_total": 0.262035,
+      "cost_usd_per_run": 0.065509,
+      "wall_seconds_per_run": 17.3,
+      "steps_per_run": 16.5,
+      "input_tokens_per_run": 117493,
+      "cloud_calls_total": 0
+    },
+    "small_alone [deepseek-v4.1-flash]": {
+      "n_runs": 90,
+      "n_rerun_rows": 1,
+      "n_passed": 81,
+      "n_bug_failures": 0,
+      "n_quality_failures": 9,
+      "cost_usd_total": 3.663545,
+      "cost_usd_per_run": 0.040706,
+      "wall_seconds_per_run": 23.0,
+      "steps_per_run": 16.9,
+      "input_tokens_per_run": 124047,
+      "cloud_calls_total": 0
+    },
+    "small_alone [gemma-3-27b]": {
+      "n_runs": 90,
+      "n_rerun_rows": 0,
+      "n_passed": 10,
+      "n_bug_failures": 0,
+      "n_quality_failures": 80,
+      "cost_usd_total": 0.97335,
+      "cost_usd_per_run": 0.010815,
+      "wall_seconds_per_run": 49.0,
+      "steps_per_run": 16.7,
+      "input_tokens_per_run": 103337,
+      "cloud_calls_total": 0
+    },
+    "small_alone [gpt-oss-120b]": {
+      "n_runs": 90,
+      "n_rerun_rows": 0,
+      "n_passed": 5,
+      "n_bug_failures": 2,
+      "n_quality_failures": 83,
+      "cost_usd_total": 1.236637,
+      "cost_usd_per_run": 0.01374,
+      "wall_seconds_per_run": 24.8,
+      "steps_per_run": 15.0,
+      "input_tokens_per_run": 63501,
+      "cloud_calls_total": 0
+    },
+    "small_alone [minimax-m3.1-flash]": {
+      "n_runs": 90,
+      "n_rerun_rows": 1,
+      "n_passed": 18,
+      "n_bug_failures": 27,
+      "n_quality_failures": 45,
+      "cost_usd_total": 5.989076,
+      "cost_usd_per_run": 0.066545,
+      "wall_seconds_per_run": 53.7,
+      "steps_per_run": 29.3,
+      "input_tokens_per_run": 407974,
+      "cloud_calls_total": 0
+    },
+    "small_alone [qwen3.8-27b]": {
+      "n_runs": 90,
+      "n_rerun_rows": 1,
+      "n_passed": 78,
+      "n_bug_failures": 0,
+      "n_quality_failures": 12,
+      "cost_usd_total": 9.390891,
+      "cost_usd_per_run": 0.104343,
+      "wall_seconds_per_run": 25.4,
+      "steps_per_run": 21.2,
+      "input_tokens_per_run": 200390,
+      "cloud_calls_total": 0
+    }
+  },
+  "break_even": {
+    "definition": "build cost, all attempts / (mean rent cost - mean skill run cost) on fixed failed test tasks; a function's build cost is charged in full to each student",
+    "summary": {
+      "note": {
+        "n_student_scenarios": 22,
+        "n_never_pays_back": 10,
+        "median_uses_to_break_even": 4.685
+      },
+      "function": {
+        "n_student_scenarios": 54,
+        "n_never_pays_back": 11,
+        "median_uses_to_break_even": 1.73
+      }
+    },
+    "rows": [
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "166f4ff",
+        "build_usd": 0.004203,
+        "run_usd_per_task": 0.002992,
+        "rent_usd_per_task": 0.007064,
+        "uses_to_break_even": 1.03
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "270f1ff",
+        "build_usd": 0.021538,
+        "run_usd_per_task": 0.005038,
+        "rent_usd_per_task": 0.017066,
+        "uses_to_break_even": 1.79
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "552869a",
+        "build_usd": 0.012592,
+        "run_usd_per_task": 0.002033,
+        "rent_usd_per_task": 0.008686,
+        "uses_to_break_even": 1.89
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "7847649",
+        "build_usd": 0.02634,
+        "run_usd_per_task": 0.004472,
+        "rent_usd_per_task": 0.006926,
+        "uses_to_break_even": 10.73
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "8749218",
+        "build_usd": 0.011726,
+        "run_usd_per_task": 0.003724,
+        "rent_usd_per_task": 0.011281,
+        "uses_to_break_even": 1.55
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "a30375d",
+        "build_usd": 0.020354,
+        "run_usd_per_task": 0.003143,
+        "rent_usd_per_task": 0.006328,
+        "uses_to_break_even": 6.39
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "note",
+        "scenario": "dac78d9",
+        "build_usd": 0.005638,
+        "run_usd_per_task": 0.003896,
+        "rent_usd_per_task": 0.005785,
+        "uses_to_break_even": 2.98
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "042a9fc",
+        "build_usd": 0.194724,
+        "run_usd_per_task": 0.00051,
+        "rent_usd_per_task": 0.03839,
+        "uses_to_break_even": 5.14
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "0d01c76",
+        "build_usd": 0.01991,
+        "run_usd_per_task": 0.000777,
+        "rent_usd_per_task": 0.013977,
+        "uses_to_break_even": 1.51
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "13547f5",
+        "build_usd": 0.002435,
+        "run_usd_per_task": 0.000707,
+        "rent_usd_per_task": 0.005834,
+        "uses_to_break_even": 0.47
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "166f4ff",
+        "build_usd": 0.004434,
+        "run_usd_per_task": 0.000617,
+        "rent_usd_per_task": 0.007217,
+        "uses_to_break_even": 0.67
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "31dc501",
+        "build_usd": 0.01545,
+        "run_usd_per_task": 0.000475,
+        "rent_usd_per_task": 0.006841,
+        "uses_to_break_even": 2.43
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "3b8fb7a",
+        "build_usd": 0.043877,
+        "run_usd_per_task": 0.000502,
+        "rent_usd_per_task": 0.068566,
+        "uses_to_break_even": 0.64
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "552869a",
+        "build_usd": 0.006591,
+        "run_usd_per_task": 0.000706,
+        "rent_usd_per_task": 0.008686,
+        "uses_to_break_even": 0.83
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "59fae45",
+        "build_usd": 0.003224,
+        "run_usd_per_task": 0.000525,
+        "rent_usd_per_task": 0.011512,
+        "uses_to_break_even": 0.29
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "5a83b05",
+        "build_usd": 0.012925,
+        "run_usd_per_task": 0.000508,
+        "rent_usd_per_task": 0.006468,
+        "uses_to_break_even": 2.17
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "7847649",
+        "build_usd": 0.033139,
+        "run_usd_per_task": 0.000753,
+        "rent_usd_per_task": 0.006926,
+        "uses_to_break_even": 5.37
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "83a7951",
+        "build_usd": 0.08073,
+        "run_usd_per_task": 0.000537,
+        "rent_usd_per_task": 0.047086,
+        "uses_to_break_even": 1.73
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "8749218",
+        "build_usd": 0.018266,
+        "run_usd_per_task": 0.000498,
+        "rent_usd_per_task": 0.011281,
+        "uses_to_break_even": 1.69
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "90adc3f",
+        "build_usd": 0.017874,
+        "run_usd_per_task": 0.000769,
+        "rent_usd_per_task": 0.013392,
+        "uses_to_break_even": 1.42
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "a30375d",
+        "build_usd": 0.020165,
+        "run_usd_per_task": 0.000997,
+        "rent_usd_per_task": 0.006798,
+        "uses_to_break_even": 3.48
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "b6d1104",
+        "build_usd": 0.084363,
+        "run_usd_per_task": 0.000524,
+        "rent_usd_per_task": 0.016977,
+        "uses_to_break_even": 5.13
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "d194965",
+        "build_usd": 0.028232,
+        "run_usd_per_task": 0.000523,
+        "rent_usd_per_task": 0.028135,
+        "uses_to_break_even": 1.02
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "dac78d9",
+        "build_usd": 0.001294,
+        "run_usd_per_task": 0.000508,
+        "rent_usd_per_task": 0.005785,
+        "uses_to_break_even": 0.25
+      },
+      {
+        "student": "gemma-3-27b",
+        "form": "function",
+        "scenario": "f861c32",
+        "build_usd": 0.211225,
+        "run_usd_per_task": 0.000496,
+        "rent_usd_per_task": 0.047216,
+        "uses_to_break_even": 4.52
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "note",
+        "scenario": "552869a",
+        "build_usd": 0.004589,
+        "run_usd_per_task": 0.004793,
+        "rent_usd_per_task": 0.008686,
+        "uses_to_break_even": 1.18
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "note",
+        "scenario": "dac78d9",
+        "build_usd": 0.011333,
+        "run_usd_per_task": 0.014553,
+        "rent_usd_per_task": 0.006768,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "042a9fc",
+        "build_usd": 0.194724,
+        "run_usd_per_task": 0.001211,
+        "rent_usd_per_task": 0.03839,
+        "uses_to_break_even": 5.24
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "0d01c76",
+        "build_usd": 0.01991,
+        "run_usd_per_task": 0.001245,
+        "rent_usd_per_task": 0.009411,
+        "uses_to_break_even": 2.44
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "13547f5",
+        "build_usd": 0.002435,
+        "run_usd_per_task": 0.00108,
+        "rent_usd_per_task": 0.005834,
+        "uses_to_break_even": 0.51
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "166f4ff",
+        "build_usd": 0.004434,
+        "run_usd_per_task": 0.001125,
+        "rent_usd_per_task": 0.007217,
+        "uses_to_break_even": 0.73
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "31dc501",
+        "build_usd": 0.01545,
+        "run_usd_per_task": 0.000961,
+        "rent_usd_per_task": 0.006627,
+        "uses_to_break_even": 2.73
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "3aa1a22",
+        "build_usd": 0.030904,
+        "run_usd_per_task": 0.000997,
+        "rent_usd_per_task": 0.033984,
+        "uses_to_break_even": 0.94
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "3b8fb7a",
+        "build_usd": 0.043877,
+        "run_usd_per_task": 0.001113,
+        "rent_usd_per_task": 0.059105,
+        "uses_to_break_even": 0.76
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "552869a",
+        "build_usd": 0.006591,
+        "run_usd_per_task": 0.001081,
+        "rent_usd_per_task": 0.008686,
+        "uses_to_break_even": 0.87
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "59fae45",
+        "build_usd": 0.003224,
+        "run_usd_per_task": 0.001128,
+        "rent_usd_per_task": 0.011512,
+        "uses_to_break_even": 0.31
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "5a83b05",
+        "build_usd": 0.012925,
+        "run_usd_per_task": 0.000997,
+        "rent_usd_per_task": 0.006593,
+        "uses_to_break_even": 2.31
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "7847649",
+        "build_usd": 0.033139,
+        "run_usd_per_task": 0.001414,
+        "rent_usd_per_task": 0.006947,
+        "uses_to_break_even": 5.99
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "83a7951",
+        "build_usd": 0.08073,
+        "run_usd_per_task": 0.00119,
+        "rent_usd_per_task": 0.047086,
+        "uses_to_break_even": 1.76
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "8749218",
+        "build_usd": 0.018266,
+        "run_usd_per_task": 0.001118,
+        "rent_usd_per_task": 0.011281,
+        "uses_to_break_even": 1.8
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "90adc3f",
+        "build_usd": 0.017874,
+        "run_usd_per_task": 0.001244,
+        "rent_usd_per_task": 0.018093,
+        "uses_to_break_even": 1.06
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "a30375d",
+        "build_usd": 0.020165,
+        "run_usd_per_task": 0.001138,
+        "rent_usd_per_task": 0.006798,
+        "uses_to_break_even": 3.56
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "b6d1104",
+        "build_usd": 0.084363,
+        "run_usd_per_task": 0.001182,
+        "rent_usd_per_task": 0.016977,
+        "uses_to_break_even": 5.34
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "d194965",
+        "build_usd": 0.028232,
+        "run_usd_per_task": 0.001161,
+        "rent_usd_per_task": 0.028135,
+        "uses_to_break_even": 1.05
+      },
+      {
+        "student": "gpt-oss-120b",
+        "form": "function",
+        "scenario": "f861c32",
+        "build_usd": 0.211225,
+        "run_usd_per_task": 0.001103,
+        "rent_usd_per_task": 0.047216,
+        "uses_to_break_even": 4.58
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "0d01c76",
+        "build_usd": 0.427359,
+        "run_usd_per_task": 0.055851,
+        "rent_usd_per_task": 0.009411,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "13547f5",
+        "build_usd": 0.039807,
+        "run_usd_per_task": 0.006399,
+        "rent_usd_per_task": 0.005843,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "270f1ff",
+        "build_usd": 0.042194,
+        "run_usd_per_task": 0.016269,
+        "rent_usd_per_task": 0.017522,
+        "uses_to_break_even": 33.67
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "31dc501",
+        "build_usd": 0.010567,
+        "run_usd_per_task": 0.006814,
+        "rent_usd_per_task": 0.006627,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "522e5e5",
+        "build_usd": 0.026084,
+        "run_usd_per_task": 0.022429,
+        "rent_usd_per_task": 0.008036,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "59fae45",
+        "build_usd": 0.034153,
+        "run_usd_per_task": 0.009632,
+        "rent_usd_per_task": 0.011512,
+        "uses_to_break_even": 18.17
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "5a83b05",
+        "build_usd": 0.009135,
+        "run_usd_per_task": 0.008051,
+        "rent_usd_per_task": 0.006593,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "8749218",
+        "build_usd": 0.069018,
+        "run_usd_per_task": 0.016886,
+        "rent_usd_per_task": 0.011281,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "90adc3f",
+        "build_usd": 0.052203,
+        "run_usd_per_task": 0.077603,
+        "rent_usd_per_task": 0.013392,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "d18139b",
+        "build_usd": 0.166398,
+        "run_usd_per_task": 0.038477,
+        "rent_usd_per_task": 0.040225,
+        "uses_to_break_even": 95.19
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "d194965",
+        "build_usd": 0.080853,
+        "run_usd_per_task": 0.036597,
+        "rent_usd_per_task": 0.026548,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "note",
+        "scenario": "f861c32",
+        "build_usd": 0.201821,
+        "run_usd_per_task": 0.031512,
+        "rent_usd_per_task": 0.062273,
+        "uses_to_break_even": 6.56
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "042a9fc",
+        "build_usd": 0.194724,
+        "run_usd_per_task": 0.001275,
+        "rent_usd_per_task": 0.03839,
+        "uses_to_break_even": 5.25
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "0d01c76",
+        "build_usd": 0.01991,
+        "run_usd_per_task": 0.026294,
+        "rent_usd_per_task": 0.013977,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "13547f5",
+        "build_usd": 0.002435,
+        "run_usd_per_task": 0.00823,
+        "rent_usd_per_task": 0.005843,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "31dc501",
+        "build_usd": 0.01545,
+        "run_usd_per_task": 0.008453,
+        "rent_usd_per_task": 0.006627,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "3aa1a22",
+        "build_usd": 0.030904,
+        "run_usd_per_task": 0.078382,
+        "rent_usd_per_task": 0.033984,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "3b8fb7a",
+        "build_usd": 0.043877,
+        "run_usd_per_task": 0.024134,
+        "rent_usd_per_task": 0.059105,
+        "uses_to_break_even": 1.25
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "522e5e5",
+        "build_usd": 0.003152,
+        "run_usd_per_task": 0.021023,
+        "rent_usd_per_task": 0.008036,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "552869a",
+        "build_usd": 0.006591,
+        "run_usd_per_task": 0.011774,
+        "rent_usd_per_task": 0.008994,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "59fae45",
+        "build_usd": 0.003224,
+        "run_usd_per_task": 0.019654,
+        "rent_usd_per_task": 0.011512,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "5a83b05",
+        "build_usd": 0.012925,
+        "run_usd_per_task": 0.007645,
+        "rent_usd_per_task": 0.006593,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "83a7951",
+        "build_usd": 0.08073,
+        "run_usd_per_task": 0.146134,
+        "rent_usd_per_task": 0.068566,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "8749218",
+        "build_usd": 0.018266,
+        "run_usd_per_task": 0.001229,
+        "rent_usd_per_task": 0.011281,
+        "uses_to_break_even": 1.82
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "90adc3f",
+        "build_usd": 0.017874,
+        "run_usd_per_task": 0.029055,
+        "rent_usd_per_task": 0.018093,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "b6d1104",
+        "build_usd": 0.084363,
+        "run_usd_per_task": 0.019893,
+        "rent_usd_per_task": 0.016977,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "d194965",
+        "build_usd": 0.028232,
+        "run_usd_per_task": 0.001285,
+        "rent_usd_per_task": 0.028135,
+        "uses_to_break_even": 1.05
+      },
+      {
+        "student": "minimax-m3.1-flash",
+        "form": "function",
+        "scenario": "f861c32",
+        "build_usd": 0.211225,
+        "run_usd_per_task": 0.032974,
+        "rent_usd_per_task": 0.047216,
+        "uses_to_break_even": 14.83
+      },
+      {
+        "student": "deepseek-v4.1-flash",
+        "form": "note",
+        "scenario": "7847649",
+        "build_usd": 0.014333,
+        "run_usd_per_task": 0.012688,
+        "rent_usd_per_task": 0.006926,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "deepseek-v4.1-flash",
+        "form": "function",
+        "scenario": "7847649",
+        "build_usd": 0.033139,
+        "run_usd_per_task": 0.00216,
+        "rent_usd_per_task": 0.006926,
+        "uses_to_break_even": 6.95
+      },
+      {
+        "student": "qwen3.8-27b",
+        "form": "function",
+        "scenario": "90adc3f",
+        "build_usd": 0.017874,
+        "run_usd_per_task": 0.006935,
+        "rent_usd_per_task": 0.022794,
+        "uses_to_break_even": 1.13
+      }
+    ]
+  },
+  "function_run_failures": {
+    "gemma-3-27b": {
+      "completed / quality": 11
+    },
+    "gpt-oss-120b": {
+      "completed / quality": 10
+    },
+    "minimax-m3.1-flash": {
+      "completed / quality": 1,
+      "max_steps / bug": 3
+    },
+    "deepseek-v4.1-flash": {
+      "completed / quality": 1
+    },
+    "qwen3.8-27b": {
+      "completed / quality": 6
+    }
+  },
+  "n_rerun_rows": 6
+}

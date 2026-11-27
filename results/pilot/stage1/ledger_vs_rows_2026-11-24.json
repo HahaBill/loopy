@@ -1,0 +1,89 @@
+{
+  "run_name": "stage1",
+  "n_run_rows": 993,
+  "n_runs_compared": 993,
+  "n_comparisons": 885,
+  "n_runs_compared_together_with_a_neighbour": 121,
+  "n_runs_that_differ": 1,
+  "ledger_minus_row_usd_over_runs_that_differ": 0.001093,
+  "ledger_minus_row_usd_over_all_compared": 0.001101,
+  "row_usd_compared": 32.837323,
+  "ledger_usd_compared": 32.838424,
+  "by_condition": {
+    "cloud_alone": {
+      "n_runs": 91,
+      "row_usd": 1.974957,
+      "ledger_usd": 1.976052,
+      "n_runs_that_differ": 1,
+      "ledger_minus_row_usd": 0.001095
+    },
+    "coach_checked": {
+      "n_runs": 87,
+      "row_usd": 3.018795,
+      "ledger_usd": 3.018797,
+      "n_runs_that_differ": 0,
+      "ledger_minus_row_usd": 2e-06
+    },
+    "compile": {
+      "n_runs": 231,
+      "row_usd": 2.33492,
+      "ledger_usd": 2.334916,
+      "n_runs_that_differ": 0,
+      "ledger_minus_row_usd": -4e-06
+    },
+    "generic_note": {
+      "n_runs": 131,
+      "row_usd": 4.255152,
+      "ledger_usd": 4.255151,
+      "n_runs_that_differ": 0,
+      "ledger_minus_row_usd": -1e-06
+    },
+    "small_alone": {
+      "n_runs": 453,
+      "row_usd": 21.253499,
+      "ledger_usd": 21.253508,
+      "n_runs_that_differ": 0,
+      "ledger_minus_row_usd": 9e-06
+    }
+  },
+  "runs_that_differ": [
+    {
+      "condition": "cloud_alone",
+      "model_key": "glm-5.3-flash",
+      "runs": [
+        {
+          "task_id": "0d01c76_3",
+          "repeat": 1,
+          "stop_reason": "model_error",
+          "requests": 10,
+          "row_usd": 0.007211
+        }
+      ],
+      "matched_by": "task in the ledger note, time order",
+      "n_ledger_rows": 1,
+      "row_requests": 10,
+      "row_usd": 0.007211,
+      "ledger_usd": 0.008304,
+      "ledger_minus_row_usd": 0.001093,
+      "tolerance_usd": 2e-06
+    }
+  ],
+  "run_rows_not_compared": [],
+  "ledger_rows_of_runs_not_matched": {
+    "n": 0,
+    "usd": 0
+  },
+  "ledger_rows_that_are_not_run_costs": {
+    "n": 80,
+    "usd": 8.145444,
+    "what": "builders' rows and rows written by hand"
+  },
+  "note_builds": {
+    "n_builds_compared": 72,
+    "n_builds_that_differ": 0,
+    "row_usd": 5.366742,
+    "ledger_usd": 5.366739,
+    "builds_that_differ": [],
+    "n_builds_in_only_one_file": 0
+  }
+}

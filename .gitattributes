@@ -1,0 +1,3 @@
+# Keep line endings the same on every machine, so the file hashes written into run meta files stay valid.
+* text=auto eol=lf
+*.pdf binary

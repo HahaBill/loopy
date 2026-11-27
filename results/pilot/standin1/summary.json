@@ -1,0 +1,376 @@
+{
+  "run_name": "standin1",
+  "labels": [
+    "STAND-IN MODELS"
+  ],
+  "small_model": "qwen3-30b-a3b",
+  "cloud_model": "glm-5.3-flash",
+  "n_run_records": 30,
+  "n_teach_records": 9,
+  "by_condition": {
+    "cloud_alone [glm-5.3-flash]": {
+      "n_runs": 9,
+      "n_passed": 9,
+      "n_bug_failures": 0,
+      "n_quality_failures": 0,
+      "cost_usd_total": 0.14524,
+      "cost_usd_per_run": 0.016138,
+      "wall_seconds_per_run": 33.8,
+      "steps_per_run": 16.9,
+      "input_tokens_per_run": 100612,
+      "cloud_calls_total": 161
+    },
+    "coach [qwen3-30b-a3b]": {
+      "n_runs": 6,
+      "n_passed": 1,
+      "n_bug_failures": 2,
+      "n_quality_failures": 3,
+      "cost_usd_total": 0.130235,
+      "cost_usd_per_run": 0.021706,
+      "wall_seconds_per_run": 41.6,
+      "steps_per_run": 24.3,
+      "input_tokens_per_run": 210709,
+      "cloud_calls_total": 0
+    },
+    "compile [qwen3-30b-a3b]": {
+      "n_runs": 6,
+      "n_passed": 5,
+      "n_bug_failures": 0,
+      "n_quality_failures": 1,
+      "cost_usd_total": 0.017434,
+      "cost_usd_per_run": 0.002906,
+      "wall_seconds_per_run": 7.8,
+      "steps_per_run": 5.5,
+      "input_tokens_per_run": 28096,
+      "cloud_calls_total": 0
+    },
+    "small_alone [qwen3-30b-a3b]": {
+      "n_runs": 9,
+      "n_passed": 0,
+      "n_bug_failures": 5,
+      "n_quality_failures": 4,
+      "cost_usd_total": 0.454002,
+      "cost_usd_per_run": 0.050445,
+      "wall_seconds_per_run": 129.0,
+      "steps_per_run": 37.3,
+      "input_tokens_per_run": 476070,
+      "cloud_calls_total": 0
+    }
+  },
+  "teach": [
+    {
+      "scenario_id": "d4e9306",
+      "kind": "coach",
+      "round": null,
+      "status": "built",
+      "validated": false,
+      "attempts": null,
+      "cloud_calls": 1,
+      "cost_usd": 0.003236,
+      "divergence_step": 6,
+      "failure_kind": "procedural"
+    },
+    {
+      "scenario_id": "d4e9306",
+      "kind": "compile",
+      "round": null,
+      "status": "failed_validation",
+      "validated": false,
+      "attempts": 3,
+      "cloud_calls": 3,
+      "cost_usd": 0.005101,
+      "divergence_step": null,
+      "failure_kind": null
+    },
+    {
+      "scenario_id": "37a8675",
+      "kind": "coach",
+      "round": null,
+      "status": "built",
+      "validated": false,
+      "attempts": null,
+      "cloud_calls": 1,
+      "cost_usd": 0.003902,
+      "divergence_step": 3,
+      "failure_kind": "procedural"
+    },
+    {
+      "scenario_id": "37a8675",
+      "kind": "compile",
+      "round": null,
+      "status": "failed_validation",
+      "validated": false,
+      "attempts": 3,
+      "cloud_calls": 3,
+      "cost_usd": 0.008725,
+      "divergence_step": null,
+      "failure_kind": null
+    },
+    {
+      "scenario_id": "530b157",
+      "kind": "coach",
+      "round": null,
+      "status": "built",
+      "validated": false,
+      "attempts": null,
+      "cloud_calls": 1,
+      "cost_usd": 0.002408,
+      "divergence_step": 5,
+      "failure_kind": "procedural"
+    },
+    {
+      "scenario_id": "530b157",
+      "kind": "compile",
+      "round": null,
+      "status": "failed_validation",
+      "validated": false,
+      "attempts": 3,
+      "cloud_calls": 3,
+      "cost_usd": 0.009285,
+      "divergence_step": null,
+      "failure_kind": null
+    },
+    {
+      "scenario_id": "d4e9306",
+      "kind": "compile",
+      "round": 2,
+      "status": "built",
+      "validated": true,
+      "attempts": 1,
+      "cloud_calls": 1,
+      "cost_usd": 0.001935,
+      "divergence_step": null,
+      "failure_kind": null
+    },
+    {
+      "scenario_id": "37a8675",
+      "kind": "compile",
+      "round": 2,
+      "status": "built",
+      "validated": true,
+      "attempts": 2,
+      "cloud_calls": 2,
+      "cost_usd": 0.012531,
+      "divergence_step": null,
+      "failure_kind": null
+    },
+    {
+      "scenario_id": "530b157",
+      "kind": "compile",
+      "round": 2,
+      "status": "built",
+      "validated": true,
+      "attempts": 3,
+      "cloud_calls": 3,
+      "cost_usd": 0.023547,
+      "divergence_step": null,
+      "failure_kind": null
+    }
+  ],
+  "skill_effects_on_test_versions": {
+    "coach": {
+      "n_tasks_with_both_runs": 6,
+      "fixed (failed alone, passed with it)": [
+        "d4e9306_2"
+      ],
+      "hurt (passed alone, failed with it)": [],
+      "still failing": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3",
+        "d4e9306_3"
+      ],
+      "still passing": []
+    },
+    "compile": {
+      "n_tasks_with_both_runs": 6,
+      "fixed (failed alone, passed with it)": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "hurt (passed alone, failed with it)": [],
+      "still failing": [
+        "530b157_2"
+      ],
+      "still passing": []
+    }
+  },
+  "signals": {
+    "1_small_model_fails_often": {
+      "small_alone_failed": 9,
+      "of": 9,
+      "holds": true
+    },
+    "2_coach_or_compile_fixes_new_versions": {
+      "test_tasks_small_failed_alone": [
+        "d4e9306_2",
+        "d4e9306_3",
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_2",
+        "530b157_3"
+      ],
+      "fixed_by_coach": [
+        "d4e9306_2"
+      ],
+      "fixed_by_compile": [
+        "37a8675_2",
+        "37a8675_3",
+        "530b157_3",
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "holds": true
+    },
+    "3_no_option_always_wins": {
+      "cheapest_option_by_scenario": {
+        "37a8675": "compile",
+        "530b157": "rent",
+        "d4e9306": "compile"
+      },
+      "holds": true
+    },
+    "4_forecast_tracks_outcomes": {
+      "n_runs": 9,
+      "n_with_forecast": 9,
+      "mean_forecast_on_failed_runs": 0.633,
+      "mean_forecast_on_passed_runs": null,
+      "auroc": null,
+      "threshold": 0.65,
+      "holds": null
+    }
+  },
+  "n_holding": 3,
+  "holding": [
+    "1_small_model_fails_often",
+    "2_coach_or_compile_fixes_new_versions",
+    "3_no_option_always_wins"
+  ],
+  "not_readable": [
+    "4_forecast_tracks_outcomes"
+  ],
+  "option_costs": {
+    "37a8675": {
+      "test_tasks_small_failed_alone": [
+        "37a8675_2",
+        "37a8675_3"
+      ],
+      "options": {
+        "rent": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 2,
+          "build_status": "not needed",
+          "build_cost_usd": 0.0,
+          "run_cost_usd": 0.02906,
+          "cloud_calls": 33,
+          "cost_usd_per_solved_task": 0.01453
+        },
+        "coach": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 0,
+          "build_status": "built",
+          "build_cost_usd": 0.003902,
+          "run_cost_usd": 0.010154,
+          "cloud_calls": 1,
+          "cost_usd_per_solved_task": null
+        },
+        "compile": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 2,
+          "build_status": "built",
+          "build_cost_usd": 0.021256,
+          "run_cost_usd": 0.001313,
+          "cloud_calls": 5,
+          "cost_usd_per_solved_task": 0.011284
+        }
+      },
+      "cheapest_option": "compile"
+    },
+    "530b157": {
+      "test_tasks_small_failed_alone": [
+        "530b157_2",
+        "530b157_3"
+      ],
+      "options": {
+        "rent": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 2,
+          "build_status": "not needed",
+          "build_cost_usd": 0.0,
+          "run_cost_usd": 0.038141,
+          "cloud_calls": 41,
+          "cost_usd_per_solved_task": 0.01907
+        },
+        "coach": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 0,
+          "build_status": "built",
+          "build_cost_usd": 0.002408,
+          "run_cost_usd": 0.106502,
+          "cloud_calls": 1,
+          "cost_usd_per_solved_task": null
+        },
+        "compile": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 1,
+          "build_status": "built",
+          "build_cost_usd": 0.032832,
+          "run_cost_usd": 0.013975,
+          "cloud_calls": 6,
+          "cost_usd_per_solved_task": 0.046807
+        }
+      },
+      "cheapest_option": "rent"
+    },
+    "d4e9306": {
+      "test_tasks_small_failed_alone": [
+        "d4e9306_2",
+        "d4e9306_3"
+      ],
+      "options": {
+        "rent": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 2,
+          "build_status": "not needed",
+          "build_cost_usd": 0.0,
+          "run_cost_usd": 0.024442,
+          "cloud_calls": 29,
+          "cost_usd_per_solved_task": 0.012221
+        },
+        "coach": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 1,
+          "build_status": "built",
+          "build_cost_usd": 0.003236,
+          "run_cost_usd": 0.013579,
+          "cloud_calls": 1,
+          "cost_usd_per_solved_task": 0.016815
+        },
+        "compile": {
+          "n_tasks": 2,
+          "n_runs_found": 2,
+          "n_solved": 2,
+          "build_status": "built",
+          "build_cost_usd": 0.007036,
+          "run_cost_usd": 0.002146,
+          "cloud_calls": 4,
+          "cost_usd_per_solved_task": 0.004591
+        }
+      },
+      "cheapest_option": "compile"
+    }
+  },
+  "total_cost_usd": 0.817581
+}

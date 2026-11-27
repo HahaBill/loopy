@@ -1,0 +1,72 @@
+{
+  "command": "experiments/pilot/run_arm.py --config experiments/stage2/config_part_a_gate2.json --run-name stage2a --condition generic_note --model nemotron-3-super-120b --tasks 3aa1a22_3,90adc3f_2 --repeat 1 --label STAGE 2 PART A GATE 2 --max-usd 0.5",
+  "condition": "generic_note",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pydantic_ai": "2.71.0",
+    "python": "3.11.9"
+  },
+  "git": {
+    "branch": "alfredo/pilot-setup",
+    "commit": "a1bcefb0210b45647949f52fa0868d115c842f56",
+    "dirty_files": [
+      "M results/pilot/stage2a/runs.jsonl",
+      " M results/spend_ledger.jsonl",
+      "?? results/pilot/stage2a/meta_20261125_032530_small_alone_nemotron-3-super-120b.json",
+      "?? results/pilot/stage2a/meta_20261125_032530_small_alone_nemotron-3-super-120b_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_032530_small_alone_qwen3-235b-instruct.json",
+      "?? results/pilot/stage2a/meta_20261125_032530_small_alone_qwen3-235b-instruct_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_041114_coach_checked_qwen3-235b-instruct.json",
+      "?? results/pilot/stage2a/meta_20261125_041114_coach_checked_qwen3-235b-instruct_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_041642_compile_qwen3-235b-instruct.json",
+      "?? results/pilot/stage2a/meta_20261125_041642_compile_qwen3-235b-instruct_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_042003_generic_note_qwen3-235b-instruct.json",
+      "?? results/pilot/stage2a/meta_20261125_042003_generic_note_qwen3-235b-instruct_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_044318_coach_checked_nemotron-3-super-120b.json",
+      "?? results/pilot/stage2a/meta_20261125_044318_coach_checked_nemotron-3-super-120b_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_045701_compile_nemotron-3-super-120b.json",
+      "?? results/pilot/stage2a/meta_20261125_045701_compile_nemotron-3-super-120b_finish.json",
+      "?? results/pilot/stage2a/meta_20261125_050512_generic_note_nemotron-3-super-120b.json",
+      "?? results/pilot/stage2a/meta_20261125_050512_generic_note_nemotron-3-super-120b_finish.json",
+      "?? results/pilot/stage2a/teach.jsonl"
+    ]
+  },
+  "label": "STAGE 2 PART A GATE 2",
+  "max_usd": 0.5,
+  "model": {
+    "api_key_env": "NEBIUS_API_KEY",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "context_budget_tokens": 200000,
+    "extra_body": null,
+    "key": "nemotron-3-super-120b",
+    "max_tokens": 4000,
+    "name": "nvidia/nemotron-3-super-120b-a12b",
+    "request_timeout": 180.0,
+    "role": "small",
+    "seed": 123,
+    "temperature": 0.0,
+    "usd_per_mtok_in": 0.3,
+    "usd_per_mtok_out": 0.9
+  },
+  "model_key": "nemotron-3-super-120b",
+  "provider": "nebius.com",
+  "repeat": 1,
+  "run_name": "stage2a",
+  "settings": {
+    "appworld_timeout_seconds": 100,
+    "max_steps": 50,
+    "output_char_limit": 8000
+  },
+  "sha256": {
+    "config": "5fd6323d7ea48be27068f3037eb4673b1d819fb963162bc118bc5eeea8aa34d3",
+    "prompt": "5e72480bd4c033ea4c3d65e092ffb3ff16401fda255c8649eb8ac848ed219147",
+    "react.py": "bacf8db168d8c26383c088468d106fd207ada48c4c4b235e1fc75f6f0d2837e5",
+    "run_arm.py": "4f1953ee668a00cecda2f939c446f314dc4d56d8c3632e5d386cc0dd5a2acf5c",
+    "scenarios": "1cee923b140cb5c7504ae2ef5d8298a1067144c118e1144938450acc9c8709ed"
+  },
+  "started": "2026-11-25T05:19:38-05:00",
+  "task_ids": [
+    "3aa1a22_3",
+    "90adc3f_2"
+  ]
+}

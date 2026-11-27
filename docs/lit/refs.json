@@ -1,0 +1,134 @@
+[
+{
+"id": "2610.02932",
+"title": "When to Compile a Computer-Use Agent? Measuring Payback and Making Compilation Decisions for Token Efficiency",
+"first": "Yulong Ming"
+},
+{
+"id": "2410.15257",
+"title": "Learning-Augmented Algorithms for the Bahncard Problem",
+"author": "Zhao",
+"first": "Hailiang Zhao"
+},
+{
+"id": "2610.07816",
+"title": "Do I Need the Cloud? Uncertainty-Aware Step-Level Handoff for Small Language Model Agents",
+"first": "Abolfazl Younesi"
+},
+{
+"id": "2608.14927",
+"title": "LLMs Can Predict Failure Risk, But Struggle to Predict Which Collaboration Protocol Pays Off: Cost-Aware Protocol Routing Across Reasoning Tasks",
+"first": "Chih-Hsuan Yang"
+},
+{
+"id": "2606.15390",
+"title": "Not All Skills Help: Measuring and Repairing Agent Knowledge",
+"first": "Yixuan Wang"
+},
+{
+"id": "2605.23899",
+"title": "From Raw Experience to Skill Consumption: A Systematic Study of Model-Generated Agent Skills",
+"first": "Zisu Huang"
+},
+{
+"id": "2610.06212",
+"title": "Serve Now or Improve Later? Scheduling Self-Evolution in Online Agent Systems",
+"first": "Yangbo Wei"
+},
+{
+"id": "2607.16851",
+"title": "AgentBrew: Lifelong Knowledge Brewing from Strong Teachers to Weak LLM Agents",
+"first": "Yangqin Jiang"
+},
+{
+"id": "2609.34712",
+"title": "RSI-Router: Evolving Subtask-Level LLM Routing and Skills for Cost-Efficient Agents",
+"first": "Hao Li"
+},
+{
+"id": "2608.27911",
+"title": "TACIT-Switch: Cost-Aware Model Escalation for LLM Agents from Censored Supervision",
+"first": "Ji'an Lei"
+},
+{
+"id": "2607.08938",
+"title": "Better Harnesses, Smaller Models: Building 90% Cheaper Agents via Automated Harness Adaptation",
+"first": "Chenyang Yang"
+},
+{
+"id": "2510.04618",
+"title": "Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models",
+"first": "Qizheng Zhang"
+},
+{
+"id": "2407.18901",
+"title": "AppWorld: A Controllable World of Apps and People for Benchmarking Interactive Coding Agents",
+"first": "Harsh Trivedi"
+},
+{
+"id": "2608.21964",
+"title": "Repo2Skill-Evo: Repository Skills Go Stale in Silence",
+"first": "Chenyuan Duan"
+},
+{
+"id": "2605.26844",
+"title": "Not All Disagreement Is Learnable: Token Teachability in On-Policy Distillation",
+"first": "Yuanyi Wang"
+},
+{
+"id": "2610.33876",
+"title": "FlashScript: Compiling Recurring Agent Workflows into Reusable Neuro-Symbolic Programs",
+"first": "Sadra Sabouri"
+},
+{
+"id": "2608.10333",
+"title": "MERA: Model Evolution and Routing with Skill Adaptation for Agentic Systems at Scale",
+"first": "Yuhang Yao"
+},
+{
+"id": "2409.07429",
+"title": "Agent Workflow Memory",
+"first": "Zora Zhiruo Wang"
+},
+{
+"id": "2602.12670",
+"title": "SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks",
+"first": "Xiangyi Li"
+},
+{
+"id": "2506.14852",
+"title": "Agentic Plan Caching: Test-Time Memory for Fast and Cost-Efficient LLM Agents",
+"first": "Qizheng Zhang"
+},
+{
+"id": "2606.17929",
+"title": "PreAct: Computer-Using Agents that Get Faster on Repeated Tasks",
+"first": "Bojie Li"
+},
+{
+"id": "2407.17712",
+"title": "Improving Online Algorithms via ML Predictions",
+"author": "Purohit",
+"first": "Ravi Kumar"
+},
+{
+"id": "2305.05176",
+"title": "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance",
+"first": "Lingjiao Chen"
+},
+{
+"id": "2406.18665",
+"title": "RouteLLM: Learning to Route LLMs with Preference Data",
+"first": "Isaac Ong"
+},
+{
+"id": "2610.26214",
+"title": "Ski Rental with Uniform Stochastic Signals",
+"first": "Tudor Cardas"
+},
+{
+"id": "2608.02680",
+"title": "TraceCompiler: Skill-Guided Mining and Compilation of LLM Agent Traces into Mostly Deterministic Workflows",
+"first": "Salma El Yadouni"
+}
+]

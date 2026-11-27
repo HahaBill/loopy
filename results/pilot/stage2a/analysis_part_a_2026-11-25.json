@@ -1,0 +1,870 @@
+{
+  "status": "COMPLETE",
+  "students": [
+    "nemotron-3-super-120b",
+    "qwen3-235b-instruct"
+  ],
+  "n_scenarios": 23,
+  "teacher": "glm-5.3-flash",
+  "label": "CATCHES UP",
+  "quotable_as_thesis": true,
+  "point": {
+    "D_A": 0.4423076923076923,
+    "D_A_net": 0.36111111111111105,
+    "gap_F_minus_N_diff": -0.4017094017094017,
+    "F_diff": 0.040598290598290565
+  },
+  "bootstrap": {
+    "intervals_95": {
+      "D_A": {
+        "low": 0.1763076093574449,
+        "high": 0.6924947026224282
+      },
+      "D_A_net": {
+        "low": 0.1282013201320132,
+        "high": 0.6218058055805578
+      },
+      "gap_F_minus_N_diff": {
+        "low": -0.7409268401222984,
+        "high": -0.10475931677018628
+      },
+      "F_diff": {
+        "low": -0.1386137316561845,
+        "high": 0.1810519351905965
+      }
+    },
+    "n_undefined_resamples": 0,
+    "resamples": 10000,
+    "seed": 123,
+    "unit": "scenario",
+    "interval": "percentile, 2.5 to 97.5"
+  },
+  "part_a_pooled": {
+    "n": 26,
+    "note": 0.6923076923076923,
+    "function": 0.8461538461538461,
+    "control": 0.19230769230769232,
+    "note_fixed": 18,
+    "function_fixed": 22,
+    "control_fixed": 5
+  },
+  "lower_tier_pooled": {
+    "n": 108,
+    "note": 0.25,
+    "function": 0.8055555555555556,
+    "control": 0.1111111111111111,
+    "n_count": 108,
+    "note_count": 27,
+    "function_count": 87,
+    "control_count": 12
+  },
+  "lower_tier_matches_protocol_reference": true,
+  "units_without_a_control_run": [],
+  "per_student": {
+    "gpt-oss-120b": {
+      "group": "lower tier (stage 1)",
+      "v1_passed_alone_of_23": 1,
+      "v1_pass_rate_alone": 0.043478260869565216,
+      "n": 41,
+      "note": 0.04878048780487805,
+      "function": 0.8048780487804879,
+      "control": 0.024390243902439025,
+      "note_fixed": 2,
+      "function_fixed": 33,
+      "control_fixed": 1,
+      "harm": {
+        "test_tasks_passed_alone": 3,
+        "with_a_built_note": 1,
+        "broken_by_note": 1,
+        "broken_by_function": 1
+      }
+    },
+    "gemma-3-27b": {
+      "group": "lower tier (stage 1)",
+      "v1_passed_alone_of_23": 5,
+      "v1_pass_rate_alone": 0.21739130434782608,
+      "n": 33,
+      "note": 0.2727272727272727,
+      "function": 0.7272727272727273,
+      "control": 0.06060606060606061,
+      "note_fixed": 9,
+      "function_fixed": 24,
+      "control_fixed": 2,
+      "harm": {
+        "test_tasks_passed_alone": 5,
+        "with_a_built_note": 2,
+        "broken_by_note": 1,
+        "broken_by_function": 1
+      }
+    },
+    "minimax-m3.1-flash": {
+      "group": "lower tier (stage 1)",
+      "v1_passed_alone_of_23": 5,
+      "v1_pass_rate_alone": 0.21739130434782608,
+      "n": 34,
+      "note": 0.47058823529411764,
+      "function": 0.8823529411764706,
+      "control": 0.2647058823529412,
+      "note_fixed": 16,
+      "function_fixed": 30,
+      "control_fixed": 9,
+      "harm": {
+        "test_tasks_passed_alone": 11,
+        "with_a_built_note": 2,
+        "broken_by_note": 0,
+        "broken_by_function": 0
+      }
+    },
+    "deepseek-v4.1-flash": {
+      "group": "upper tier (stage 1)",
+      "v1_passed_alone_of_23": 21,
+      "v1_pass_rate_alone": 0.9130434782608695,
+      "n": 1,
+      "note": 1.0,
+      "function": 1.0,
+      "control": 1.0,
+      "note_fixed": 1,
+      "function_fixed": 1,
+      "control_fixed": 1,
+      "harm": {
+        "test_tasks_passed_alone": 45,
+        "with_a_built_note": 3,
+        "broken_by_note": 0,
+        "broken_by_function": 1
+      }
+    },
+    "qwen3.8-27b": {
+      "group": "upper tier (stage 1)",
+      "v1_passed_alone_of_23": 21,
+      "v1_pass_rate_alone": 0.9130434782608695,
+      "n": 2,
+      "note": 1.0,
+      "function": 1.0,
+      "control": 0.5,
+      "note_fixed": 2,
+      "function_fixed": 2,
+      "control_fixed": 1,
+      "harm": {
+        "test_tasks_passed_alone": 41,
+        "with_a_built_note": 2,
+        "broken_by_note": 0,
+        "broken_by_function": 6
+      }
+    },
+    "nemotron-3-super-120b": {
+      "group": "part A",
+      "v1_passed_alone_of_23": 13,
+      "v1_pass_rate_alone": 0.5652173913043478,
+      "n": 14,
+      "note": 0.7142857142857143,
+      "function": 0.8571428571428571,
+      "control": 0.21428571428571427,
+      "note_fixed": 10,
+      "function_fixed": 12,
+      "control_fixed": 3,
+      "harm": {
+        "test_tasks_passed_alone": 26,
+        "with_a_built_note": 4,
+        "broken_by_note": 0,
+        "broken_by_function": 2
+      }
+    },
+    "qwen3-235b-instruct": {
+      "group": "part A",
+      "v1_passed_alone_of_23": 13,
+      "v1_pass_rate_alone": 0.5652173913043478,
+      "n": 12,
+      "note": 0.6666666666666666,
+      "function": 0.8333333333333334,
+      "control": 0.16666666666666666,
+      "note_fixed": 8,
+      "function_fixed": 10,
+      "control_fixed": 2,
+      "harm": {
+        "test_tasks_passed_alone": 22,
+        "with_a_built_note": 8,
+        "broken_by_note": 2,
+        "broken_by_function": 3
+      }
+    }
+  },
+  "note_builds": {
+    "nemotron-3-super-120b": {
+      "decisions": 23,
+      "attempted": 10,
+      "status": {
+        "skipped_small_passed": 13,
+        "built": 9,
+        "failed_validation": 1
+      },
+      "cost_usd_all_builds": 1.262352,
+      "mean_attempts_when_attempted": 1.6
+    },
+    "qwen3-235b-instruct": {
+      "decisions": 23,
+      "attempted": 10,
+      "status": {
+        "built": 10,
+        "skipped_small_passed": 13
+      },
+      "cost_usd_all_builds": 0.461069,
+      "mean_attempts_when_attempted": 1.4
+    }
+  },
+  "cost_and_steps_by_arm": {
+    "nemotron-3-super-120b": {
+      "small_alone": {
+        "runs": 69,
+        "passed": 39,
+        "mean_cost_usd": 0.048443,
+        "median_steps": 15,
+        "stop_reasons": {
+          "completed": 66,
+          "max_steps": 3
+        }
+      },
+      "coach_checked": {
+        "runs": 18,
+        "passed": 14,
+        "mean_cost_usd": 0.049653,
+        "median_steps": 21.5,
+        "stop_reasons": {
+          "completed": 18
+        }
+      },
+      "compile": {
+        "runs": 46,
+        "passed": 42,
+        "mean_cost_usd": 0.006397,
+        "median_steps": 1.0,
+        "stop_reasons": {
+          "completed": 46
+        }
+      },
+      "generic_note": {
+        "runs": 14,
+        "passed": 3,
+        "mean_cost_usd": 0.082051,
+        "median_steps": 25.0,
+        "stop_reasons": {
+          "completed": 12,
+          "max_steps": 2
+        }
+      }
+    },
+    "qwen3-235b-instruct": {
+      "small_alone": {
+        "runs": 69,
+        "passed": 35,
+        "mean_cost_usd": 0.030148,
+        "median_steps": 18,
+        "stop_reasons": {
+          "completed": 67,
+          "max_steps": 2
+        }
+      },
+      "coach_checked": {
+        "runs": 20,
+        "passed": 14,
+        "mean_cost_usd": 0.022477,
+        "median_steps": 16.5,
+        "stop_reasons": {
+          "completed": 20
+        }
+      },
+      "compile": {
+        "runs": 46,
+        "passed": 39,
+        "mean_cost_usd": 0.004104,
+        "median_steps": 2.0,
+        "stop_reasons": {
+          "completed": 46
+        }
+      },
+      "generic_note": {
+        "runs": 12,
+        "passed": 2,
+        "mean_cost_usd": 0.024315,
+        "median_steps": 18.0,
+        "stop_reasons": {
+          "completed": 12
+        }
+      }
+    }
+  },
+  "break_even_including_failures": {
+    "added": "Nov 24, 2026, after review; post hoc, not part of the analysis fixed before the students ran",
+    "why": "break_even reads only the failed test tasks a skill fixed, so failed skill runs, failed builds and builds that fixed nothing are left out of it; this block counts them",
+    "definition": "per student, form and scenario with an attempted build, on the student's failed test tasks that the teacher passed: cost per use = mean over those tasks of (skill run cost, failed runs included, + that task's own rent cost if the skill did not fix it); uses to break even = build cost, all attempts / (mean rent cost - cost per use), or never if that saving is not positive; a failed build never pays back; a function's build cost is charged in full to each student",
+    "summary": {
+      "note": {
+        "n_student_scenarios": 13,
+        "n_failed_builds": 0,
+        "n_built_with_no_fix": 2,
+        "n_never_pays_back": 10,
+        "median_uses_to_break_even": 4.06
+      },
+      "function": {
+        "n_student_scenarios": 24,
+        "n_failed_builds": 0,
+        "n_built_with_no_fix": 2,
+        "n_never_pays_back": 2,
+        "median_uses_to_break_even": 1.52
+      }
+    },
+    "summary_note_eligible_scenarios_only": {
+      "note": {
+        "n_student_scenarios": 13,
+        "n_failed_builds": 0,
+        "n_built_with_no_fix": 2,
+        "n_never_pays_back": 10,
+        "median_uses_to_break_even": 4.06
+      },
+      "function": {
+        "n_student_scenarios": 13,
+        "n_failed_builds": 0,
+        "n_built_with_no_fix": 1,
+        "n_never_pays_back": 1,
+        "median_uses_to_break_even": 2.96
+      }
+    },
+    "rows": [
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "2c544f9",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.084611,
+        "rent_usd_per_task": 0.020444,
+        "run_usd_per_task": 0.064125,
+        "cost_usd_per_use": 0.064125,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "3aa1a22",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 1,
+        "build_usd": 0.021247,
+        "rent_usd_per_task": 0.050616,
+        "run_usd_per_task": 0.021444,
+        "cost_usd_per_use": 0.038436,
+        "uses_to_break_even": 1.74
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "552869a",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.044292,
+        "rent_usd_per_task": 0.00884,
+        "run_usd_per_task": 0.034579,
+        "cost_usd_per_use": 0.034579,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "83a7951",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.143895,
+        "rent_usd_per_task": 0.047086,
+        "run_usd_per_task": 0.074446,
+        "cost_usd_per_use": 0.074446,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "90adc3f",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.019268,
+        "rent_usd_per_task": 0.022794,
+        "run_usd_per_task": 0.01805,
+        "cost_usd_per_use": 0.01805,
+        "uses_to_break_even": 4.06
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "b6d1104",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 1,
+        "build_usd": 0.045841,
+        "rent_usd_per_task": 0.016977,
+        "run_usd_per_task": 0.025628,
+        "cost_usd_per_use": 0.034813,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "note",
+        "scenario": "f861c32",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 0,
+        "build_usd": 0.445618,
+        "rent_usd_per_task": 0.047216,
+        "run_usd_per_task": 0.075299,
+        "cost_usd_per_use": 0.122514,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "2c544f9",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.012914,
+        "rent_usd_per_task": 0.020444,
+        "run_usd_per_task": 0.001679,
+        "cost_usd_per_use": 0.001679,
+        "uses_to_break_even": 0.69
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "3aa1a22",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 1,
+        "build_usd": 0.030904,
+        "rent_usd_per_task": 0.050616,
+        "run_usd_per_task": 0.007378,
+        "cost_usd_per_use": 0.041001,
+        "uses_to_break_even": 3.21
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "552869a",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 1,
+        "build_usd": 0.006591,
+        "rent_usd_per_task": 0.00884,
+        "run_usd_per_task": 0.001915,
+        "cost_usd_per_use": 0.006412,
+        "uses_to_break_even": 2.71
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "59fae45",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.003224,
+        "rent_usd_per_task": 0.011512,
+        "run_usd_per_task": 0.002167,
+        "cost_usd_per_use": 0.002167,
+        "uses_to_break_even": 0.34
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "5a83b05",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.012925,
+        "rent_usd_per_task": 0.006468,
+        "run_usd_per_task": 0.002658,
+        "cost_usd_per_use": 0.002658,
+        "uses_to_break_even": 3.39
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "83a7951",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.08073,
+        "rent_usd_per_task": 0.047086,
+        "run_usd_per_task": 0.001735,
+        "cost_usd_per_use": 0.001735,
+        "uses_to_break_even": 1.78
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "8749218",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.018266,
+        "rent_usd_per_task": 0.011281,
+        "run_usd_per_task": 0.001751,
+        "cost_usd_per_use": 0.001751,
+        "uses_to_break_even": 1.92
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "90adc3f",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.017874,
+        "rent_usd_per_task": 0.022794,
+        "run_usd_per_task": 0.002844,
+        "cost_usd_per_use": 0.002844,
+        "uses_to_break_even": 0.9
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "b6d1104",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.084363,
+        "rent_usd_per_task": 0.016977,
+        "run_usd_per_task": 0.00244,
+        "cost_usd_per_use": 0.00244,
+        "uses_to_break_even": 5.8
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "d194965",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.028232,
+        "rent_usd_per_task": 0.029722,
+        "run_usd_per_task": 0.001789,
+        "cost_usd_per_use": 0.001789,
+        "uses_to_break_even": 1.01
+      },
+      {
+        "student": "nemotron-3-super-120b",
+        "form": "function",
+        "scenario": "f861c32",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.211225,
+        "rent_usd_per_task": 0.047216,
+        "run_usd_per_task": 0.001742,
+        "cost_usd_per_use": 0.001742,
+        "uses_to_break_even": 4.65
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "note",
+        "scenario": "522e5e5",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.028911,
+        "rent_usd_per_task": 0.008048,
+        "run_usd_per_task": 0.02014,
+        "cost_usd_per_use": 0.02014,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "note",
+        "scenario": "7847649",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 1,
+        "build_usd": 0.019797,
+        "rent_usd_per_task": 0.006947,
+        "run_usd_per_task": 0.008456,
+        "cost_usd_per_use": 0.01194,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "note",
+        "scenario": "83a7951",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.125048,
+        "rent_usd_per_task": 0.068566,
+        "run_usd_per_task": 0.040897,
+        "cost_usd_per_use": 0.040897,
+        "uses_to_break_even": 4.52
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "note",
+        "scenario": "8749218",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.012008,
+        "rent_usd_per_task": 0.011281,
+        "run_usd_per_task": 0.014245,
+        "cost_usd_per_use": 0.014245,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "note",
+        "scenario": "b6d1104",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 1,
+        "build_usd": 0.028425,
+        "rent_usd_per_task": 0.016977,
+        "run_usd_per_task": 0.022649,
+        "cost_usd_per_use": 0.031833,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "note",
+        "scenario": "f861c32",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 0,
+        "build_usd": 0.046824,
+        "rent_usd_per_task": 0.047216,
+        "run_usd_per_task": 0.026501,
+        "cost_usd_per_use": 0.073716,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "166f4ff",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.004434,
+        "rent_usd_per_task": 0.007371,
+        "run_usd_per_task": 0.001346,
+        "cost_usd_per_use": 0.001346,
+        "uses_to_break_even": 0.74
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "2c544f9",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.012914,
+        "rent_usd_per_task": 0.020444,
+        "run_usd_per_task": 0.001288,
+        "cost_usd_per_use": 0.001288,
+        "uses_to_break_even": 0.67
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "3aa1a22",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 0,
+        "build_usd": 0.030904,
+        "rent_usd_per_task": 0.050616,
+        "run_usd_per_task": 0.001418,
+        "cost_usd_per_use": 0.052033,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "3b8fb7a",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.043877,
+        "rent_usd_per_task": 0.068566,
+        "run_usd_per_task": 0.001388,
+        "cost_usd_per_use": 0.001388,
+        "uses_to_break_even": 0.65
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "522e5e5",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 0,
+        "build_usd": 0.003152,
+        "rent_usd_per_task": 0.008048,
+        "run_usd_per_task": 0.002412,
+        "cost_usd_per_use": 0.01046,
+        "uses_to_break_even": null
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "59fae45",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.003224,
+        "rent_usd_per_task": 0.011512,
+        "run_usd_per_task": 0.003137,
+        "cost_usd_per_use": 0.003137,
+        "uses_to_break_even": 0.38
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "7847649",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.033139,
+        "rent_usd_per_task": 0.006947,
+        "run_usd_per_task": 0.001994,
+        "cost_usd_per_use": 0.001994,
+        "uses_to_break_even": 6.69
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "83a7951",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 1,
+        "n_fixed": 1,
+        "build_usd": 0.08073,
+        "rent_usd_per_task": 0.068566,
+        "run_usd_per_task": 0.001442,
+        "cost_usd_per_use": 0.001442,
+        "uses_to_break_even": 1.2
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "8749218",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.018266,
+        "rent_usd_per_task": 0.011281,
+        "run_usd_per_task": 0.001142,
+        "cost_usd_per_use": 0.001142,
+        "uses_to_break_even": 1.8
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "90adc3f",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.017874,
+        "rent_usd_per_task": 0.018093,
+        "run_usd_per_task": 0.003954,
+        "cost_usd_per_use": 0.003954,
+        "uses_to_break_even": 1.26
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "b6d1104",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.084363,
+        "rent_usd_per_task": 0.016977,
+        "run_usd_per_task": 0.001454,
+        "cost_usd_per_use": 0.001454,
+        "uses_to_break_even": 5.43
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "d194965",
+        "note_eligible": false,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.028232,
+        "rent_usd_per_task": 0.028135,
+        "run_usd_per_task": 0.00145,
+        "cost_usd_per_use": 0.00145,
+        "uses_to_break_even": 1.06
+      },
+      {
+        "student": "qwen3-235b-instruct",
+        "form": "function",
+        "scenario": "f861c32",
+        "note_eligible": true,
+        "build_status": "built",
+        "n_failed_test_tasks": 2,
+        "n_fixed": 2,
+        "build_usd": 0.211225,
+        "rent_usd_per_task": 0.047216,
+        "run_usd_per_task": 0.001351,
+        "cost_usd_per_use": 0.001351,
+        "uses_to_break_even": 4.61
+      }
+    ]
+  },
+  "run_facts": {
+    "gate2_rows": 295,
+    "gate2_rows_by_condition": {
+      "small_alone": 138,
+      "coach_checked": 38,
+      "compile": 92,
+      "generic_note": 27
+    },
+    "redone_runs": 1,
+    "commits": [
+      "a1bcefb0210b45647949f52fa0868d115c842f56",
+      "c7a1d797e49a33a13859e5df67d76620cd091468"
+    ],
+    "cost_usd_on_rows": 8.692139,
+    "note_build_cost_usd": 1.723421,
+    "first_started": "2026-11-25T01:56:54-05:00",
+    "last_finished": "2026-11-25T05:22:03-05:00"
+  }
+}

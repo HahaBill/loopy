@@ -1,0 +1,66 @@
+{
+  "candidates_by_difficulty": {
+    "1": [
+      "23cf851",
+      "383cbac",
+      "396c5a2",
+      "3ab5b8b",
+      "4ec8de5",
+      "57c3486",
+      "68ee2c9",
+      "6bdbc26",
+      "d4e9306",
+      "df61dc5"
+    ],
+    "2": [
+      "0d8a4ee",
+      "37a8675",
+      "4fab96f",
+      "50e1ac9",
+      "6171bbc",
+      "6c2c621",
+      "b119b1f",
+      "fac291d"
+    ],
+    "3": [
+      "530b157"
+    ]
+  },
+  "chosen": [
+    {
+      "difficulty": 1,
+      "n_candidates_at_this_level": 10,
+      "scenario_id": "d4e9306",
+      "task_ids": [
+        "d4e9306_1",
+        "d4e9306_2",
+        "d4e9306_3"
+      ]
+    },
+    {
+      "difficulty": 2,
+      "n_candidates_at_this_level": 8,
+      "scenario_id": "37a8675",
+      "task_ids": [
+        "37a8675_1",
+        "37a8675_2",
+        "37a8675_3"
+      ]
+    },
+    {
+      "difficulty": 3,
+      "n_candidates_at_this_level": 1,
+      "scenario_id": "530b157",
+      "task_ids": [
+        "530b157_1",
+        "530b157_2",
+        "530b157_3"
+      ]
+    }
+  ],
+  "created": "2026-11-20T00:06:43-05:00",
+  "rule": "one scenario per difficulty level, drawn with random.Random(seed).choice over the sorted scenario ids of that level, levels visited in ascending order",
+  "seed": 932342253935054559,
+  "seed_text": "loopy-pilot-scenarios-v1",
+  "split": "dev"
+}

@@ -1,0 +1,168 @@
+{"ts": "2026-11-20T00:24:36", "cmd": "expand", "source": "openalex", "query": "cites of 2610.02932", "hits": 0}
+{"ts": "2026-11-20T00:24:37", "cmd": "expand", "source": "s2", "query": "recs of 2610.02932", "hits": 25}
+{"ts": "2026-11-20T00:25:21", "cmd": "search", "source": "arxiv", "query": "all:learning-augmented AND all:skill AND all:agent AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:25:21", "cmd": "search", "source": "openalex", "query": "learning-augmented skill agent since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:25:27", "cmd": "search", "source": "s2", "query": "learning-augmented skill agent since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:25:57", "cmd": "search", "source": "arxiv", "query": "all:rent AND all:buy AND all:LLM AND all:agent AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:25:58", "cmd": "search", "source": "openalex", "query": "rent or buy LLM agent since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:26:18", "cmd": "search", "source": "s2", "query": "rent or buy LLM agent since 2026-09-21", "hits": 0}
+{"ts": "2026-11-20T00:27:09", "cmd": "search", "source": "arxiv", "query": "all:ski AND all:rental AND all:agent AND all:skill AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:27:09", "cmd": "search", "source": "openalex", "query": "ski rental agent skill since 2026-09-21", "hits": 8}
+{"ts": "2026-11-20T00:27:29", "cmd": "search", "source": "s2", "query": "ski rental agent skill since 2026-09-21", "hits": 1}
+{"ts": "2026-11-20T00:28:02", "cmd": "search", "source": "arxiv", "query": "all:coach AND all:compile AND all:agent AND all:cost AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:28:02", "cmd": "search", "source": "openalex", "query": "coach compile agent cost since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:28:08", "cmd": "search", "source": "s2", "query": "coach compile agent cost since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:28:56", "cmd": "search", "source": "arxiv", "query": "all:self-prediction AND all:agent AND all:failure AND all:routing AND all:skill AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:29:45", "cmd": "search", "source": "arxiv", "query": "all:self-prediction AND all:failure AND all:routing AND all:agent AND submittedDate:[202609210000 TO 202611202359] [ERROR The read operation timed out]", "hits": 0}
+{"ts": "2026-11-20T00:29:46", "cmd": "search", "source": "openalex", "query": "self-prediction agent failure routing skill since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:30:06", "cmd": "search", "source": "s2", "query": "self-prediction agent failure routing skill since 2026-09-21", "hits": 12}
+{"ts": "2026-11-20T00:30:07", "cmd": "expand", "source": "s2", "query": "cites of 2410.15257", "hits": 10}
+{"ts": "2026-11-20T18:48:06", "cmd": "search", "source": "arxiv", "query": "all:natural AND all:language AND all:skill AND all:versus AND all:program AND all:small AND all:model AND all:agent AND submittedDate:[202605240000 TO 202611202359]", "hits": 0}
+{"ts": "2026-11-20T18:48:09", "cmd": "search", "source": "arxiv", "query": "all:language AND all:natural AND all:program AND all:versus AND submittedDate:[202605240000 TO 202611202359]", "hits": 8}
+{"ts": "2026-11-20T18:48:10", "cmd": "search", "source": "openalex", "query": "natural language skill versus program small model agent since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:10", "cmd": "search", "source": "s2", "query": "natural language skill versus program small model agent since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:11", "cmd": "search", "source": "arxiv", "query": "all:knowing AND all:doing AND all:gap AND all:agent AND all:skill AND all:execution AND submittedDate:[202605240000 TO 202611202359]", "hits": 0}
+{"ts": "2026-11-20T18:48:14", "cmd": "search", "source": "arxiv", "query": "all:execution AND all:knowing AND all:doing AND all:agent AND submittedDate:[202605240000 TO 202611202359]", "hits": 12}
+{"ts": "2026-11-20T18:48:14", "cmd": "search", "source": "openalex", "query": "knowing doing gap agent skill execution since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:34", "cmd": "search", "source": "s2", "query": "knowing doing gap agent skill execution since 2026-05-24", "hits": 0}
+{"ts": "2026-11-20T18:48:34", "cmd": "search", "source": "arxiv", "query": "all:teacher AND all:diagnosis AND all:student AND all:failure AND all:agent AND all:skill AND submittedDate:[202605240000 TO 202611202359]", "hits": 1}
+{"ts": "2026-11-20T18:48:35", "cmd": "search", "source": "openalex", "query": "teacher diagnosis student failure agent skill since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:48:55", "cmd": "search", "source": "s2", "query": "teacher diagnosis student failure agent skill since 2026-05-24", "hits": 0}
+{"ts": "2026-11-20T18:48:55", "cmd": "search", "source": "arxiv", "query": "all:weak AND all:agent AND all:follows AND all:skill AND all:fails AND all:instruction AND all:following AND submittedDate:[202605240000 TO 202611202359]", "hits": 2}
+{"ts": "2026-11-20T18:48:56", "cmd": "search", "source": "openalex", "query": "weak agent follows skill fails instruction following since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:49:16", "cmd": "search", "source": "s2", "query": "weak agent follows skill fails instruction following since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:49:17", "cmd": "search", "source": "arxiv", "query": "all:capability AND all:threshold AND all:skill AND all:transfer AND all:student AND all:model AND submittedDate:[202605240000 TO 202611202359]", "hits": 0}
+{"ts": "2026-11-20T18:49:20", "cmd": "search", "source": "arxiv", "query": "all:capability AND all:threshold AND all:transfer AND all:student AND submittedDate:[202605240000 TO 202611202359]", "hits": 5}
+{"ts": "2026-11-20T18:49:20", "cmd": "search", "source": "openalex", "query": "capability threshold skill transfer student model since 2026-05-24", "hits": 12}
+{"ts": "2026-11-20T18:49:32", "cmd": "search", "source": "s2", "query": "capability threshold skill transfer student model since 2026-05-24", "hits": 12}
+{"ts": "2026-11-24T01:11:54", "cmd": "search", "source": "arxiv", "query": "all:expertise AND all:reversal AND all:language AND all:model AND submittedDate:[202605280000 TO 202611242359]", "hits": 8}
+{"ts": "2026-11-24T01:11:54", "cmd": "search", "source": "openalex", "query": "expertise reversal language model since 2026-05-28", "hits": 8}
+{"ts": "2026-11-24T01:12:14", "cmd": "search", "source": "s2", "query": "expertise reversal language model since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:12:29", "cmd": "search", "source": "arxiv", "query": "all:executable AND all:skill AND all:versus AND all:text AND all:skill AND all:agent AND submittedDate:[202605280000 TO 202611242359]", "hits": 3}
+{"ts": "2026-11-24T01:12:30", "cmd": "search", "source": "openalex", "query": "executable skill versus text skill agent since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:12:49", "cmd": "search", "source": "s2", "query": "executable skill versus text skill agent since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:12:50", "cmd": "search", "source": "arxiv", "query": "all:executable AND all:skill AND all:versus AND all:text AND all:skill AND all:agent", "hits": 4}
+{"ts": "2026-11-24T01:12:50", "cmd": "search", "source": "openalex", "query": "executable skill versus text skill agent", "hits": 12}
+{"ts": "2026-11-24T01:13:10", "cmd": "search", "source": "s2", "query": "executable skill versus text skill agent", "hits": 0}
+{"ts": "2026-11-24T01:13:11", "cmd": "search", "source": "arxiv", "query": "all:code AND all:skill AND all:natural AND all:language AND all:skill AND all:weak AND all:model AND submittedDate:[202605280000 TO 202611242359]", "hits": 4}
+{"ts": "2026-11-24T01:13:11", "cmd": "search", "source": "openalex", "query": "code skill natural language skill weak model since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:13:31", "cmd": "search", "source": "s2", "query": "code skill natural language skill weak model since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:13:32", "cmd": "search", "source": "arxiv", "query": "all:code AND all:skill AND all:natural AND all:language AND all:skill AND all:weak AND all:model", "hits": 6}
+{"ts": "2026-11-24T01:13:32", "cmd": "search", "source": "openalex", "query": "code skill natural language skill weak model", "hits": 12}
+{"ts": "2026-11-24T01:13:53", "cmd": "search", "source": "s2", "query": "code skill natural language skill weak model", "hits": 12}
+{"ts": "2026-11-24T01:13:54", "cmd": "search", "source": "arxiv", "query": "all:skill AND all:format AND all:model AND all:capability AND submittedDate:[202605280000 TO 202611242359]", "hits": 15}
+{"ts": "2026-11-24T01:13:54", "cmd": "search", "source": "openalex", "query": "skill format model capability since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:14:14", "cmd": "search", "source": "s2", "query": "skill format model capability since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:14:14", "cmd": "search", "source": "arxiv", "query": "all:skill AND all:format AND all:model AND all:capability", "hits": 12}
+{"ts": "2026-11-24T01:14:15", "cmd": "search", "source": "openalex", "query": "skill format model capability", "hits": 12}
+{"ts": "2026-11-24T01:14:35", "cmd": "search", "source": "s2", "query": "skill format model capability", "hits": 0}
+{"ts": "2026-11-24T01:14:35", "cmd": "search", "source": "arxiv", "query": "all:tool AND all:making AND all:weak AND all:model AND submittedDate:[202605280000 TO 202611242359]", "hits": 15}
+{"ts": "2026-11-24T01:14:36", "cmd": "search", "source": "openalex", "query": "tool making weak model since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:14:56", "cmd": "search", "source": "s2", "query": "tool making weak model since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:14:57", "cmd": "search", "source": "arxiv", "query": "all:tool AND all:making AND all:weak AND all:model", "hits": 12}
+{"ts": "2026-11-24T01:14:57", "cmd": "search", "source": "openalex", "query": "tool making weak model", "hits": 12}
+{"ts": "2026-11-24T01:15:17", "cmd": "search", "source": "s2", "query": "tool making weak model", "hits": 0}
+{"ts": "2026-11-24T01:15:18", "cmd": "search", "source": "arxiv", "query": "all:program AND all:distillation AND all:small AND all:agent AND submittedDate:[202605280000 TO 202611242359]", "hits": 4}
+{"ts": "2026-11-24T01:15:18", "cmd": "search", "source": "openalex", "query": "program distillation small agent since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:15:38", "cmd": "search", "source": "s2", "query": "program distillation small agent since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:15:39", "cmd": "search", "source": "arxiv", "query": "all:program AND all:distillation AND all:small AND all:agent", "hits": 9}
+{"ts": "2026-11-24T01:15:39", "cmd": "search", "source": "openalex", "query": "program distillation small agent", "hits": 12}
+{"ts": "2026-11-24T01:15:59", "cmd": "search", "source": "s2", "query": "program distillation small agent", "hits": 0}
+{"ts": "2026-11-24T01:15:59", "cmd": "search", "source": "arxiv", "query": "all:expertise AND all:reversal AND all:effect AND all:LLM AND submittedDate:[202605280000 TO 202611242359]", "hits": 2}
+{"ts": "2026-11-24T01:16:00", "cmd": "search", "source": "openalex", "query": "expertise reversal effect LLM since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:16:20", "cmd": "search", "source": "s2", "query": "expertise reversal effect LLM since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:16:20", "cmd": "search", "source": "arxiv", "query": "all:expertise AND all:reversal AND all:effect AND all:LLM", "hits": 5}
+{"ts": "2026-11-24T01:16:20", "cmd": "search", "source": "openalex", "query": "expertise reversal effect LLM", "hits": 12}
+{"ts": "2026-11-24T01:16:28", "cmd": "expand", "source": "s2", "query": "cites of 2611.18624", "hits": 0}
+{"ts": "2026-11-24T01:16:29", "cmd": "expand", "source": "s2", "query": "recs of 2611.18624", "hits": 25}
+{"ts": "2026-11-24T01:16:29", "cmd": "expand", "source": "s2", "query": "cites of 2611.13144", "hits": 0}
+{"ts": "2026-11-24T01:16:30", "cmd": "expand", "source": "s2", "query": "recs of 2611.13144", "hits": 25}
+{"ts": "2026-11-24T01:16:40", "cmd": "search", "source": "s2", "query": "expertise reversal effect LLM", "hits": 0}
+{"ts": "2026-11-24T01:16:40", "cmd": "search", "source": "arxiv", "query": "all:scaffolding AND all:hurts AND all:strong AND all:model AND all:agent AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:16:43", "cmd": "search", "source": "arxiv", "query": "all:scaffolding AND all:strong AND all:hurts AND all:model AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:16:44", "cmd": "search", "source": "openalex", "query": "scaffolding hurts strong model agent since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:16:50", "cmd": "expand", "source": "openalex", "query": "cites of 2610.33024", "hits": 0}
+{"ts": "2026-11-24T01:16:50", "cmd": "expand", "source": "s2", "query": "recs of 2610.33024", "hits": 25}
+{"ts": "2026-11-24T01:16:53", "cmd": "expand", "source": "s2", "query": "cites of 2610.19148", "hits": 1}
+{"ts": "2026-11-24T01:16:54", "cmd": "expand", "source": "s2", "query": "recs of 2610.19148", "hits": 25}
+{"ts": "2026-11-24T01:16:57", "cmd": "expand", "source": "s2", "query": "cites of 2610.28914", "hits": 0}
+{"ts": "2026-11-24T01:16:57", "cmd": "expand", "source": "s2", "query": "recs of 2610.28914", "hits": 25}
+{"ts": "2026-11-24T01:17:04", "cmd": "search", "source": "s2", "query": "scaffolding hurts strong model agent since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:17:04", "cmd": "search", "source": "arxiv", "query": "all:scaffolding AND all:hurts AND all:strong AND all:model AND all:agent", "hits": 0}
+{"ts": "2026-11-24T01:17:07", "cmd": "search", "source": "arxiv", "query": "all:scaffolding AND all:strong AND all:hurts AND all:model", "hits": 0}
+{"ts": "2026-11-24T01:17:08", "cmd": "search", "source": "openalex", "query": "scaffolding hurts strong model agent", "hits": 12}
+{"ts": "2026-11-24T01:17:28", "cmd": "search", "source": "s2", "query": "scaffolding hurts strong model agent", "hits": 0}
+{"ts": "2026-11-24T01:17:28", "cmd": "search", "source": "arxiv", "query": "all:skill AND all:harms AND all:capable AND all:agent AND submittedDate:[202605280000 TO 202611242359]", "hits": 15}
+{"ts": "2026-11-24T01:17:29", "cmd": "search", "source": "openalex", "query": "skill harms capable agent since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:17:49", "cmd": "search", "source": "s2", "query": "skill harms capable agent since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:17:49", "cmd": "search", "source": "arxiv", "query": "all:skill AND all:harms AND all:capable AND all:agent", "hits": 12}
+{"ts": "2026-11-24T01:17:50", "cmd": "search", "source": "openalex", "query": "skill harms capable agent", "hits": 12}
+{"ts": "2026-11-24T01:18:09", "cmd": "search", "source": "s2", "query": "skill harms capable agent", "hits": 0}
+{"ts": "2026-11-24T01:18:10", "cmd": "search", "source": "arxiv", "query": "all:teacher AND all:student AND all:agent AND all:skill AND all:capability AND all:gap AND submittedDate:[202605280000 TO 202611242359]", "hits": 3}
+{"ts": "2026-11-24T01:18:10", "cmd": "search", "source": "openalex", "query": "teacher student agent skill capability gap since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:18:30", "cmd": "search", "source": "s2", "query": "teacher student agent skill capability gap since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:18:31", "cmd": "search", "source": "arxiv", "query": "all:teacher AND all:student AND all:agent AND all:skill AND all:capability AND all:gap", "hits": 3}
+{"ts": "2026-11-24T01:18:31", "cmd": "search", "source": "openalex", "query": "teacher student agent skill capability gap", "hits": 12}
+{"ts": "2026-11-24T01:18:52", "cmd": "search", "source": "s2", "query": "teacher student agent skill capability gap", "hits": 12}
+{"ts": "2026-11-24T01:18:53", "cmd": "search", "source": "arxiv", "query": "all:skill AND all:benefit AND all:depends AND all:model AND all:strength AND submittedDate:[202605280000 TO 202611242359]", "hits": 3}
+{"ts": "2026-11-24T01:18:53", "cmd": "search", "source": "openalex", "query": "skill benefit depends on model strength since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:19:13", "cmd": "search", "source": "s2", "query": "skill benefit depends on model strength since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:19:13", "cmd": "search", "source": "arxiv", "query": "all:skill AND all:benefit AND all:depends AND all:model AND all:strength", "hits": 3}
+{"ts": "2026-11-24T01:19:14", "cmd": "search", "source": "openalex", "query": "skill benefit depends on model strength", "hits": 12}
+{"ts": "2026-11-24T01:19:15", "cmd": "search", "source": "s2", "query": "skill benefit depends on model strength", "hits": 12}
+{"ts": "2026-11-24T01:19:15", "cmd": "search", "source": "arxiv", "query": "all:instruction AND all:following AND all:ceiling AND all:small AND all:model AND all:skill AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:19:19", "cmd": "search", "source": "arxiv", "query": "all:instruction AND all:following AND all:ceiling AND all:small AND submittedDate:[202605280000 TO 202611242359]", "hits": 1}
+{"ts": "2026-11-24T01:19:19", "cmd": "search", "source": "openalex", "query": "instruction following ceiling small model skill since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:19:39", "cmd": "search", "source": "s2", "query": "instruction following ceiling small model skill since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:19:40", "cmd": "search", "source": "arxiv", "query": "all:instruction AND all:following AND all:ceiling AND all:small AND all:model AND all:skill", "hits": 0}
+{"ts": "2026-11-24T01:19:43", "cmd": "search", "source": "arxiv", "query": "all:instruction AND all:following AND all:ceiling AND all:small", "hits": 1}
+{"ts": "2026-11-24T01:19:43", "cmd": "search", "source": "openalex", "query": "instruction following ceiling small model skill", "hits": 12}
+{"ts": "2026-11-24T01:20:03", "cmd": "search", "source": "s2", "query": "instruction following ceiling small model skill", "hits": 0}
+{"ts": "2026-11-24T01:20:04", "cmd": "search", "source": "arxiv", "query": "all:compiled AND all:workflow AND all:hurts AND all:agent AND all:flexibility AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:20:07", "cmd": "search", "source": "arxiv", "query": "all:flexibility AND all:compiled AND all:workflow AND all:hurts AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:20:07", "cmd": "search", "source": "openalex", "query": "compiled workflow hurts agent flexibility since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:20:27", "cmd": "search", "source": "s2", "query": "compiled workflow hurts agent flexibility since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:20:28", "cmd": "search", "source": "arxiv", "query": "all:compiled AND all:workflow AND all:hurts AND all:agent AND all:flexibility", "hits": 0}
+{"ts": "2026-11-24T01:20:31", "cmd": "search", "source": "arxiv", "query": "all:flexibility AND all:compiled AND all:workflow AND all:hurts", "hits": 0}
+{"ts": "2026-11-24T01:20:31", "cmd": "search", "source": "openalex", "query": "compiled workflow hurts agent flexibility", "hits": 12}
+{"ts": "2026-11-24T01:20:51", "cmd": "search", "source": "s2", "query": "compiled workflow hurts agent flexibility", "hits": 0}
+{"ts": "2026-11-24T01:24:49", "cmd": "search", "source": "arxiv", "query": "all:agent AND all:over-reliance AND all:tool AND all:output AND submittedDate:[202605280000 TO 202611242359]", "hits": 2}
+{"ts": "2026-11-24T01:24:49", "cmd": "search", "source": "openalex", "query": "agent over-reliance tool output since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:25:09", "cmd": "search", "source": "s2", "query": "agent over-reliance tool output since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:25:10", "cmd": "search", "source": "arxiv", "query": "all:agent AND all:over-reliance AND all:tool AND all:output", "hits": 8}
+{"ts": "2026-11-24T01:25:10", "cmd": "search", "source": "openalex", "query": "agent over-reliance tool output", "hits": 12}
+{"ts": "2026-11-24T01:25:30", "cmd": "search", "source": "s2", "query": "agent over-reliance tool output", "hits": 0}
+{"ts": "2026-11-24T01:25:31", "cmd": "search", "source": "arxiv", "query": "all:automation AND all:bias AND all:LLM AND all:agent AND all:tool AND submittedDate:[202605280000 TO 202611242359]", "hits": 1}
+{"ts": "2026-11-24T01:25:31", "cmd": "search", "source": "openalex", "query": "automation bias LLM agent tool since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:25:51", "cmd": "search", "source": "s2", "query": "automation bias LLM agent tool since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:25:52", "cmd": "search", "source": "arxiv", "query": "all:automation AND all:bias AND all:LLM AND all:agent AND all:tool", "hits": 12}
+{"ts": "2026-11-24T01:25:52", "cmd": "search", "source": "openalex", "query": "automation bias LLM agent tool", "hits": 12}
+{"ts": "2026-11-24T01:25:53", "cmd": "search", "source": "s2", "query": "automation bias LLM agent tool", "hits": 12}
+{"ts": "2026-11-24T01:25:53", "cmd": "search", "source": "arxiv", "query": "all:tools AND all:narrow AND all:capability AND all:gap AND all:models AND submittedDate:[202605280000 TO 202611242359]", "hits": 15}
+{"ts": "2026-11-24T01:25:54", "cmd": "search", "source": "openalex", "query": "tools narrow capability gap models since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:26:14", "cmd": "search", "source": "s2", "query": "tools narrow capability gap models since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:26:14", "cmd": "search", "source": "arxiv", "query": "all:tools AND all:narrow AND all:capability AND all:gap AND all:models", "hits": 12}
+{"ts": "2026-11-24T01:26:14", "cmd": "search", "source": "openalex", "query": "tools narrow capability gap models", "hits": 12}
+{"ts": "2026-11-24T01:26:26", "cmd": "search", "source": "s2", "query": "tools narrow capability gap models", "hits": 12}
+{"ts": "2026-11-24T01:26:26", "cmd": "search", "source": "arxiv", "query": "all:substitute AND all:complement AND all:LLM AND all:agent AND all:skill AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:26:29", "cmd": "search", "source": "arxiv", "query": "all:substitute AND all:complement AND all:agent AND all:skill AND submittedDate:[202605280000 TO 202611242359]", "hits": 1}
+{"ts": "2026-11-24T01:26:30", "cmd": "search", "source": "openalex", "query": "substitute complement LLM agent skill since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:26:50", "cmd": "search", "source": "s2", "query": "substitute complement LLM agent skill since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:26:50", "cmd": "search", "source": "arxiv", "query": "all:substitute AND all:complement AND all:LLM AND all:agent AND all:skill", "hits": 0}
+{"ts": "2026-11-24T01:26:53", "cmd": "search", "source": "arxiv", "query": "all:substitute AND all:complement AND all:agent AND all:skill", "hits": 1}
+{"ts": "2026-11-24T01:26:53", "cmd": "search", "source": "openalex", "query": "substitute complement LLM agent skill", "hits": 12}
+{"ts": "2026-11-24T01:27:13", "cmd": "search", "source": "s2", "query": "substitute complement LLM agent skill", "hits": 0}
+{"ts": "2026-11-24T01:27:14", "cmd": "search", "source": "arxiv", "query": "all:agent AND all:blindly AND all:trusts AND all:tool AND all:result AND submittedDate:[202605280000 TO 202611242359]", "hits": 1}
+{"ts": "2026-11-24T01:27:14", "cmd": "search", "source": "openalex", "query": "agent blindly trusts tool result since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:27:34", "cmd": "search", "source": "s2", "query": "agent blindly trusts tool result since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:27:34", "cmd": "search", "source": "arxiv", "query": "all:agent AND all:blindly AND all:trusts AND all:tool AND all:result", "hits": 1}
+{"ts": "2026-11-24T01:27:35", "cmd": "search", "source": "openalex", "query": "agent blindly trusts tool result", "hits": 12}
+{"ts": "2026-11-24T01:27:55", "cmd": "search", "source": "s2", "query": "agent blindly trusts tool result", "hits": 0}
+{"ts": "2026-11-24T01:27:55", "cmd": "search", "source": "arxiv", "query": "all:harness AND all:equalizes AND all:weak AND all:strong AND all:models AND submittedDate:[202605280000 TO 202611242359]", "hits": 0}
+{"ts": "2026-11-24T01:27:58", "cmd": "search", "source": "arxiv", "query": "all:equalizes AND all:harness AND all:strong AND all:models AND submittedDate:[202605280000 TO 202611242359]", "hits": 2}
+{"ts": "2026-11-24T01:27:59", "cmd": "search", "source": "openalex", "query": "harness equalizes weak strong models since 2026-05-28", "hits": 15}
+{"ts": "2026-11-24T01:28:19", "cmd": "search", "source": "s2", "query": "harness equalizes weak strong models since 2026-05-28", "hits": 0}
+{"ts": "2026-11-24T01:28:19", "cmd": "search", "source": "arxiv", "query": "all:harness AND all:equalizes AND all:weak AND all:strong AND all:models", "hits": 0}
+{"ts": "2026-11-24T01:28:22", "cmd": "search", "source": "arxiv", "query": "all:equalizes AND all:harness AND all:strong AND all:models", "hits": 7}
+{"ts": "2026-11-24T01:28:23", "cmd": "search", "source": "openalex", "query": "harness equalizes weak strong models", "hits": 12}
+{"ts": "2026-11-24T01:28:42", "cmd": "search", "source": "s2", "query": "harness equalizes weak strong models", "hits": 0}

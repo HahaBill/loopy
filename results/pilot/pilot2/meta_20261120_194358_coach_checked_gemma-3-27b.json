@@ -1,0 +1,74 @@
+{
+  "command": "experiments/pilot/run_arm.py --run-name pilot2 --condition coach_checked --model gemma-3-27b --versions 2,3 --skills-dir results/pilot/pilot2/raw_large/skills/gemma-3-27b --max-usd 0.5 --label PILOT 2",
+  "condition": "coach_checked",
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pydantic_ai": "2.71.0",
+    "python": "3.11.9"
+  },
+  "git": {
+    "branch": "alfredo/pilot-setup",
+    "commit": "57f2888124fbf48b5b23c076813776dc8d080dca",
+    "dirty_files": [
+      "M results/spend_ledger.jsonl",
+      "?? results/pilot/pilot2/meta_20261120_185834_small_alone_gemma-3-27b.json",
+      "?? results/pilot/pilot2/meta_20261120_185834_small_alone_gemma-3-27b_finish.json",
+      "?? results/pilot/pilot2/meta_20261120_185856_small_alone_gpt-oss-120b.json",
+      "?? results/pilot/pilot2/meta_20261120_185856_small_alone_gpt-oss-120b_finish.json",
+      "?? results/pilot/pilot2/meta_20261120_190324_small_alone_qwen3.8-27b.json",
+      "?? results/pilot/pilot2/meta_20261120_190324_small_alone_qwen3.8-27b_finish.json",
+      "?? results/pilot/pilot2/meta_20261120_190634_compile_gemma-3-27b.json",
+      "?? results/pilot/pilot2/meta_20261120_190634_compile_gemma-3-27b_finish.json",
+      "?? results/pilot/pilot2/meta_20261120_190714_compile_gpt-oss-120b.json",
+      "?? results/pilot/pilot2/meta_20261120_190714_compile_gpt-oss-120b_finish.json",
+      "?? results/pilot/pilot2/meta_20261120_190740_compile_qwen3.8-27b.json",
+      "?? results/pilot/pilot2/meta_20261120_190740_compile_qwen3.8-27b_finish.json",
+      "?? results/pilot/pilot2/meta_20261120_192231_coach_checked_qwen3-30b-a3b.json",
+      "?? results/pilot/pilot2/meta_20261120_192231_coach_checked_qwen3-30b-a3b_finish.json",
+      "?? results/pilot/pilot2/runs.jsonl",
+      "?? results/pilot/pilot2/teach.jsonl"
+    ]
+  },
+  "label": "PILOT 2",
+  "max_usd": 0.5,
+  "model": {
+    "api_key_env": "NEBIUS_API_KEY",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "context_budget_tokens": 90000,
+    "extra_body": null,
+    "key": "gemma-3-27b",
+    "max_tokens": 1500,
+    "name": "google/gemma-3-27b-it",
+    "request_timeout": 180.0,
+    "role": "small",
+    "seed": 123,
+    "temperature": 0.0,
+    "usd_per_mtok_in": 0.1,
+    "usd_per_mtok_out": 0.3
+  },
+  "model_key": "gemma-3-27b",
+  "provider": "nebius.com",
+  "repeat": 1,
+  "run_name": "pilot2",
+  "settings": {
+    "appworld_timeout_seconds": 100,
+    "max_steps": 50,
+    "output_char_limit": 8000
+  },
+  "sha256": {
+    "config": "7adbd539259d6300e8f8a129a08dd3422732ab4eef3bb377eeedf43740dab9d6",
+    "prompt": "5e72480bd4c033ea4c3d65e092ffb3ff16401fda255c8649eb8ac848ed219147",
+    "react.py": "9e1e716ace719e2d70c2ff0758674a8888d390ab84a0812e8be5fb33a256f43e",
+    "run_arm.py": "fae47ac76ac45af833467e8c3d1c320a7101a205604cac9e839ad74a2acee24c",
+    "scenarios": "9ba0c0974246956b44305468218718a42cb10acd8bff748aa22f855f50e0753c"
+  },
+  "started": "2026-11-20T19:43:58-05:00",
+  "task_ids": [
+    "d4e9306_2",
+    "d4e9306_3",
+    "37a8675_2",
+    "37a8675_3",
+    "530b157_2",
+    "530b157_3"
+  ]
+}
