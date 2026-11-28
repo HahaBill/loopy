@@ -31,7 +31,7 @@ from loopy.agent.react import Budget, CostCapReached, run_task
 from loopy.eval.bridge import REPO_ROOT, AppWorldBridge
 from loopy.eval.runlog import append_jsonl, git_state, ledger_total, now_et, read_jsonl
 from loopy.skills.coach import build_coach_prompt, build_revision_prompt, parse_coach_reply
-from loopy.skills.teach import cap_stop_status, complete_uncut, run_check, stale_skips, stop_status
+from loopy.skills.teach import PaidRequestFailed, cap_stop_status, complete_uncut, run_check, stale_skips, stop_status
 
 HERE = Path(__file__).resolve().parent
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
@@ -62,7 +62,10 @@ def ledger_note(student: str, scenario_id: str) -> str:
     return f"build_coach_checked {student} {scenario_id}"
 
 
-def pending_state(folder: Path) -> dict | None:
+IDENTITY_KEYS = ("teacher_model_key", "small_model_key", "learn_task_id")
+
+
+def pending_state(folder: Path, expected: dict | None = None) -> dict | None:
     """What an interrupted build of this scenario already did and paid for, from its latest pending log (item 4).
 
     A build whose validation the provider or the bridge kept breaking writes a pending log and no row. A restart goes
@@ -77,6 +80,10 @@ def pending_state(folder: Path) -> dict | None:
     missing = [key for key in RESUME_KEYS if key not in state]
     if missing:
         raise SystemExit(f"{logs[-1]}: a pending build without {missing}; it cannot be resumed. Decide it by hand.")
+    wrong = [key for key, value in (expected or {}).items() if key in state and state[key] != value]
+    if wrong:
+        raise SystemExit(f"{logs[-1]}: a pending build for another {wrong} in this folder; it cannot be resumed here. "
+                         "Decide it by hand.")
     return {**state, "file": logs[-1].name}
 
 
@@ -122,16 +129,24 @@ def main() -> int:
     # A recorded skip is a decision only while the runs it was read from are still the latest ones.
     done = {row["scenario_id"] for row in earlier} - {key[0] for key in stale_skips(earlier, learned)}
 
+    def budget_for(who: str) -> Budget:
+        """The invocation's guard (--max-usd, over both budgets when there are two) and this provider's own stop."""
+        max_usd = args.max_usd if args.max_usd is not None else config.get("max_usd_per_invocation")
+        ledger_cap = (config.get("ledger_caps_usd") or {}).get(who)
+        if ledger_cap is not None and ledger_total(LEDGER, who) >= ledger_cap:
+            raise SystemExit(f"{who}: the ${ledger_cap:.2f} cap is used up. Stopping.")
+        return Budget(max_usd=max_usd, ledger=LEDGER, provider=who, run_name=args.run_name,
+                      note=f"build_coach_checked {args.small_model}", ledger_cap=ledger_cap,
+                      reserve_usd=(config.get("ledger_reserve_usd") or {}).get(who, 0.0))
+
     provider = teacher_spec.provider
-    max_usd = args.max_usd if args.max_usd is not None else config.get("max_usd_per_invocation")
     ledger_cap = (config.get("ledger_caps_usd") or {}).get(provider)
-    if ledger_cap is not None:
-        remaining = ledger_cap - ledger_total(LEDGER, provider)
-        if remaining <= 0:
-            raise SystemExit(f"{provider}: the ${ledger_cap:.2f} cap is used up. Stopping.")
-        max_usd = remaining if max_usd is None else min(max_usd, remaining)
-    budget = Budget(max_usd=max_usd, ledger=LEDGER, provider=provider, run_name=args.run_name,
-                    note=f"build_coach_checked {args.small_model}", ledger_cap=ledger_cap)
+    budget = budget_for(provider)
+    # The note's check is a student run. When the student is billed by another provider than the teacher, its
+    # requests go to that provider's ledger rows and stop, not the teacher's. With one provider this is one budget.
+    student_budget = budget if student_spec.provider == provider else budget_for(student_spec.provider)
+    if student_budget is not budget:  # one invocation guard (--max-usd) over both providers' spend
+        budget.shares_cap_with, student_budget.shares_cap_with = student_budget, budget
     student = PydanticAIChat(student_spec)
     git = git_state()
 
@@ -165,14 +180,18 @@ def main() -> int:
                     return json.loads((Path(record["_folder"]) / "raw_large" / name).read_text(encoding="utf-8"))
 
                 folder = skills_dir / scenario_id
-                budget.note = ledger_note(args.small_model, scenario_id)
-                state = pending_state(folder)
+                budget.note = student_budget.note = ledger_note(args.small_model, scenario_id)
+                identity = {"teacher_model_key": args.cloud_model, "small_model_key": args.small_model,
+                            "learn_task_id": task_id}
+                state = pending_state(folder, identity)
                 if state:  # an earlier start was interrupted during validation: go on from where it stopped
                     messages, attempts, broken_checks = state["messages"], state["attempts"], state["broken_checks"]
                     teacher_cost, student_cost = state["teacher_cost_usd"], state["student_cost_usd"]
                     teacher_calls, student_requests = state["teacher_calls"], state["student_requests"]
                     cut_off_requests = state["cut_off_requests"]
+                    teacher_cached = state.get("teacher_cached_input_tokens", 0)
                     first = types.SimpleNamespace(**state["first"]) if state["first"] else None
+                    pending_text = state.get("pending_reply")  # paid for, its check broke: checked again, not bought
                     print(f"{scenario_id}: resuming the build interrupted in {state['file']} after "
                           f"{len(attempts)} attempt(s) | already paid ${teacher_cost + student_cost:.4f}", flush=True)
                 else:
@@ -180,32 +199,53 @@ def main() -> int:
                     messages = [{"role": "user", "content": build_coach_prompt(
                         small_raw["instruction"], small_raw["steps"], cloud_raw["steps"])}]
                     teacher_cost = student_cost = 0.0
-                    teacher_calls = student_requests = cut_off_requests = 0
-                    attempts, broken_checks, first = [], [], None
-                validated, note, stopped = False, None, None
+                    teacher_calls = student_requests = cut_off_requests = teacher_cached = 0
+                    attempts, broken_checks, first, pending_text = [], [], None, None
+                validated, note, stopped, pending_reply = False, None, None, None
                 untouched = False  # the spend limit came before this build's first request
                 interrupted = None  # why the validation could not run to its own end, if it could not
                 attempt = len(attempts) + 1
                 for attempt in range(len(attempts) + 1, args.max_repairs + 2):
+                    if pending_text is not None:
+                        text, pending_text = pending_text, None
+                    else:
+                        try:
+                            reply, usage = complete_uncut(teacher_spec, messages, budget)
+                        except CostCapReached as error:
+                            # A spend limit before this attempt's first request. A build that has paid for nothing
+                            # gets no record, so the next start builds it; one that has paid stays pending and resumes
+                            # on the next start, within the provider's own stop.
+                            if cap_stop_status(teacher_calls + student_requests) is None:
+                                untouched = True
+                            else:
+                                interrupted = f"spend limit reached: {error}"
+                            break
+                        except PaidRequestFailed as error:  # part of the reply was paid for, then it failed
+                            teacher_cost += error.usage["cost_usd"]
+                            teacher_cached += error.usage["cached_input_tokens"]
+                            teacher_calls += error.usage["requests"]
+                            cut_off_requests += error.usage["cut_off_requests"]
+                            interrupted = f"teacher request failed: {error}"
+                            break
+                        except Exception as error:  # the provider failed after the client's own retries
+                            interrupted = f"teacher request failed: {type(error).__name__}: {str(error)[:300]}"
+                            break
+                        teacher_cost += usage["cost_usd"]
+                        teacher_cached += usage["cached_input_tokens"]
+                        teacher_calls += usage["requests"]
+                        cut_off_requests += usage["cut_off_requests"]
+                        if usage["stopped_by_cap"]:  # a spend limit between two parts of one reply
+                            interrupted = "spend limit reached during a reply"
+                            break
+                        stopped = stop_status(usage)
+                        if stopped:  # cut off even at the ceiling: the reply never fit
+                            break
+                        text = reply.text
                     try:
-                        reply, usage = complete_uncut(teacher_spec, messages, budget)
-                    except CostCapReached:
-                        # Reached between attempts: keep what this build already paid for. A build that sent
-                        # nothing gets no record, so the next start builds it.
-                        stopped = cap_stop_status(teacher_calls + student_requests)
-                        untouched = stopped is None
-                        break
-                    teacher_cost += usage["cost_usd"]
-                    teacher_calls += usage["requests"]
-                    cut_off_requests += usage["cut_off_requests"]
-                    stopped = stop_status(usage)
-                    if stopped:  # not an attempt: the teacher never finished a reply
-                        break
-                    try:
-                        note = parse_coach_reply(reply.text)
+                        note = parse_coach_reply(text)
                     except ValueError as error:
-                        attempts.append({"attempt": attempt, "reply": reply.text, "parse_error": str(error)})
-                        messages += [{"role": "assistant", "content": reply.text},
+                        attempts.append({"attempt": attempt, "reply": text, "parse_error": str(error)})
+                        messages += [{"role": "assistant", "content": text},
                                      {"role": "user", "content": f"Your reply could not be used: {error}. "
                                                                   "Reply again in exactly the required format."}]
                         continue
@@ -221,7 +261,7 @@ def main() -> int:
                             trace = run_task(bridge, student, task.instruction, task.supervisor,
                                              max_steps=config["max_steps"],
                                              output_char_limit=config["output_char_limit"],
-                                             guidance=note.guidance(), forecast=False, budget=budget)
+                                             guidance=note.guidance(), forecast=False, budget=student_budget)
                             passed = bool(bridge.evaluate()["success"])
                             bridge.close_task()
                             stop_reason, error = trace.stop_reason, trace.error
@@ -245,15 +285,15 @@ def main() -> int:
                     broken_checks += [{"attempt": attempt, "stop_reason": item["stop_reason"], "error": item["error"],
                                        "n_steps": len(item["steps"])} for item in (checks if not ran else checks[:-1])]
                     if not ran:
-                        interrupted = f"{check['stop_reason']}: {check['error']}"
+                        interrupted, pending_reply = f"{check['stop_reason']}: {check['error']}", text
                         break
-                    attempts.append({"attempt": attempt, "reply": reply.text, "note": note.note,
+                    attempts.append({"attempt": attempt, "reply": text, "note": note.note,
                                      "passed": check["passed"], "stop_reason": check["stop_reason"],
                                      "n_steps": len(check["steps"]), "steps": check["steps"]})
                     if check["passed"]:
                         validated = True
                         break
-                    messages += [{"role": "assistant", "content": reply.text},
+                    messages += [{"role": "assistant", "content": text},
                                  {"role": "user", "content": build_revision_prompt(check["steps"])}]
 
                 if untouched:
@@ -267,9 +307,11 @@ def main() -> int:
                     (folder / f"coach_checked_PENDING_log_{time.strftime('%Y%m%d_%H%M%S')}.json").write_text(
                         json.dumps({"prompt": messages[0]["content"], "messages": messages, "attempts": attempts,
                                     "interrupted": interrupted, "interrupted_attempt": attempt,
+                                    "pending_reply": pending_reply, **identity,
                                     "broken_checks": broken_checks, "teacher_cost_usd": teacher_cost,
                                     "student_cost_usd": student_cost, "teacher_calls": teacher_calls,
                                     "student_requests": student_requests, "cut_off_requests": cut_off_requests,
+                                    "teacher_cached_input_tokens": teacher_cached,
                                     "first": None if first is None else {"divergence_step": first.divergence_step,
                                                                          "failure_kind": first.failure_kind},
                                     "resumed_from": state["file"] if state else None},
@@ -291,11 +333,14 @@ def main() -> int:
                     **row, "status": final_status, "validated": validated,
                     "attempts": len(attempts), "requests": teacher_calls, "cloud_calls": teacher_calls,
                     "teacher_cost_usd": round(teacher_cost, 6), "student_cost_usd": round(student_cost, 6),
+                    "teacher_cached_input_tokens": teacher_cached,
                     "student_requests": student_requests, "cut_off_requests": cut_off_requests, "cost_usd": round(teacher_cost + student_cost, 6),
                     "divergence_step": first.divergence_step if first else None,
                     "failure_kind": first.failure_kind if first else None,
                     "resumed_from": state["file"] if state else None,
                 })
+                for path in folder.glob(PENDING_GLOB):  # decided now: kept for the record, never resumed again
+                    path.rename(path.with_name(path.name.replace("_PENDING_", "_RESUMED_")))
                 print(f"{scenario_id}: coach_checked {final_status} after "
                       f"{len(attempts)} attempt(s) | teacher ${teacher_cost:.4f} + student ${student_cost:.4f}",
                       flush=True)
@@ -306,6 +351,9 @@ def main() -> int:
     except CostCapReached as error:
         print(f"cost cap reached: {error}")
     print(f"spent ${budget.spent_usd:.4f} | {provider} ledger total ${ledger_total(LEDGER, provider):.4f}")
+    if student_budget is not budget:
+        print(f"student checks spent ${student_budget.spent_usd:.4f} | {student_spec.provider} ledger total "
+              f"${ledger_total(LEDGER, student_spec.provider):.4f}")
     return 0
 
 

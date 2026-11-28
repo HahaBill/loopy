@@ -94,6 +94,14 @@ def cap_stop_status(requests_sent: int) -> str | None:
     return "cost_cap" if requests_sent > 0 else None
 
 
+class PaidRequestFailed(RuntimeError):
+    """A request failed after earlier requests for the same reply were paid for. `usage` holds what was paid."""
+
+    def __init__(self, usage: dict[str, Any], error: Exception) -> None:
+        super().__init__(f"{type(error).__name__}: {error}")
+        self.usage = usage
+
+
 def complete_uncut(
     spec: ModelSpec,
     messages: list[Message],
@@ -104,6 +112,7 @@ def complete_uncut(
     """Returns the last reply and the usage summed over every request it took."""
     limit = min(spec.max_tokens, ceiling)
     usage: dict[str, Any] = {"requests": 0, "cut_off_requests": 0, "input_tokens": 0, "output_tokens": 0,
+                             "cached_input_tokens": 0,
                              "cost_usd": 0.0, "seconds": 0.0, "still_cut_off": False, "stopped_by_cap": False}
     at_ceiling = 0
     reply: Reply | None = None
@@ -117,11 +126,17 @@ def complete_uncut(
             return reply, usage
         current = dataclasses.replace(spec, max_tokens=limit,
                                       request_timeout=max(spec.request_timeout, limit / 1000 * SECONDS_PER_1K_TOKENS))
-        reply = make_chat(current).complete(messages)
+        try:
+            reply = make_chat(current).complete(messages)
+        except Exception as error:
+            if usage["requests"] == 0:
+                raise
+            raise PaidRequestFailed(usage, error) from error
         cost = spec.cost_usd(reply.input_tokens, reply.output_tokens)
         budget.add(cost)
         usage["requests"] += 1
         usage["input_tokens"] += reply.input_tokens
+        usage["cached_input_tokens"] += reply.cached_input_tokens
         usage["output_tokens"] += reply.output_tokens
         usage["cost_usd"] += cost
         usage["seconds"] += reply.seconds

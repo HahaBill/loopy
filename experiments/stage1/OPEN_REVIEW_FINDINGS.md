@@ -28,3 +28,21 @@ To do before any new note or function build is run with this code: items 4, 5 an
 - **Item 7:** fixed (`ledger_note`: every request of a note build carries the student and the scenario).
 
 Tests: `tests/test_note_build_fixes.py`. Items 1, 2, 3, 6 and 8 are unchanged.
+
+## Fixed Nov 27, 2026, before stage 3 builds any function
+
+- **Item 4, function builder:** fixed in `build_skills.py` too (`compile_pending_state`: an interrupted function build
+  resumes with its conversation, its attempts and its spend). Tests: `tests/test_note_build_fixes.py`.
+
+## Stage 3 setup, Nov 27, 2026: review findings left open
+
+The pre-push review ran three rounds on the stage 3 setup. Every finding of the first two rounds and seven of the
+third were fixed. These three are left open, on purpose, because each needs the process to be killed in the middle of
+a paid step or a spend stop in the middle of one reply, and each costs at most one teacher reply (about $1) without
+changing any recorded result:
+
+| Where | Finding | What happens |
+|---|---|---|
+| `build_skills.py`, `build_coach_checked.py` | A paid teacher reply is kept only in memory while its check runs. | If the process is killed during that check, the restart buys the reply again; the build row records one of the two. |
+| `teach.py`, both builders | A spend stop while a cut-off reply is being sent again with more room loses the next limit. | The resumed build asks again at the earlier limit before the larger one. |
+| `stage3.py`, calibration | The forecast reply (the "will you fail?" question) is not counted in the share of replies cut by the output limit. | A teacher whose forecasts are cut but whose steps are not still passes the check. The forecast is not used by any stage 3 measure. |

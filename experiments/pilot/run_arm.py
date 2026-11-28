@@ -166,7 +166,8 @@ def main() -> int:
             raise SystemExit(f"{provider}: ${spent_before:.2f} already spent of the ${ledger_cap:.2f} cap. Stopping.")
         max_usd = remaining if max_usd is None else min(max_usd, remaining)
     budget = Budget(max_usd=max_usd, ledger=LEDGER, provider=provider, run_name=args.run_name,
-                    note=f"{args.condition} {args.model}", ledger_cap=ledger_cap)
+                    note=f"{args.condition} {args.model}", ledger_cap=ledger_cap,
+                    reserve_usd=(config.get("ledger_reserve_usd") or {}).get(provider, 0.0))
 
     print(f"run {args.run_name} | {args.condition} | {args.model} = {spec.name} via {provider}")
     print(f"tasks: {len(todo)} to run, {len(task_ids) - len(todo)} already done -> {', '.join(todo) or '-'}")
@@ -221,6 +222,11 @@ def main() -> int:
             if ledger_cap is not None and ledger_total(LEDGER, provider) >= ledger_cap:
                 print("  provider cap reached; stopping this invocation", flush=True)
                 break
+            if (raw_dir / f"{args.condition}__{args.model}__{task_id}__r{args.repeat}.json").exists():
+                # An earlier start wrote this run's trajectory and stopped before its row: it was paid for already.
+                print(f"  {task_id}: a trajectory for repeat {args.repeat} exists without its row; not run again. "
+                      "Decide it by hand.", flush=True)
+                continue
             started, clock = now_et(), time.perf_counter()
             task = bridge.open_task(task_id, experiment_name=experiment_name,
                                     timeout_seconds=config["appworld_timeout_seconds"])
@@ -266,6 +272,7 @@ def main() -> int:
                 "requests": int(totals["requests"]),
                 "cloud_calls": int(totals["requests"]) if spec.role == "cloud" else 0,
                 "input_tokens": int(totals["input_tokens"]),
+                "cached_input_tokens": int(totals["cached_input_tokens"]),
                 "output_tokens": int(totals["output_tokens"]),
                 "cost_usd": round(totals["cost_usd"], 6),
                 "model_seconds": round(totals["model_seconds"], 2),

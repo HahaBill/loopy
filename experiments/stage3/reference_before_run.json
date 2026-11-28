@@ -1,0 +1,290 @@
+{
+  "teacher": "glm-5.3-flash",
+  "n_scenarios": 23,
+  "cost_question": {
+    "all_four": {
+      "students": [
+        "gpt-oss-120b",
+        "gemma-3-27b",
+        "minimax-m3.1-flash",
+        "nemotron-3-super-120b"
+      ],
+      "n_scenarios": 23,
+      "n_pairs": 61,
+      "share_of_rent_saved_by_uses": {
+        "note": {
+          "1": -4.028756637378328,
+          "3": -1.7808973847943412,
+          "10": -0.994146646389948,
+          "30": -0.7693607211315492
+        },
+        "function": {
+          "1": -1.8357482501691837,
+          "3": -0.322606132078177,
+          "10": 0.2069936092536736,
+          "30": 0.3583078210627745
+        }
+      },
+      "note_cheaper_share_by_uses": {
+        "1": 0.2459016393442623,
+        "3": 0.21311475409836064,
+        "10": 0.09836065573770492,
+        "30": 0.13114754098360656
+      },
+      "primary_uses": 10,
+      "note_cheaper_share": 0.09836065573770492,
+      "interval_95": {
+        "low": 0.03389830508474576,
+        "high": 0.171875,
+        "n_undefined_resamples": 0,
+        "resamples": 10000,
+        "seed": 123,
+        "uses": 10
+      },
+      "label": "FUNCTION IS THE BETTER BUY",
+      "beats_renting_note_eligible": {
+        "note": {
+          "student_scenarios": 61,
+          "pay_back": 9,
+          "median_uses_to_break_even": 6.39
+        },
+        "function": {
+          "student_scenarios": 61,
+          "pay_back": 44,
+          "median_uses_to_break_even": 1.8050000000000002
+        }
+      },
+      "v1_pass_rate_alone": {
+        "gpt-oss-120b": 0.043478260869565216,
+        "gemma-3-27b": 0.21739130434782608,
+        "minimax-m3.1-flash": 0.21739130434782608,
+        "nemotron-3-super-120b": 0.5652173913043478
+      }
+    },
+    "weak": {
+      "students": [
+        "gpt-oss-120b",
+        "gemma-3-27b",
+        "minimax-m3.1-flash"
+      ],
+      "n_scenarios": 23,
+      "n_pairs": 54,
+      "share_of_rent_saved_by_uses": {
+        "note": {
+          "1": -3.9353308100462137,
+          "3": -1.732307386750803,
+          "10": -0.9612491885974124,
+          "30": -0.740946846267871
+        },
+        "function": {
+          "1": -1.9199722912071406,
+          "3": -0.3847318523015837,
+          "10": 0.1526023013153598,
+          "30": 0.30612634520591586
+        }
+      },
+      "note_cheaper_share_by_uses": {
+        "1": 0.24074074074074073,
+        "3": 0.2222222222222222,
+        "10": 0.09259259259259259,
+        "30": 0.12962962962962962
+      },
+      "primary_uses": 10,
+      "note_cheaper_share": 0.09259259259259259,
+      "interval_95": {
+        "low": 0.021265514184397174,
+        "high": 0.1724137931034483,
+        "n_undefined_resamples": 0,
+        "resamples": 10000,
+        "seed": 123,
+        "uses": 10
+      },
+      "label": "FUNCTION IS THE BETTER BUY",
+      "beats_renting_note_eligible": {
+        "note": {
+          "student_scenarios": 54,
+          "pay_back": 7,
+          "median_uses_to_break_even": 10.73
+        },
+        "function": {
+          "student_scenarios": 54,
+          "pay_back": 37,
+          "median_uses_to_break_even": 1.8
+        }
+      },
+      "v1_pass_rate_alone": {
+        "gpt-oss-120b": 0.043478260869565216,
+        "gemma-3-27b": 0.21739130434782608,
+        "minimax-m3.1-flash": 0.21739130434782608
+      }
+    },
+    "middle": {
+      "students": [
+        "nemotron-3-super-120b"
+      ],
+      "n_scenarios": 23,
+      "n_pairs": 7,
+      "share_of_rent_saved_by_uses": {
+        "note": {
+          "1": -4.569557841409898,
+          "3": -2.0621636063116995,
+          "10": -1.1845756240273309,
+          "30": -0.9338362005175105
+        },
+        "function": {
+          "1": -1.3482121576086703,
+          "3": 0.03701245795809127,
+          "10": 0.5218410734064578,
+          "30": 0.660363534963134
+        }
+      },
+      "note_cheaper_share_by_uses": {
+        "1": 0.2857142857142857,
+        "3": 0.14285714285714285,
+        "10": 0.14285714285714285,
+        "30": 0.14285714285714285
+      },
+      "primary_uses": 10,
+      "note_cheaper_share": 0.14285714285714285,
+      "interval_95": {
+        "low": 0.0,
+        "high": 0.5,
+        "n_undefined_resamples": 3,
+        "resamples": 10000,
+        "seed": 123,
+        "uses": 10
+      },
+      "label": "UNDECIDED",
+      "beats_renting_note_eligible": {
+        "note": {
+          "student_scenarios": 7,
+          "pay_back": 2,
+          "median_uses_to_break_even": 2.9
+        },
+        "function": {
+          "student_scenarios": 7,
+          "pay_back": 7,
+          "median_uses_to_break_even": 2.71
+        }
+      },
+      "v1_pass_rate_alone": {
+        "nemotron-3-super-120b": 0.5652173913043478
+      }
+    }
+  },
+  "accuracy": {
+    "label": "CATCHES UP",
+    "quotable_as_thesis": true,
+    "point": {
+      "D_A": 0.4642857142857143,
+      "D_A_net": 0.36111111111111116,
+      "gap_F_minus_N_diff": -0.4126984126984128,
+      "F_diff": 0.051587301587301515
+    },
+    "bootstrap": {
+      "intervals_95": {
+        "D_A": {
+          "low": 0.13723890551795942,
+          "high": 0.7213642213642214
+        },
+        "D_A_net": {
+          "low": 0.021921559803039118,
+          "high": 0.6809607351712614
+        },
+        "gap_F_minus_N_diff": {
+          "low": -0.698874562937063,
+          "high": -0.0660228780797417
+        },
+        "F_diff": {
+          "low": -0.11904761904761907,
+          "high": 0.2149532710280374
+        }
+      },
+      "n_undefined_resamples": 0,
+      "resamples": 10000,
+      "seed": 123,
+      "unit": "scenario",
+      "interval": "percentile, 2.5 to 97.5"
+    },
+    "middle_pooled": {
+      "n": 14,
+      "note": 0.7142857142857143,
+      "function": 0.8571428571428571,
+      "control": 0.21428571428571427
+    },
+    "weak_pooled": {
+      "n": 108,
+      "note": 0.25,
+      "function": 0.8055555555555556,
+      "control": 0.1111111111111111
+    }
+  },
+  "per_student": {
+    "gpt-oss-120b": {
+      "v1_passed_alone": 1,
+      "v1_pass_rate_alone": 0.043478260869565216,
+      "units": 41,
+      "note_fixed": 2,
+      "function_fixed": 33,
+      "control_fixed": 1,
+      "harm": {
+        "test_tasks_passed_alone": 3,
+        "broken_by_note": 1,
+        "of_those_with_a_note": 1,
+        "broken_by_function": 1,
+        "of_those_with_a_function": 3
+      }
+    },
+    "gemma-3-27b": {
+      "v1_passed_alone": 5,
+      "v1_pass_rate_alone": 0.21739130434782608,
+      "units": 33,
+      "note_fixed": 9,
+      "function_fixed": 24,
+      "control_fixed": 2,
+      "harm": {
+        "test_tasks_passed_alone": 5,
+        "broken_by_note": 1,
+        "of_those_with_a_note": 2,
+        "broken_by_function": 1,
+        "of_those_with_a_function": 5
+      }
+    },
+    "minimax-m3.1-flash": {
+      "v1_passed_alone": 5,
+      "v1_pass_rate_alone": 0.21739130434782608,
+      "units": 34,
+      "note_fixed": 16,
+      "function_fixed": 30,
+      "control_fixed": 9,
+      "harm": {
+        "test_tasks_passed_alone": 11,
+        "broken_by_note": 0,
+        "of_those_with_a_note": 2,
+        "broken_by_function": 0,
+        "of_those_with_a_function": 11
+      }
+    },
+    "nemotron-3-super-120b": {
+      "v1_passed_alone": 13,
+      "v1_pass_rate_alone": 0.5652173913043478,
+      "units": 14,
+      "note_fixed": 10,
+      "function_fixed": 12,
+      "control_fixed": 3,
+      "harm": {
+        "test_tasks_passed_alone": 26,
+        "broken_by_note": 0,
+        "of_those_with_a_note": 4,
+        "broken_by_function": 2,
+        "of_those_with_a_function": 26
+      }
+    }
+  },
+  "teacher_alone": {
+    "passed": 65,
+    "tasks": 69,
+    "v1_passed": 23,
+    "mean_cost_usd_all_repeats": 0.022136
+  }
+}

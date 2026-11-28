@@ -1,0 +1,80 @@
+{
+  "name": "stage3",
+  "split": "test_normal",
+  "scenario_file": "experiments/stage2/scenarios_part_a.json",
+  "max_steps": 50,
+  "output_char_limit": 8000,
+  "appworld_timeout_seconds": 100,
+  "max_usd_per_invocation": 8.0,
+  "ledger_caps_usd": {
+    "nebius.com": 84.01,
+    "openai.com": 90.0
+  },
+  "teacher_prices_checked_on": null,
+  "notes": [
+    "Stage 3 (experiments/stage3/PROTOCOL.md), designed by Alfredo Frontera on Nov 27, 2026. Part A's settings: AppWorld's minimal prompt, temperature 0, seed 123, at most 50 steps, part A's 23 scenarios.",
+    "The four student entries are copied unchanged from the part A config. The teacher entry is new.",
+    "Teacher model id and prices: gpt-6.2-sol at 2.00 and 10.00 dollars per million input and output tokens, cached input 0.10, from third-party price lists read on Nov 27. Not confirmed by OpenAI. Check the id and the prices on OpenAI's pricing page, correct them here if needed, and set teacher_prices_checked_on to that date: the preflight refuses to start until then.",
+    "Hard stops, at list prices: nebius.com stood at 59.01 dollars on the ledger when this was written, so the students can spend 25 dollars; openai.com starts at 0, so the teacher can spend 90.",
+    "usd_per_mtok_cached_in is used only by the analysis, for costs as OpenAI bills them. Every stop and every recorded cost uses the list price.",
+    "Teacher: GPT-6.2 Sol always reasons, and the library sends it no temperature (checked Nov 27 with a request to a stand-in server), so its temperature is null: it runs at OpenAI's default. Its output limit is 16000 tokens, not 4000, because its reasoning tokens count against the limit. Both are the deviations written in the protocol before any run.",
+    "ledger_reserve_usd: new requests stop that much before each hard stop, so four jobs in flight cannot pass it (the dearest single request is about $1.04 on OpenAI and $0.12 on Nebius)."
+  ],
+  "models": {
+    "gpt-6.2-sol": {
+      "role": "cloud",
+      "name": "gpt-6.2-sol",
+      "base_url": "https://api.openai.com/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "usd_per_mtok_in": 2.0,
+      "usd_per_mtok_out": 10.0,
+      "usd_per_mtok_cached_in": 0.1,
+      "max_tokens": 16000,
+      "context_budget_tokens": 400000,
+      "temperature": null
+    },
+    "gpt-oss-120b": {
+      "role": "small",
+      "name": "openai/gpt-oss-120b",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.15,
+      "usd_per_mtok_out": 0.6,
+      "max_tokens": 4000,
+      "context_budget_tokens": 110000
+    },
+    "gemma-3-27b": {
+      "role": "small",
+      "name": "google/gemma-3-27b-it",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.3,
+      "context_budget_tokens": 90000
+    },
+    "minimax-m3.1-flash": {
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "role": "small",
+      "max_tokens": 4000,
+      "context_budget_tokens": 400000,
+      "name": "MiniMaxAI/MiniMax-M3.1-Flash",
+      "usd_per_mtok_in": 0.15,
+      "usd_per_mtok_out": 0.6
+    },
+    "nemotron-3-super-120b": {
+      "role": "small",
+      "base_url": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "max_tokens": 4000,
+      "name": "nvidia/nemotron-3-super-120b-a12b",
+      "usd_per_mtok_in": 0.3,
+      "usd_per_mtok_out": 0.9,
+      "context_budget_tokens": 200000
+    }
+  },
+  "ledger_reserve_usd": {
+    "openai.com": 5.0,
+    "nebius.com": 0.5
+  }
+}
