@@ -52,7 +52,10 @@ class Budget:
 
     With a ledger, every priced request is written to the shared ledger as soon as it returns, and the shared cap is
     read before the next one. Parallel jobs then see each other's spend, so the most the total can pass the cap by is
-    one request in flight per job. A hard kill loses at most the request in flight.
+    one request in flight per job. `reserve_usd` stops new requests that much before the cap, so that with a reserve of
+    at least (jobs in parallel) x (the dearest single request) the cap itself is never passed. A hard kill loses at most
+    the request in flight. `shares_cap_with` makes two budgets, one per provider, count each other's spend against
+    `max_usd`, so one invocation's guard holds across both.
     """
 
     max_usd: float | None = None
@@ -62,14 +65,18 @@ class Budget:
     run_name: str = ""
     note: str = ""
     ledger_cap: float | None = None
+    reserve_usd: float = 0.0
+    shares_cap_with: "Budget | None" = field(default=None, repr=False, compare=False)
 
     def check(self) -> None:
-        if self.max_usd is not None and self.spent_usd >= self.max_usd:
-            raise CostCapReached(f"spent ${self.spent_usd:.4f} of the ${self.max_usd:.2f} cap")
+        spent = self.spent_usd + (self.shares_cap_with.spent_usd if self.shares_cap_with is not None else 0.0)
+        if self.max_usd is not None and spent >= self.max_usd:
+            raise CostCapReached(f"spent ${spent:.4f} of the ${self.max_usd:.2f} cap")
         if self.ledger is not None and self.ledger_cap is not None:
             total = ledger_total(self.ledger, self.provider)
-            if total >= self.ledger_cap:
-                raise CostCapReached(f"{self.provider} ledger at ${total:.4f} of the ${self.ledger_cap:.2f} cap")
+            if total >= self.ledger_cap - self.reserve_usd:
+                raise CostCapReached(f"{self.provider} ledger at ${total:.4f} of the ${self.ledger_cap:.2f} cap "
+                                     f"(new requests stop ${self.reserve_usd:.2f} before it)")
 
     def add(self, usd: float) -> None:
         self.spent_usd += usd
@@ -93,6 +100,7 @@ class Step:
     finish_reason: str | None = None
     attempts: int = 1
     dropped_messages: int = 0
+    cached_input_tokens: int = 0
 
 
 @dataclass
@@ -103,6 +111,7 @@ class Forecast:
     output_tokens: int
     seconds: float
     cost_usd: float
+    cached_input_tokens: int = 0
 
 
 @dataclass
@@ -114,6 +123,7 @@ class PaidReply:
     seconds: float
     cost_usd: float
     raw_reply: str
+    cached_input_tokens: int = 0
 
 
 @dataclass
@@ -138,6 +148,7 @@ class RunTrace:
             "requests": len(parts),
             "input_tokens": sum(part.input_tokens for part in parts),
             "output_tokens": sum(part.output_tokens for part in parts),
+            "cached_input_tokens": sum(part.cached_input_tokens for part in parts),
             "model_seconds": sum(part.seconds for part in parts),
             "cost_usd": sum(part.cost_usd for part in parts),
         }
@@ -229,6 +240,7 @@ def ask_forecast(model: ChatModel, messages: list[Message], budget: Budget) -> F
         output_tokens=reply.output_tokens,
         seconds=reply.seconds,
         cost_usd=cost,
+        cached_input_tokens=reply.cached_input_tokens,
     )
 
 
@@ -272,7 +284,8 @@ def run_task(
             budget.add(cost)
             # Counted from the moment it is charged. If the environment raises below, the step is never stored, and
             # without this the run's totals would be one request short of what the budget and the ledger recorded.
-            paid = PaidReply(reply.input_tokens, reply.output_tokens, reply.seconds, cost, reply.text)
+            paid = PaidReply(reply.input_tokens, reply.output_tokens, reply.seconds, cost, reply.text,
+                             cached_input_tokens=reply.cached_input_tokens)
             trace.unfinished.append(paid)
 
             code = extract_code(reply.text)
@@ -298,6 +311,7 @@ def run_task(
                     cost_usd=cost,
                     raw_reply=reply.text,
                     thinking=reply.thinking,
+                    cached_input_tokens=reply.cached_input_tokens,
                     finish_reason=reply.finish_reason,
                     attempts=reply.attempts,
                     dropped_messages=dropped,

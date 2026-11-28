@@ -31,10 +31,41 @@ from loopy.eval.bridge import REPO_ROOT, AppWorldBridge
 from loopy.eval.runlog import append_jsonl, git_state, ledger_total, now_et, read_jsonl
 from loopy.skills.coach import build_coach_prompt, parse_coach_reply
 from loopy.skills.compile import build_compile_prompt, build_repair_prompt, parse_compile_reply
-from loopy.skills.teach import cap_stop_status, complete_uncut, run_check, stale_skips, stop_status
+from loopy.skills.teach import PaidRequestFailed, cap_stop_status, complete_uncut, run_check, stale_skips, stop_status
 
 HERE = Path(__file__).resolve().parent
 LEDGER = REPO_ROOT / "results" / "spend_ledger.jsonl"
+COMPILE_PENDING_GLOB = "compile_PENDING_*.json"
+COMPILE_RESUME_KEYS = ("messages", "attempts", "usages", "last_error")
+IDENTITY_KEYS = ("teacher_model_key", "small_model_key", "learn_task_id")
+
+
+def compile_pending_state(folder: Path, expected: dict | None = None) -> dict | None:
+    """What an interrupted function build of this scenario already did and paid for (review item 4).
+
+    The same rule as the note builder: a build whose validation the bridge kept breaking writes a pending file and no
+    row, and a restart goes on with the same conversation, the attempts already used and the spend already paid. Each
+    pending file holds the whole state up to its interruption, so only the latest one is read.
+    """
+    logs = sorted(folder.glob(COMPILE_PENDING_GLOB))
+    if not logs:
+        return None
+    state = json.loads(logs[-1].read_text(encoding="utf-8"))
+    missing = [key for key in COMPILE_RESUME_KEYS if key not in state]
+    if missing:
+        raise SystemExit(f"{logs[-1]}: a pending function build without {missing}; it cannot be resumed. "
+                         "Decide it by hand.")
+    wrong = [key for key, value in (expected or {}).items() if key in state and state[key] != value]
+    if wrong:
+        raise SystemExit(f"{logs[-1]}: a pending function build for another {wrong} in this folder; it cannot be "
+                         "resumed here. Decide it by hand.")
+    return {**state, "file": logs[-1].name}
+
+
+def retire_pending(folder: Path, pattern: str) -> None:
+    """A build that now has its row is decided: its pending files are kept for the record but never resumed again."""
+    for path in folder.glob(pattern):
+        path.rename(path.with_name(path.name.replace("_PENDING_", "_RESUMED_")))
 
 
 def find_record(records: list[dict], task_id: str, condition: str, model_key: str) -> dict | None:
@@ -109,7 +140,8 @@ def main() -> int:
             raise SystemExit(f"{provider}: the ${ledger_cap:.2f} cap is used up. Stopping.")
         max_usd = remaining if max_usd is None else min(max_usd, remaining)
     budget = Budget(max_usd=max_usd, ledger=LEDGER, provider=provider, run_name=args.run_name,
-                    note=f"build_skills {args.cloud_model}", ledger_cap=ledger_cap)
+                    note=f"build_skills {args.cloud_model}", ledger_cap=ledger_cap,
+                    reserve_usd=(config.get("ledger_reserve_usd") or {}).get(provider, 0.0))
     git = git_state()
 
     def base_row(scenario_id: str, task_id: str, kind: str) -> dict:
@@ -129,6 +161,7 @@ def main() -> int:
                 "cut_off_requests": sum(usage["cut_off_requests"] for usage in usages),
                 "input_tokens": sum(usage["input_tokens"] for usage in usages),
                 "output_tokens": sum(usage["output_tokens"] for usage in usages),
+                "cached_input_tokens": sum(usage.get("cached_input_tokens", 0) for usage in usages),
                 "cost_usd": round(sum(usage["cost_usd"] for usage in usages), 6),
                 "model_seconds": round(sum(usage["seconds"] for usage in usages), 2)}
 
@@ -186,25 +219,52 @@ def main() -> int:
 
                 untouched = False  # the spend limit came before this build's first request
                 interrupted = None  # why the function's validation could not run, if it could not
+                state = None
                 if args.only != "coach" and (scenario_id, "compile", args.cloud_model, args.small_model) not in done:
-                    messages = [{"role": "user", "content": build_compile_prompt(cloud_raw["instruction"],
-                                                                                 cloud_raw["steps"])}]
-                    usages, attempts, validated, status, last_error = [], [], False, "failed_validation", None
-                    for attempt in range(1, args.max_repairs + 2):
-                        try:
-                            text, usage = ask(messages)
-                        except CostCapReached:
-                            # Reached between attempts: keep what this build already paid for. A build that sent
-                            # nothing gets no record, so the next start builds it.
-                            if cap_stop_status(sum(usage["requests"] for usage in usages)) is None:
-                                untouched = True
-                            else:
-                                status, last_error = "cost_cap", "no whole reply: cost_cap"
-                            break
-                        usages.append(usage)
-                        if stop_status(usage):  # not an attempt: the model never finished a reply
-                            status, last_error = stop_status(usage), f"no whole reply: {stop_status(usage)}"
-                            break
+                    identity = {"teacher_model_key": args.cloud_model, "small_model_key": args.small_model,
+                                "learn_task_id": task_id}
+                    state = compile_pending_state(folder, identity)
+                    if state:  # an earlier start was interrupted during validation: go on from where it stopped
+                        messages, attempts, usages = state["messages"], state["attempts"], state["usages"]
+                        last_error = state["last_error"]
+                        pending_text = state.get("pending_reply")  # paid for, its check broke: checked again, not bought
+                        print(f"{scenario_id}: resuming the function build interrupted in {state['file']} after "
+                              f"{len(attempts)} attempt(s) | already paid ${total(usages)['cost_usd']:.4f}")
+                    else:
+                        messages = [{"role": "user", "content": build_compile_prompt(cloud_raw["instruction"],
+                                                                                     cloud_raw["steps"])}]
+                        usages, attempts, last_error, pending_text = [], [], None, None
+                    validated, status, pending_reply = False, "failed_validation", None
+                    attempt = len(attempts) + 1
+                    for attempt in range(len(attempts) + 1, args.max_repairs + 2):
+                        if pending_text is not None:
+                            text, pending_text = pending_text, None
+                        else:
+                            try:
+                                text, usage = ask(messages)
+                            except CostCapReached as error:
+                                # A spend limit before this attempt's first request. A build that has paid for
+                                # nothing gets no record, so the next start builds it; one that has paid stays
+                                # pending and resumes on the next start, within the provider's own stop.
+                                if cap_stop_status(sum(paid["requests"] for paid in usages)) is None:
+                                    untouched = True
+                                else:
+                                    interrupted = f"spend limit reached: {error}"
+                                break
+                            except PaidRequestFailed as error:  # part of the reply was paid for, then it failed
+                                usages.append(error.usage)
+                                interrupted = f"teacher request failed: {error}"
+                                break
+                            except Exception as error:  # the provider failed after the client's own retries
+                                interrupted = f"teacher request failed: {type(error).__name__}: {str(error)[:300]}"
+                                break
+                            usages.append(usage)
+                            if usage["stopped_by_cap"]:  # a spend limit between two parts of one reply
+                                interrupted = "spend limit reached during a reply"
+                                break
+                            if stop_status(usage):  # cut off even at the ceiling: the reply never fit
+                                status, last_error = stop_status(usage), f"no whole reply: {stop_status(usage)}"
+                                break
                         try:
                             workflow = parse_compile_reply(text)
                         except (ValueError, SyntaxError) as error:
@@ -234,7 +294,7 @@ def main() -> int:
                         # A validation the bridge broke says nothing about the function. It is not an attempt.
                         ran, checks = run_check(check_once)
                         if not ran:
-                            interrupted = checks[-1]["error"]
+                            interrupted, pending_reply = checks[-1]["error"], text
                             break
                         output, passed = checks[-1]["output"], checks[-1]["passed"]
                         attempts.append({"attempt": attempt, "reply": text, "output": output, "passed": passed})
@@ -248,7 +308,15 @@ def main() -> int:
                     if untouched:
                         print(f"{scenario_id}: compile not started, the spend limit came first; left pending")
                     elif interrupted:
-                        # No row: a row would mark the build as decided. What was paid is in the ledger and the log.
+                        # No row: a row would mark the build as decided. What was paid is in the ledger and in the
+                        # pending file, which also holds everything a restart needs (`compile_pending_state`).
+                        (folder / f"compile_PENDING_{time.strftime('%Y%m%d_%H%M%S')}.json").write_text(
+                            json.dumps({"messages": messages, "attempts": attempts, "usages": usages,
+                                        "last_error": last_error, "interrupted": interrupted,
+                                        "interrupted_attempt": attempt, "pending_reply": pending_reply,
+                                        **identity,
+                                        "resumed_from": state["file"] if state else None},
+                                       indent=2, ensure_ascii=False), encoding="utf-8")
                         build_log["compile"] = {"prompt": messages[0]["content"], "attempts": attempts,
                                                 "status": "pending", "interrupted": interrupted,
                                                 "cost_usd": total(usages)["cost_usd"]}
@@ -257,7 +325,9 @@ def main() -> int:
                     else:
                         append_jsonl(teach_path, {**base_row(scenario_id, task_id, "compile"), **total(usages),
                                                   "status": status, "validated": validated, "attempts": len(attempts),
-                                                  "error": None if validated else last_error})
+                                                  "error": None if validated else last_error,
+                                                  "resumed_from": state["file"] if state else None})
+                        retire_pending(folder, COMPILE_PENDING_GLOB)
                         build_log["compile"] = {"prompt": messages[0]["content"], "attempts": attempts,
                                                 "status": status}
                         print(f"{scenario_id}: compile {status} after {len(attempts)} attempt(s) | "
@@ -270,7 +340,7 @@ def main() -> int:
                     print("cost cap reached; stopping. The build that was not started stays pending.")
                     break
                 if interrupted:
-                    print("the validation could not run; stopping. The build stays pending.")
+                    print("the build could not finish; stopping. It stays pending and resumes on the next start.")
                     break
                 if build_log.get("compile", {}).get("status") == "cost_cap":
                     print("cost cap reached; stopping. A cost_cap build is not resumed: the stage is incomplete.")

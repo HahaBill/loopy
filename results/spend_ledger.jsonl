@@ -11505,3 +11505,7 @@
 {"note": "generic_note nemotron-3-super-120b", "provider": "nebius.com", "run": "stage2a", "time": "2026-11-25T05:21:57-05:00", "usd": 0.003809}
 {"note": "generic_note nemotron-3-super-120b", "provider": "nebius.com", "run": "stage2a", "time": "2026-11-25T05:21:57-05:00", "usd": 0.00383}
 {"note": "generic_note nemotron-3-super-120b", "provider": "nebius.com", "run": "stage2a", "time": "2026-11-25T05:22:03-05:00", "usd": 0.005443}
+{"note": "ping minimax-m3", "provider": "nebius.com", "run": "stage3_setup_ping", "time": "2026-11-27T18:58:08-05:00", "usd": 0.000108}
+{"note": "ping nemotron-3.5-super-vl", "provider": "nebius.com", "run": "stage3_setup_ping", "time": "2026-11-27T18:58:09-05:00", "usd": 7.2e-05}
+{"note": "ping hermes-4-405b", "provider": "nebius.com", "run": "stage3_setup_ping", "time": "2026-11-27T18:58:10-05:00", "usd": 8e-05}
+{"note": "ping reflection-beam", "provider": "nebius.com", "run": "stage3_setup_ping", "time": "2026-11-27T18:58:11-05:00", "usd": 8.8e-05}

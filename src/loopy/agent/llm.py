@@ -26,12 +26,16 @@ class ModelSpec:
     api_key_env: str | None = None  # the environment variable holding the key (never the key itself)
     usd_per_mtok_in: float = 0.0
     usd_per_mtok_out: float = 0.0
-    temperature: float = 0.0
+    temperature: float | None = 0.0  # None: not sent, for models that accept only their default
     max_tokens: int = 1500
     seed: int | None = 123
     context_budget_tokens: int | None = None  # trim old steps when the prompt would exceed this estimate
     request_timeout: float = 180.0
     extra_body: dict[str, Any] | None = None
+    # What the provider bills for input it read from its prompt cache. Recorded for the analysis only: every cost and
+    # every spending stop uses the list price above, so a stop is never reached later than the list price says.
+    # Last, so that the positional order of the fields above stays as it was.
+    usd_per_mtok_cached_in: float | None = None
 
     @classmethod
     def from_dict(cls, key: str, data: dict[str, Any]) -> "ModelSpec":
@@ -65,6 +69,7 @@ class Reply:
     finish_reason: str | None = None
     thinking: str = ""
     attempts: int = 1
+    cached_input_tokens: int = 0  # the part of input_tokens the provider read from its prompt cache
 
 
 class ChatModel(Protocol):
@@ -98,6 +103,20 @@ class PydanticAIChat:
         self.runs_locally = choice.runs_locally
         self.retries = retries
 
+    def settings(self) -> dict[str, Any]:
+        """The model settings every request is sent with. What the library then sends depends on the model's profile."""
+        settings: dict[str, Any] = {
+            "max_tokens": self.spec.max_tokens,
+            "timeout": self.spec.request_timeout,
+        }
+        if self.spec.temperature is not None:
+            settings["temperature"] = self.spec.temperature
+        if self.spec.seed is not None:
+            settings["seed"] = self.spec.seed
+        if self.spec.extra_body:
+            settings["extra_body"] = self.spec.extra_body
+        return settings
+
     def complete(self, messages: list[Message]) -> Reply:
         from pydantic_ai.direct import model_request_sync
         from pydantic_ai.messages import (
@@ -118,15 +137,7 @@ class PydanticAIChat:
             else:
                 history.append(ModelRequest(parts=[UserPromptPart(content=message["content"])]))
 
-        settings: dict[str, Any] = {
-            "temperature": self.spec.temperature,
-            "max_tokens": self.spec.max_tokens,
-            "timeout": self.spec.request_timeout,
-        }
-        if self.spec.seed is not None:
-            settings["seed"] = self.spec.seed
-        if self.spec.extra_body:
-            settings["extra_body"] = self.spec.extra_body
+        settings = self.settings()
 
         attempt = 0
         while True:
@@ -151,6 +162,7 @@ class PydanticAIChat:
             finish_reason=str(response.finish_reason) if response.finish_reason else None,
             thinking=thinking,
             attempts=attempt,
+            cached_input_tokens=int(getattr(response.usage, "cache_read_tokens", 0) or 0),
         )
 
 

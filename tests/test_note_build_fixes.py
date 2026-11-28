@@ -69,3 +69,79 @@ def test_a_pending_log_without_the_state_to_resume_stops_the_builder(tmp_path):
         json.dumps({"prompt": "p", "attempts": [], "teacher_cost_usd": 0.01}), encoding="utf-8")
     with pytest.raises(SystemExit):
         builder.pending_state(tmp_path)
+
+
+skills_builder = load("function_builder_under_test", "experiments/pilot/build_skills.py")
+
+
+def test_an_interrupted_function_build_resumes_with_its_attempts_and_spend(tmp_path):  # item 4, function builder
+    assert skills_builder.compile_pending_state(tmp_path) is None
+    state = {"messages": [{"role": "user", "content": "p"}], "attempts": [{"attempt": 1, "passed": False}],
+             "usages": [{"requests": 1, "cost_usd": 0.2}], "last_error": None}
+    (tmp_path / "compile_PENDING_20261127_010000.json").write_text(json.dumps({**state, "attempts": []}), encoding="utf-8")
+    (tmp_path / "compile_PENDING_20261127_020000.json").write_text(json.dumps(state), encoding="utf-8")
+    found = skills_builder.compile_pending_state(tmp_path)
+    assert found["file"].endswith("020000.json") and len(found["attempts"]) == 1 and found["usages"][0]["cost_usd"] == 0.2
+    (tmp_path / "compile_PENDING_20261127_030000.json").write_text(json.dumps({"attempts": []}), encoding="utf-8")
+    with pytest.raises(SystemExit):
+        skills_builder.compile_pending_state(tmp_path)
+
+
+def test_a_finished_build_retires_its_checkpoints(tmp_path):
+    (tmp_path / "compile_PENDING_20261127_010000.json").write_text("{}", encoding="utf-8")
+    skills_builder.retire_pending(tmp_path, skills_builder.COMPILE_PENDING_GLOB)
+    assert skills_builder.compile_pending_state(tmp_path) is None
+    assert (tmp_path / "compile_RESUMED_20261127_010000.json").exists()
+
+
+def test_two_budgets_share_one_invocation_guard_and_stop_before_the_cap(tmp_path):
+    from loopy.agent.react import Budget, CostCapReached
+    teacher, student = Budget(max_usd=6.0), Budget(max_usd=6.0)
+    teacher.shares_cap_with, student.shares_cap_with = student, teacher
+    teacher.add(4.0)
+    student.add(1.5)
+    teacher.check()
+    student.add(1.0)
+    for budget in (teacher, student):
+        with pytest.raises(CostCapReached):
+            budget.check()
+    ledger = tmp_path / "ledger.jsonl"
+    reserved = Budget(ledger=ledger, provider="openai.com", ledger_cap=90.0, reserve_usd=4.0)
+    reserved.add(85.5)
+    reserved.check()
+    reserved.add(0.6)
+    with pytest.raises(CostCapReached):
+        reserved.check()
+
+
+def test_a_checkpoint_is_resumed_only_by_the_same_teacher_student_and_task(tmp_path):
+    state = {"messages": [], "attempts": [], "usages": [], "last_error": None, "teacher_model_key": "t",
+             "small_model_key": "shared", "learn_task_id": "a_1"}
+    (tmp_path / "compile_PENDING_20261127_010000.json").write_text(json.dumps(state), encoding="utf-8")
+    same = {"teacher_model_key": "t", "small_model_key": "shared", "learn_task_id": "a_1"}
+    assert skills_builder.compile_pending_state(tmp_path, same)["learn_task_id"] == "a_1"
+    with pytest.raises(SystemExit):
+        skills_builder.compile_pending_state(tmp_path, {**same, "teacher_model_key": "another"})
+
+
+def test_a_request_that_fails_after_a_paid_part_reports_what_was_paid():
+    from loopy.agent.llm import ModelSpec, Reply
+    from loopy.agent.react import Budget
+    from loopy.skills.teach import PaidRequestFailed, complete_uncut
+
+    class Chat:
+        calls = 0
+
+        def __init__(self, spec):
+            self.spec = spec
+
+        def complete(self, messages):
+            Chat.calls += 1
+            if Chat.calls == 1:  # cut off by the output limit: paid for, sent again with more room
+                return Reply(text="partial", input_tokens=1000, output_tokens=100, seconds=1.0, finish_reason="length")
+            raise ConnectionError("provider down")
+
+    spec = ModelSpec(key="t", role="cloud", name="t", usd_per_mtok_in=1.0, usd_per_mtok_out=1.0, max_tokens=100)
+    with pytest.raises(PaidRequestFailed) as caught:
+        complete_uncut(spec, [{"role": "user", "content": "x"}], Budget(), make_chat=Chat)
+    assert caught.value.usage["requests"] == 1 and abs(caught.value.usage["cost_usd"] - 0.0011) < 1e-12

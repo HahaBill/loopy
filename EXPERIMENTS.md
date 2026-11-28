@@ -20,6 +20,14 @@ on Nebius.
 | Nov 25 | Stage 2, part A screen: 4 new models alone on 12 tasks | 48 | Nemotron-3-Super-120B (7 of 12) and Qwen3-235B (8 of 12) land in the middle band and are kept | `experiments/stage2/PROTOCOL_PART_A.md`, `results/pilot/stage2a/screen_part_a_2026-11-25.json` |
 | Nov 25 | Stage 2, part A: the two kept models through the stage 1 arms | 271 | their failed tasks: note 69%, function 85%, generic note 19%, against 25%, 81% and 11% for the weak models on the same scenarios. CATCHES UP | `experiments/stage2/PROTOCOL_PART_A.md`, `results/pilot/stage2a/analysis_part_a_2026-11-25.json` |
 
+## Designed, not run yet
+
+**Stage 3, designed by Alfredo on Nov 27, to be run by Bill.** It uses GPT-6.2 Sol as the teacher, with the same four
+students (the three weak ones and Nemotron-3-Super) on part A's 23 scenarios. Everything is run the same way. The
+students' solo runs are reused, so only the teacher's runs and the help arms are new. It tests whether the cheap
+teacher's answers hold when renting is expensive. The rules, predictions and the meaning of each result are in
+`experiments/stage3/PROTOCOL.md`, and how to run it is in `experiments/stage3/README.md`.
+
 ## What it says so far
 
 - For weak models the function is the help that works: on the 23 scenarios that have a function, it fixed 81% of
